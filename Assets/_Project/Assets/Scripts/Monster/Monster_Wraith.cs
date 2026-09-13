@@ -37,6 +37,16 @@ public class Monster_Wraith : MonoBehaviour {
     public float hiddenTimeMin = 1.2f; // 사라져 있는 최소 시간.
     public float hiddenTimeMax = 2f; // 사라져 있는 최대 시간.
 
+    [Header("이동 잔상")]
+    // 사라져 있는 동안 어디로 가는지 전혀 읽히지 않아, 플레이어 입장에서는 매번 "갑자기 머리 위에 생겼다"가 된다.
+    // 그래서 착지 지점으로 즉시 순간이동시키지 않고, 투명해진 채로 흘러가며 잔상만 남긴다.
+    public SpriteRenderer trailRenderer; // 잔상으로 찍을 스프라이트. **비워두면 자식에서 자동으로 찾습니다.**
+    public float glideDuration = 0.45f; // 사라진 자리에서 착지 지점까지 흘러가는 시간. **0이면 예전처럼 즉시 순간이동한다.**
+    [Min(1)] public int trailGhostCount = 8; // 이동 한 번에 남길 잔상 장수.
+    public float trailGhostLifetime = 0.35f; // 한 장이 완전히 지워지기까지의 시간.
+    public Color trailGhostTint = new(0.7f, 0.45f, 1f, 0.45f); // 잔상 색과 시작 투명도. 조준선과 같은 보랏빛 계열로 맞춘다.
+    public int trailSortingOrderOffset = -1; // 본체보다 이만큼 뒤에 그린다.
+
     [Header("텔레포트 위치")]
     public float teleportMinDistance = 5f; // 플레이어와 너무 가깝게 나타나지 않도록 하는 최소 거리.
     public float teleportMaxDistance = 9f; // 최대 거리.
@@ -88,6 +98,9 @@ public class Monster_Wraith : MonoBehaviour {
         renderers = GetComponentsInChildren<SpriteRenderer>(true);
         baseColors = new Color[renderers.Length];
         for (int i = 0; i < renderers.Length; i++) baseColors[i] = renderers[i].color;
+
+        // 연결을 깜빡해도 잔상이 조용히 사라지지 않도록 첫 스프라이트를 대신 쓴다.
+        if (trailRenderer == null && renderers.Length > 0) trailRenderer = renderers[0];
 
         aimLine = AimLineIndicator.Create(aimLineColor);
     }
@@ -237,9 +250,8 @@ public class Monster_Wraith : MonoBehaviour {
             if (!StillHasTarget()) break; // 사라지는 동안 놓쳤으면 숨은 채로 순찰 복귀.
 
             Vector2 landingPos = ChooseTeleportPosition();
-            yield return new WaitForSeconds(Random.Range(hiddenTimeMin, hiddenTimeMax));
+            yield return TravelWhileHidden(landingPos);
 
-            transform.position = landingPos; // 뿅.
             SetHurtboxEnabled(true);
             SetStateSprite("Idle");
             yield return FadeAlpha(0f, 1f, appearFadeDuration);
@@ -283,6 +295,59 @@ public class Monster_Wraith : MonoBehaviour {
         float distance = Random.Range(minDistance, maxDistance);
         Vector2 offset = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * distance;
         return (Vector2)target.position + offset;
+    }
+
+    #endregion
+    #region 숨은 채 이동 (잔상)
+
+    // 사라져 있는 시간을 "제자리 대기 → 잔상을 흘리며 이동" 두 토막으로 나눈다.
+    // 이동을 마지막에 두는 이유는, 잔상이 아직 남아 있는 동안 곧바로 모습을 드러내야
+    // "저기서 여기로 왔고 지금 여기서 나타난다"가 한 호흡으로 읽히기 때문이다.
+    // 먼저 이동해 버리면 착지 지점에서 기다리는 사이 잔상이 다 지워져 아무 단서도 남지 않는다.
+    IEnumerator TravelWhileHidden(Vector2 landingPos) {
+        float hiddenTime = Random.Range(hiddenTimeMin, hiddenTimeMax);
+        float glide = Mathf.Clamp(glideDuration, 0f, hiddenTime);
+
+        float wait = hiddenTime - glide;
+        if (wait > 0f) yield return new WaitForSeconds(wait);
+
+        if (glide <= 0f) {
+            transform.position = landingPos; // 뿅. (glideDuration 을 0으로 두면 예전 동작 그대로)
+            yield break;
+        }
+
+        Vector2 start = transform.position;
+        SetFacing(landingPos.x - start.x);
+
+        float ghostInterval = glide / trailGhostCount;
+        float ghostTimer = 0f;
+        float elapsed = 0f;
+        SpawnTrailGhost(); // 출발점에도 한 장. 어디서 떠났는지가 보여야 궤적이 선으로 이어진다.
+
+        while (elapsed < glide) {
+            elapsed += Time.deltaTime;
+
+            // 확 튀어나갔다가 착지 지점에서 감속한다. 잔상이 도착점 쪽에 몰려 "여기로 온다"가 강조된다.
+            float linear = Mathf.Clamp01(elapsed / glide);
+            float eased = 1f - (1f - linear) * (1f - linear);
+            transform.position = Vector2.Lerp(start, landingPos, eased);
+
+            ghostTimer += Time.deltaTime;
+            while (ghostTimer >= ghostInterval) {
+                ghostTimer -= ghostInterval;
+                SpawnTrailGhost();
+            }
+
+            yield return null;
+        }
+
+        transform.position = landingPos;
+        SpawnTrailGhost(); // 도착점에 한 장 더. 모습을 드러내기 직전에 시선을 이쪽으로 붙잡아 둔다.
+    }
+
+    // 본체는 알파 0으로 투명해져 있지만, 잔상은 trailGhostTint 를 그대로 쓰므로 이때도 보인다.
+    void SpawnTrailGhost() {
+        AfterimageGhost.Spawn(trailRenderer, trailGhostTint, trailGhostLifetime, trailSortingOrderOffset);
     }
 
     #endregion

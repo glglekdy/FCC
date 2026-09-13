@@ -261,6 +261,12 @@ MonoBehaviour:
   appearFadeDuration: 0.2
   hiddenTimeMin: 1.2
   hiddenTimeMax: 2
+  trailRenderer: {fileID: 4345619430860141723}
+  glideDuration: 0.45
+  trailGhostCount: 8
+  trailGhostLifetime: 0.35
+  trailGhostTint: {r: 0.7, g: 0.45, b: 1, a: 0.45}
+  trailSortingOrderOffset: -1
   teleportMinDistance: 5
   teleportMaxDistance: 9
   teleportMinAngle: 20
