@@ -1,0 +1,10 @@
+[mcp_servers.notion]
+command = "npx.cmd"
+args = [
+    "-y",
+    "@modelcontextprotocol/server-notion",
+]
+env_vars = [
+    "NOTION_API_TOKEN",
+    "NOTION_API_KEY",
+]

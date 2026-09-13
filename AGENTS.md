@@ -1,10 +1,10 @@
-# CLAUDE.md
+# AGENTS.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Codex (Codex.ai/code) when working with code in this repository.
 
 ## 말투 관련
 
-~한다., ~교체. 등의 단답형/반말 형태가 아닌, ~습니다., ~합니다. 등 완성되고 자연스러운 존댓말 문장으로 작성해 주시기 바랍니다.
+~한다., ~교체. 등의 단답형/반말 형태가 아닌, ~습니다., ~합니다. 등 완성되고 자연스러운 존댓말 문장으로 작성해 주시기 바랍니다. 그리고 한국어를 완벽하게 구사해야 합니다.
 
 ## 프로젝트
 
@@ -37,9 +37,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 CLI 빌드/테스트 스크립트나 CI는 없습니다. 모든 작업은 Unity Editor에서 수행합니다.
 
 - MCP for Unity(`com.coplaydev.unity-mcp`)가 설치되어 있어 `mcp__UnityMCP__*` 툴로 에디터를 직접 조작할 수 있습니다. 스크립트를 수정한 뒤에는 `read_console` 로 컴파일 에러를 확인하고, `editor_state` 의 `isCompiling` 이 끝난 뒤에 새 타입을 사용해야 합니다.
-- TMP 폰트 SDF 생성: 에디터 메뉴 `Tools ▸ KW Font ▸ Build Bold / Build Light / Build Inter Bold / Build Inter Regular` (`Assets/_Project/Editor/KwFontAssetBuilder.cs`)로 실행합니다.
-- **SDF 는 반드시 이 도구로 뽑습니다.** 밖에서 만들어 온 폰트는 `samplingPointSize` 에 비해 `padding` 이 좁게 잡히기 쉬운데, 그러면 글자 바깥 거리값이 투명까지 못 내려가 **글자마다 반투명 사각형 자국**이 남습니다. 실제로 Inter SDF가 `330 / 5`(1.5%)로 들어와 그 증상이 났고, 도구의 `90 / 9`(10%)로 다시 뽑아 해결했습니다. 한글은 멀쩡해 보여서 영문에서만 티가 납니다. 문자 집합은 ASCII + 한글 음절 전체(11,172자) + 기호 23종을 요청하지만, **실제로 담기는 글자는 원본 OTF에 있는 것뿐**입니다 (현재 폰트들은 한글 상용 2,350자만 들어갑니다). 결과물 `Assets/_Project/Assets/Font/SDF/*.asset` 은 Git LFS 추적 대상입니다.
-- 이미 쓰이고 있는 SDF 자산에 글자를 더할 때는 **`Tools ▸ KW Font ▸ Patch Missing Symbols`** 를 씁니다. `Build` 를 다시 돌리면 `AssetDatabase.CreateAsset` 이 파일을 새로 만들면서 **GUID가 바뀌어 프리팹·씬의 폰트 참조가 전부 끊깁니다.**
+- 한글 TMP 폰트 SDF 생성: 에디터 메뉴 `Tools ▸ KW Font ▸ Build Bold / Build Light` (`Assets/_Project/Editor/KwFontAssetBuilder.cs`, 아틀라스 4096², 한글 음절 11,172자 포함)로 실행합니다. 결과물 `Assets/_Project/Assets/Font/SDF/*.asset` 은 Git LFS 추적 대상입니다.
 - 유닛 테스트는 없습니다. `com.unity.test-framework` 는 설치되어 있지만 테스트 어셈블리가 없으며, `DialogueTest.cs` 는 대사 마크업을 눈으로 확인하는 인게임 컴포넌트입니다.
 - asmdef 없음 — 모든 스크립트가 `Assembly-CSharp` 한 덩어리로 이루어져 있습니다. 스크립트 하나만 고쳐도 전체가 재컴파일됩니다.
 
@@ -88,10 +86,6 @@ Player_Combat.DealDamage()          // OverlapCircleAll + HashSet 중복 방지
 - `DialogueTriggerZone` 은 시작 방식이 2종입니다. 기본은 영역 진입형이고, `**autoStart` 를 켜면 조작과 무관하게 씬 시작 시 강제로 재생**됩니다 (이때 Collider 트리거는 무시되고 씬 뷰 기즈모도 그려지지 않습니다). `waitForWakeUp` 을 함께 켜면 `ScreenWakeUp.WaitUntilFinished()` 로 깨어나기 연출이 끝나기를 기다린 뒤 `autoStartDelay` 만큼 쉬었다가 시작합니다. First 씬의 `OpeningDialogue` 가 이 방식입니다.
 - 대사의 **배치**(어느 칸에 어떤 초상화·효과음이 붙는지)는 ScriptableObject가 아니라 **컴포넌트 인스펙터의 `List<DialogueEntry>`** 에 직접 작성합니다. 기존 ScriptableObject 방식(`DialogueScript`/`DialogueLine`)은 사용되지 않으며 `쓰레기통/Dialogue/` 로 이동되었습니다.
 - **대사 원문은 인스펙터에 직접 적지 않습니다.** `DialogueEntry.Speaker` · `Text` 는 String Table `Dialogue` 의 키를 가리키는 `LocalizedString` 입니다 (아래 다국어 항목 참고). 원문 편집은 키를 고른 뒤 인스펙터에서 바로 하거나 Localization Tables 창에서 합니다.
-- **대화창의 배치·색은 `Tools ▸ FCC ▸ UI ▸ Apply Dialogue Layout`**(`Editor/DialogueBoxApplier.cs`)이 정합니다. Figma 「FCC_UI」의 `대화창` 안을 1920×1080 기준으로 옮긴 것이며, 멱등이라 여러 번 눌러도 안전합니다. 이 화면은 `UiThemeApplier` 의 적용표가 아니라 이 도구가 단독으로 관리합니다(두 곳에서 칠하면 값이 갈립니다).
-  - 그리는 순서를 `SortDrawOrder()` 가 못 박습니다 — 초상화(280~840)와 대화 상자(740~1000)가 100px 겹치므로, 상자가 초상화를 덮어야 인물이 상자 뒤에 선 것처럼 보입니다.
-  - 본문 칸은 설계도의 `558×68`(예시 문장의 실제 글자 크기)이 아니라 **상자 안쪽을 여백만 남기고 채웁니다.** 그대로 쓰면 긴 대사가 잘립니다.
-- **SKIP** 은 `DialogueView.RequestSkip()` 이 깃발만 세우고, `DialoguePlayer` 가 안쪽·바깥쪽 루프에서 각각 확인해 빠져나옵니다. 코루틴을 밖에서 끊으면 뒷정리(입력 액션 해제·대화창 닫기)가 건너뛰어지기 때문입니다.
 - 표시는 `DialogueView`, 본문 마크업 태그(`<shake>` `<wave>` `<rainbow>` `<round>` `<speed>`)는 `DialogueEffect`가 담당합니다. 마크업은 번역문에도 그대로 써야 하므로 **번역가에게 태그를 지우지 말라고 안내해야 합니다.**
 - 컷씬은 `CutSceneManager` + 자식 오브젝트로 붙인 `CutSceneStep` 들을 순서대로 `yield return step.Execute()` 로 실행합니다. 새 연출을 추가하려면 `Story/CutScene/Steps/` 에 `CutSceneStep` 파생 클래스를 추가하면 됩니다.
 
@@ -147,24 +141,6 @@ SaveMirror.Interact()  → Health.RestoreFull()          // 회복이 먼저 진
 - `SaveData` 는 `**JsonUtility` 가 다루므로 전부 public 필드**여야 합니다. 필드를 새로 추가하더라도 기존 세이브는 그대로 읽히며(없는 필드는 0/null), `maxHealth == 0` 이면 체력을 기록하지 않던 구버전 세이브로 판단하여 체력을 건드리지 않습니다. 후속 시스템(오염도·기억 조각)은 여기에 필드를 추가하여 확장합니다.
 - `LoadGame()` 은 **같은 씬 안에서만** 복원합니다. 메인 메뉴 → 이어하기처럼 씬 전환이 필요한 경우 `Read()` 로 `sceneName` 을 먼저 확인하여 씬을 전환한 뒤 호출해야 합니다.
 - `SaveManager.Awake()` 는 `transform.SetParent(null)` 을 먼저 호출합니다. `DontDestroyOnLoad` 는 루트 오브젝트에서만 동작하는데, 씬에서는 `GAME_MANAGER` 하위에 배치되어 있기 때문입니다.
-
-### 설정 (Settings)
-
-Figma 파일 「FCC_UI」의 `설정_일반` · `설정_컨트롤` · `설정_그래픽` 3안을 그대로 옮긴 화면입니다. 프리팹은 `Prefabs/UI/SettingsPanel.prefab`(`Tools ▸ FCC ▸ Build Settings Panel Prefab` 로 생성), 값은 `Scripts/System/GameSettings.cs` 가 맡습니다.
-
-```
-SettingsPanelView   탭 전환 · 줄 이동 · 입력           (화면)
-  └ SettingsRowView  ← SliderRow · SelectorRow · ToggleRow · KeybindRow
-        └ SettingsAccess  SettingsField ↔ GameSettings.Draft 대응표
-GameSettings        Draft / Current · PlayerPrefs 저장 · 시스템 반영  (값)
-```
-
-- **값은 `Draft` 만 만지고 「적용」을 눌러야 확정됩니다.** 해상도처럼 되돌리기 어려운 항목이 섞여 있어 즉시 반영하면 「취소」가 의미를 잃습니다. `Apply()` → Draft를 Current로 확정 + 저장 + 시스템 반영, `Cancel()` → Current를 Draft로 되돌림, `ResetToDefaults()` → 기본값.
-- 저장은 세이브 파일이 아니라 **PlayerPrefs**(`FCC_Settings`)입니다. 설정은 세이브 슬롯이 아니라 이 PC에 붙는 값이기 때문입니다.
-- 부팅 시 반영은 `[RuntimeInitializeOnLoadMethod]` 로 자동 실행됩니다. 씬마다 오브젝트를 놓게 하면 하나만 빠뜨려도 조용히 어긋납니다.
-- **설정 항목을 추가할 때 고칠 곳은 `SettingsField` 열거형 + `SettingsAccess` 대응표 + 프리팹 빌더 세 군데뿐입니다.**
-- 감각을 건드리는 항목은 원본 수치를 덮어쓰지 않고 **배율**로 곱합니다 — `HitFeedback.ShakeScale`, `DialogueEffect.SpeedScale`. 인스펙터에서 맞춰둔 값을 설정이 지워버리면 되돌릴 수 없기 때문입니다.
-- **아직 값만 보관하는 항목**: 배경음·효과음 볼륨(`AudioMixer` 미존재 — 마스터만 `AudioListener.volume` 로 동작), 데미지 수치 표시(`DamagePopup` 미존재), 키 리바인딩(Input System 인터랙티브 리바인딩 미구현). 각각 붙일 자리에 `**` 주석으로 표시해 두었습니다.
 
 ### 입력
 
@@ -225,59 +201,9 @@ public class HitReactor : MonoBehaviour {
 2. 목록처럼 개수가 변동되는 UI는 **단일 항목 프리팹을 따로 제작**하여 `Instantiate(rowPrefab, container)` 로 생성합니다. 항목 내부의 라벨·아이콘·색상 등은 해당 항목 프리팹의 컴포넌트가 관리합니다.
 3. 인스펙터로 주입받는 참조는 `public` + `[Header("연결")]` 로 정리하고, 미연결 시 **누락된 참조 이름을 명확히 알리는 검사**를 `Awake` 에 배치합니다 (NullReference 예외 방지).
 4. 고정 문구(제목·도움말)는 프리팹의 TMP에 직접 입력합니다. 상황에 따라 동적으로 변경되는 문구만 인스펙터 `string` 필드로 노출합니다.
-5. TMP 폰트는 **프로젝트 대표 폰트 하나**로 통일합니다 (아래 「UI 아트 디렉션 ▸ 서체」 참고). 비워두거나 참조가 끊기면 TMP가 **조용히** `LiberationSans` 로 떨어져 한글이 전부 네모(□)가 됩니다. 에러가 뜨지 않으므로 눈으로 확인하기 전까지 모릅니다.
+5. 한글을 사용하는 TMP에는 **반드시 한글 SDF 폰트**(`Font/SDF/SCDream6 SDF.asset` 등)를 지정해야 합니다. 비워둘 경우 기본 폰트로 처리되어 글자가 깨질 수 있습니다.
 6. 프리팹을 다량 생성해야 하는 경우 `**Assets/_Project/Editor/` 에 프리팹 생성 메뉴 도구를 구현**하여 일괄 생성한 후 세부 디자인을 편집합니다 (`SkillLoadoutPrefabBuilder.cs` → `Tools ▸ FCC ▸ Build Skill Loadout Prefab`). 에디터 전용 도구 생성은 허용되나, **런타임 시 동적 UI 조립은 금지합니다.**
 7. 예외적으로 런타임 동적 생성이 남아있는 구현부(`HealthBar` · `DamagePopup` · `PlayerInteractor` 프롬프트)는 **레거시**입니다. 새로 작성 시 참고하지 않으며, 해당 기능 수정 시 프리팹 구조로 전환해야 합니다.
-
-## UI 아트 디렉션 — 「퇴락한 빈티지 극장」 (예외 없음)
-
-화면의 **구조**는 위의 「UI 구현 규칙」이 정하고, **생김새**는 이 항목이 정합니다. 색과 폰트는 취향이 아니라 규칙입니다 — 화면마다 따로 잡으면 같은 게임으로 보이지 않습니다. 실제로 이 규칙을 세우기 전의 UI는 밝은 회색 종이(메인 로비) · 푸른 다크(HUD) · 보랏빛 다크(스킬 창) 세 갈래로 갈라져 있었고, 포인트 컬러도 금색 · 적색 · 보라 셋이 공존했습니다.
-
-컨셉은 **막을 내린 뒤 먼지가 앉은 극장**입니다. 검정이 아니라 따뜻한 어둠, 흰색이 아니라 바랜 상아, 그리고 낡은 벨벳 커튼의 적색 하나입니다.
-
-### 색 — `Scripts/Ui/UiTheme.cs` 의 토큰만 사용합니다
-
-| 토큰 | 값 | 용도 |
-| --- | --- | --- |
-| `Stage` | `#0E0B0C` | 화면 바탕(무대의 어둠) |
-| `Panel` | `#171113` | 패널 · 창 배경 |
-| `PanelRaised` | `#221A1C` | 골라진 줄 · 슬롯처럼 한 겹 올라온 면 |
-| `Dim` | `#000000` 78% | 모달 뒤를 덮는 막 |
-| `Curtain` | `#1B0F11` | 무대 커튼(벨벳이라 바탕보다 붉고 불투명합니다) |
-| `Line` | `#3A2C2E` | 1px 경계선 · 구분선 · 자리표시 프레임 |
-| `TextHigh` | `#F0E6D8` | 제목 · 골라진 항목 |
-| `TextBody` | `#C2B4A6` | 본문 · 메뉴 라벨 |
-| `TextMuted` | `#7C6F68` | 보조 표기 · 힌트 · 버전 |
-| `TextDim` | `#4A3F42` | 잠긴 항목 · 완료되어 꺼진 항목 |
-| `Accent` | `#8E2B2B` | **포인트** — 선택 테두리 · "장착 중" · 완료 체크 |
-| `AccentBright` | `#A83030` | **포인트(넓은 면적)** — 자아 게이지 채움 |
-
-**포인트 컬러는 `Accent` 계열 하나뿐입니다.** 금색 · 청록 · 보라 같은 두 번째 포인트를 추가하지 않습니다. 상태를 구분해야 할 때는 색을 늘리지 말고 **밝기 단계**(`TextHigh` → `TextBody` → `TextMuted` → `TextDim`)로 가릅니다. 스킬 강화 화면의 "좋아지는 수치 / 그대로인 수치"가 초록·보라였다가 밝기 차로 바뀐 것이 이 방식입니다.
-
-### 서체 — 프로젝트 대표 폰트 하나만 사용합니다
-
-현재 대표 폰트는 **`Font/SDF/Inter_18pt-Bold SDF.asset`**, 한글 받침은 **`Hahmlet-Bold SDF.asset`** 입니다. 경로는 `Editor/PrefabBuilderFont` 의 `ProjectFontPath` · `FallbackFontPath` **두 군데**에만 적혀 있으므로, 폰트를 갈아끼울 때는 거기만 고치고 `Tools ▸ FCC ▸ UI ▸ Apply Project Font` 를 실행합니다. 이 메뉴가 `Assets/_Project` 아래 모든 **프리팹 + 씬 + TMP 기본 설정**을 한꺼번에 맞추고 fallback 까지 걸어줍니다 (폰트만 바꾸고 머티리얼을 그대로 두면 옛 아틀라스를 물고 글자가 깨지므로 머티리얼도 같이 바꿉니다).
-
-**Inter 는 라틴 전용이라 한글이 한 자도 없습니다**(ASCII 93자뿐). 라틴·숫자는 Inter 가, 한글과 `↑ ↓ · — …` 같은 기호는 Hahmlet 이 그립니다. TMP 의 fallback 은 글자 단위라 한 줄에 섞여도 정상입니다. **대표 폰트에 한글이 없는 이상 fallback 은 필수이며, 빠지면 화면 대부분이 네모(□)가 됩니다.**
-
-**폰트를 바꿀 때마다 확인해야 할 것 — 글자 빠짐.** 한글 SDF는 보통 한글 상용 음절과 ASCII만 담고 있어서 `↑ ↓ · — … ←` 같은 기호가 빠지는데, **한글은 멀쩡하게 나오는 탓에 화면을 봐도 눈에 잘 띄지 않습니다.** TMP는 없는 글자를 조용히 네모(□)로 그리고 경고도 남기지 않습니다. `Apply Project Font` 가 끝나면서 프로젝트의 모든 문구(프리팹 + String Table)를 훑어 못 그리는 글자를 콘솔에 보고하므로, 경고가 뜨면 `Tools ▸ KW Font ▸ Patch Missing Symbols` 로 원본 OTF에서 채워 넣습니다.
-
-다만 **한글 SDF 끼리는 fallback 을 걸어도 소용이 없습니다.** 수록 범위가 서로 같아 한쪽에 없는 글자는 다른 쪽에도 없습니다. 그럴 때는 `Tools ▸ KW Font ▸ Patch Missing Symbols` 로 원본에서 채워 넣습니다 — 단 아틀라스가 이미 굳은 폰트에는 넣을 수 없으니, 그 글자를 가진 다른 폰트를 fallback 으로 물리는 편이 안전합니다.
-
-### 금지 사항
-
-1. 네온 그라데이션 · 발광(Glow) · 보라/시안 계열.
-2. 반투명 유리판(흰색 반투명 + 블러)과 흰색 반투명 테두리. 패널은 **불투명한 `Panel` 색 + 1px `Line` 테두리**로 만듭니다.
-3. 둥근 모서리. 유니티 기본 `UISprite` 는 알약 모양이라 쓰지 않습니다 — 스프라이트를 비우거나(순수 사각형) 평면인 `Background`(`UI/Skin/Background.psd`)를 씁니다.
-4. 떠 있는 카드 · 드롭섀도우.
-5. 순백(`#FFFFFF`) 글자. 가장 밝은 글자도 `TextHigh` 까지입니다.
-
-### 적용 방법
-
-- **화면에 실제로 나가는 값은 프리팹에 박힌 값입니다.** `UiTheme` 은 (1) 뷰 스크립트의 인스펙터 기본값, (2) 일괄 적용 도구의 표 두 군데에만 쓰입니다. 그래서 `UiTheme` 만 고쳐서는 기존 프리팹이 바뀌지 않습니다.
-- 색을 바꿨으면 `**Tools ▸ FCC ▸ UI ▸ Apply Theme Colors**`(`Editor/UiThemeApplier.cs`)을 실행해 전체를 맞춥니다. 멱등이라 여러 번 눌러도 안전하며, **배치는 건드리지 않고 색 · 폰트 · 스프라이트만** 덮어씁니다 (프리팹 빌더와 달리 손으로 고쳐둔 구조가 날아가지 않습니다).
-- **새 UI 프리팹을 만들면 `UiThemeApplier` 의 적용표에 줄을 추가합니다.** 추가하지 않으면 그 화면만 테마에서 빠집니다.
-- 프리팹 빌더(`MainLobbyPrefabBuilder` · `SkillLoadoutPrefabBuilder`)의 색 상수도 전부 `UiTheme` 을 참조합니다. **빌더에서 색을 새로 만들지 않습니다** — 빌더와 프리팹의 색이 갈라지면 일괄 적용으로도 맞출 수 없게 됩니다.
 
 ## 파일 · 폴더 정리 규칙
 
