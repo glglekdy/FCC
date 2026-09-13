@@ -92,8 +92,17 @@ public class HitFeedback : MonoBehaviour {
     // 타격 방향으로 화면이 밀리도록 방향성 임펄스를 발생시킨다. 무지향 흔들림보다 타격이 훨씬 시원하게 읽힌다.
     void TriggerShake(Vector2 hitPoint, Vector2 hitDir, float force) {
         if (impulseSource == null) return;
+
+        force *= ShakeScale;
+        if (force <= 0f) return; // 흔들림을 0으로 꺼둔 사람에게는 임펄스 자체를 만들지 않는다.
+
         impulseSource.GenerateImpulseAtPositionWithVelocity(hitPoint, hitDir * force);
     }
+
+    // 설정의 「화면 흔들림」이 곱하는 배율(0~1). 인스펙터의 shakeForce 를 직접 덮어쓰지 않는 이유는,
+    // 맞춰둔 타격 감각을 설정이 지워버리면 다시 되돌릴 수가 없기 때문이다.
+    // GameSettings 가 적용 시점에 넣어준다.
+    public static float ShakeScale = 1f;
 
     #endregion
     #region 쉐이크 프로파일

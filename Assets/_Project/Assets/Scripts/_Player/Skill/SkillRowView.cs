@@ -18,11 +18,11 @@ public class SkillRowView : MonoBehaviour {
     public Button button; // 마우스로 이 줄을 고르는 버튼. 비워두면 자기 오브젝트에서 찾는다.
 
     [Header("색상")]
-    public Color normalColor = new(0.13f, 0.12f, 0.18f, 1f);
-    public Color highlightColor = new(0.26f, 0.24f, 0.36f, 1f); // 커서가 올라간 줄.
-    public Color nameColor = new(0.95f, 0.93f, 0.88f, 1f);
-    public Color equippedColor = new(1f, 0.82f, 0.45f, 1f); // "장착 중"은 눈에 띄게.
-    public Color cooldownColor = new(0.62f, 0.60f, 0.66f, 1f); // 안 끼운 스킬의 쿨타임 안내는 흐리게.
+    public Color normalColor = UiTheme.PanelRaised;
+    public Color highlightColor = UiTheme.Line; // 커서가 올라간 줄. 면으로 쓰기엔 Accent 가 세서 경계선 색을 면으로 돌려 쓴다.
+    public Color nameColor = UiTheme.TextHigh;
+    public Color equippedColor = UiTheme.Accent; // 이 줄에서 포인트 컬러를 쓰는 곳은 "장착 중" 하나뿐이다.
+    public Color cooldownColor = UiTheme.TextMuted; // 안 끼운 스킬의 쿨타임 안내는 흐리게.
 
     [Header("문구")]
     public string equippedFormat = "슬롯 {0} 장착 중"; // {0}은 1부터 세는 슬롯 번호.

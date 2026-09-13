@@ -29,10 +29,10 @@ public class ObjectiveItemView : MonoBehaviour {
     public Sprite checkedSprite;
 
     [Header("색상")]
-    public Color labelColor = new(0.95f, 0.93f, 0.88f, 1f);
-    public Color completedLabelColor = new(0.62f, 0.60f, 0.66f, 1f); // 완료된 줄은 흐리게.
-    public Color checkboxOffColor = new(0.62f, 0.60f, 0.66f, 1f);
-    public Color checkboxOnColor = new(1f, 0.82f, 0.45f, 1f); // 완료 체크는 눈에 띄게.
+    public Color labelColor = UiTheme.TextBody;
+    public Color completedLabelColor = UiTheme.TextDim; // 완료된 줄은 흐리게.
+    public Color checkboxOffColor = UiTheme.Line;
+    public Color checkboxOnColor = UiTheme.Accent; // 완료 체크. 화면에서 포인트 컬러가 쓰이는 몇 안 되는 자리다.
 
     [Header("문구")]
     // 코드가 상황에 따라 갈아끼우는 문구만 여기 둔다. 고정 문구는 프리팹의 TMP에 직접 적는다.

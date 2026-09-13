@@ -39,6 +39,8 @@ public static class DialoguePlayer {
             float autoTimer = 0f;
 
             while (true) {
+                if (view.SkipRequested) break; // SKIP — 안쪽 루프를 빠져나온 뒤 바깥에서 한 번 더 확인한다.
+
                 // BlockAdvanceThisFrame: AUTO 버튼을 누른 클릭이 "다음 칸"으로도 먹히는 것을 막는다.
                 bool advanced = action != null
                              && action.WasPerformedThisFrame()
@@ -59,7 +61,13 @@ public static class DialoguePlayer {
 
                 yield return null;
             }
+
+            // 안쪽 루프는 "이 칸이 끝났다" 로도 빠져나오므로, 건너뛰기인지 여기서 다시 가른다.
+            if (view.SkipRequested) break;
         }
+
+        // 깃발을 지우는 것은 재생이 끝난 뒤여야 한다. 미리 지우면 바깥 루프가 건너뛰기를 놓친다.
+        view.ClearSkipRequest();
 
         if (enabledByUs) action.Disable();
         if (hideOnFinish) view.Hide();

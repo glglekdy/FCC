@@ -16,7 +16,15 @@ MonoBehaviour:
   m_TableCollectionNameGuidString: 5e06240941985684099e5e2e5e2644a2
   m_Entries:
   - m_Id: 57801703424
-    m_Key: dig.Speaker.
+    m_Key: dig.Speaker.master
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15616805875748864
+    m_Key: dig.Speaker.Hero
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15616805875752960
+    m_Key: dig.Speaker.Unknown
     m_Metadata:
       m_Items: []
   - m_Id: 57814286336
@@ -31,8 +39,52 @@ MonoBehaviour:
     m_Key: dlg.sample.003
     m_Metadata:
       m_Items: []
-  - m_Id: 1885679558590464
-    m_Key: dig.Opening.001
+  - m_Id: 15614216484421632
+    m_Key: dig.opening.001
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15614806379724800
+    m_Key: dig.opening.002
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15615341296091136
+    m_Key: dig.opening.003
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15615405926121472
+    m_Key: dig.opening.004
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15615554589032448
+    m_Key: dig.opening.005
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15615680212631552
+    m_Key: dig.opening.006
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15615758281211904
+    m_Key: dig.opening.007
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15615827193626624
+    m_Key: dig.opening.008
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15615916209340416
+    m_Key: dig.opening.009
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15616729136758784
+    m_Key: dig.opening.010
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15616758543024128
+    m_Key: dig.opening.011
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15616805875744768
+    m_Key: dig.opening.012
     m_Metadata:
       m_Items: []
   m_Metadata:

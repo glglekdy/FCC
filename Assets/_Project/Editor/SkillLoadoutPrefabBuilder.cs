@@ -20,18 +20,18 @@ public static class SkillLoadoutPrefabBuilder {
     const string WindowPrefabPath = PrefabDir + "/SkillLoadout.prefab";
     const string RowPrefabPath = PrefabDir + "/SkillLoadoutRow.prefab";
 
-    // 한글 문구를 쓰므로 기본 TMP 폰트(LiberationSans)로 두면 전부 네모로 깨진다.
-    const string FontPath = "Assets/_Project/Assets/Font/SDF/RIDIBatang SDF.asset";
-
-    static readonly Color DimColor = new(0f, 0f, 0f, 0.72f); // 뒤쪽 게임 화면을 덮는 어두운 막.
-    static readonly Color WindowColor = new(0.09f, 0.08f, 0.12f, 0.98f);
-    static readonly Color SlotColor = new(0.16f, 0.15f, 0.22f, 1f);
-    static readonly Color SlotSelectedColor = new(0.34f, 0.28f, 0.52f, 1f);
-    static readonly Color RowColor = new(0.13f, 0.12f, 0.18f, 1f);
-    static readonly Color RowHighlightColor = new(0.26f, 0.24f, 0.36f, 1f);
-    static readonly Color TextColor = new(0.95f, 0.93f, 0.88f, 1f);
-    static readonly Color DimTextColor = new(0.62f, 0.60f, 0.66f, 1f);
-    static readonly Color AccentColor = new(1f, 0.82f, 0.45f, 1f); // 제목과 "장착 중" 표시.
+    // 원래는 보랏빛 다크 + 금색 포인트였는데, 아트 디렉션이 「퇴락한 빈티지 극장」으로 확정되면서
+    // UiTheme 토큰으로 갈아끼웠다. **여기서 색을 새로 만들지 않는다** — 빌더와 프리팹의 색이 갈라지면
+    // Tools ▸ FCC ▸ UI ▸ Apply Theme Colors 으로도 맞출 수 없게 된다.
+    static readonly Color DimColor = UiTheme.Dim; // 뒤쪽 게임 화면을 덮는 어두운 막.
+    static readonly Color WindowColor = UiTheme.With(UiTheme.Panel, 0.98f);
+    static readonly Color SlotColor = UiTheme.PanelRaised;
+    static readonly Color SlotSelectedColor = UiTheme.Accent;
+    static readonly Color RowColor = UiTheme.PanelRaised;
+    static readonly Color RowHighlightColor = UiTheme.Line; // 커서가 올라간 줄. 면으로 쓰기엔 Accent 가 세서 경계선 색을 면으로 돌려 쓴다.
+    static readonly Color TextColor = UiTheme.TextHigh;
+    static readonly Color DimTextColor = UiTheme.TextMuted;
+    static readonly Color AccentColor = UiTheme.Accent; // "장착 중" · 레벨 · 강화 비용. 이 화면의 유일한 포인트 컬러다.
 
     const float TitleFontSize = 44f;
     const float SlotFontSize = 24f;
@@ -51,7 +51,7 @@ public static class SkillLoadoutPrefabBuilder {
 
         EnsureFolder(PrefabDir);
 
-        TMP_FontAsset font = PrefabBuilderFont.Load(FontPath, "SkillLoadout");
+        TMP_FontAsset font = PrefabBuilderFont.LoadProjectFont("SkillLoadout");
 
         SkillRowView rowPrefab = BuildRowPrefab(font);
         BuildWindowPrefab(font, rowPrefab);
@@ -189,7 +189,7 @@ public static class SkillLoadoutPrefabBuilder {
         layout.childForceExpandWidth = true;
         layout.childForceExpandHeight = false;
 
-        TextMeshProUGUI title = CreateText("Title", window.transform, font, TitleFontSize, TextAlignmentOptions.Center, AccentColor);
+        TextMeshProUGUI title = CreateText("Title", window.transform, font, TitleFontSize, TextAlignmentOptions.Center, TextColor);
         title.text = "정비하기";
         title.fontStyle = FontStyles.Bold;
         SetSize(title.rectTransform, -1f, 58f);
@@ -263,7 +263,7 @@ public static class SkillLoadoutPrefabBuilder {
 
         // 되돌리기를 왼쪽·수수하게, 강화를 오른쪽·강조색으로 둔다. 조각을 쓰는 쪽이 주된 행동이기 때문.
         Button refund = CreateButton("RefundButton", buttonRow, font, "되돌리기", RowColor, DimTextColor, 240f, out TextMeshProUGUI refundLabel);
-        Button upgrade = CreateButton("UpgradeButton", buttonRow, font, "강화", AccentColor, WindowColor, 200f, out TextMeshProUGUI upgradeLabel);
+        Button upgrade = CreateButton("UpgradeButton", buttonRow, font, "강화", AccentColor, TextColor, 200f, out TextMeshProUGUI upgradeLabel);
 
         view.upgradePanelRoot = panel.gameObject;
         view.levelLabel = level;

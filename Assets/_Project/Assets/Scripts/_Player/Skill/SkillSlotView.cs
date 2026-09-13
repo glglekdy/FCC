@@ -19,10 +19,10 @@ public class SkillSlotView : MonoBehaviour {
     public Button button; // 마우스로 슬롯을 고르는 버튼. 비워두면 자기 오브젝트에서 찾는다.
 
     [Header("색상")]
-    public Color normalColor = new(0.16f, 0.15f, 0.22f, 1f);
-    public Color selectedColor = new(0.34f, 0.28f, 0.52f, 1f); // 지금 고른 슬롯. 여기로 스킬이 들어간다.
-    public Color skillTextColor = new(0.95f, 0.93f, 0.88f, 1f);
-    public Color emptyTextColor = new(0.62f, 0.60f, 0.66f, 1f); // "비어 있음"은 한 단계 흐리게.
+    public Color normalColor = UiTheme.PanelRaised;
+    public Color selectedColor = UiTheme.Accent; // 지금 고른 슬롯. 여기로 스킬이 들어간다.
+    public Color skillTextColor = UiTheme.TextHigh;
+    public Color emptyTextColor = UiTheme.TextMuted; // "비어 있음"은 한 단계 흐리게.
 
     #endregion
     #region 초기화

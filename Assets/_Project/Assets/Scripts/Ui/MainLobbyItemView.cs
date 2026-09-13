@@ -33,13 +33,15 @@ public class MainLobbyItemView : MonoBehaviour, IPointerEnterHandler, IPointerCl
     public TMP_Text label; // "이어하기" 같은 항목 이름. 고정 문구라 프리팹에 직접 적혀 있다.
     public TMP_Text suffixLabel; // "CH1 · 3일차" 처럼 오른쪽에 붙는 보조 표기. 상황에 따라 코드가 갈아끼운다.
 
+    // 기본값은 UiTheme 토큰이지만, 실제로 화면에 나가는 값은 프리팹에 박힌 쪽이다.
+    // UiTheme 을 고쳤다면 Tools ▸ FCC ▸ UI ▸ Apply Theme Colors 을 한 번 돌려야 프리팹까지 맞춰진다.
     [Header("색상")]
-    public Color normalBackground = new(0f, 0f, 0f, 0f); // 평소에는 칠하지 않는다 (무대 배경이 그대로 비쳐야 한다).
-    public Color selectedBackground = new(0.973f, 0.957f, 0.957f, 0.82f);
-    public Color labelColor = new(0.267f, 0.255f, 0.255f, 1f);
-    public Color selectedLabelColor = new(0.176f, 0.169f, 0.169f, 1f);
-    public Color suffixColor = new(0.490f, 0.475f, 0.475f, 1f);
-    public Color lockedColor = new(0.729f, 0.714f, 0.714f, 1f); // 아직 못 여는 항목(기억의 방 등)은 통째로 흐리게.
+    public Color normalBackground = UiTheme.Transparent; // 평소에는 칠하지 않는다 (무대 배경이 그대로 비쳐야 한다).
+    public Color selectedBackground = UiTheme.With(UiTheme.PanelRaised, 0.92f);
+    public Color labelColor = UiTheme.TextBody;
+    public Color selectedLabelColor = UiTheme.TextHigh;
+    public Color suffixColor = UiTheme.TextMuted;
+    public Color lockedColor = UiTheme.TextDim; // 아직 못 여는 항목(기억의 방 등)은 통째로 흐리게.
 
     #endregion
     #region 런타임 변수

@@ -22,8 +22,12 @@ public class DialogueView : MonoBehaviour
     [SerializeField] private Button   _autoButton;               // AUTO 토글 버튼 (선택)
     [SerializeField] private TMP_Text _autoLabel;                // 켜짐/꺼짐을 색으로 표시 (선택)
     [SerializeField] private float    _autoAdvanceDelay = 1.5f;  // 출력 완료 후 다음 칸까지 대기(초)
-    [SerializeField] private Color    _autoOnColor  = new(1f, 0.85f, 0.3f, 1f);
-    [SerializeField] private Color    _autoOffColor = new(1f, 1f, 1f, 0.45f);
+
+    // 금색·순백은 「퇴락한 빈티지 극장」 팔레트 밖의 색이라 UiTheme 토큰으로 바꿨습니다.
+    [SerializeField] private Color    _autoOnColor  = UiTheme.AccentBright;
+    [SerializeField] private Color    _autoOffColor = UiTheme.TextMuted;
+
+    [SerializeField] private Button   _skipButton;               // 대화 전체 건너뛰기 (선택)
 
     private bool _autoAdvance;
     private int  _uiClickFrame = -10;
@@ -61,12 +65,14 @@ public class DialogueView : MonoBehaviour
         }
 
         if (_autoButton != null) _autoButton.onClick.AddListener(ToggleAutoAdvance);
+        if (_skipButton != null) _skipButton.onClick.AddListener(RequestSkip);
         RefreshAutoLabel();
     }
 
     private void OnDestroy()
     {
         if (_autoButton != null) _autoButton.onClick.RemoveListener(ToggleAutoAdvance);
+        if (_skipButton != null) _skipButton.onClick.RemoveListener(RequestSkip);
     }
 
     /// <summary>대화창을 켜고 한 칸(화자 + 초상화 + 본문 + 효과음)을 표시합니다.</summary>
@@ -93,6 +99,24 @@ public class DialogueView : MonoBehaviour
 
     /// <summary>대화창을 끕니다.</summary>
     public void Hide() => SetRootActive(false);
+
+    /// <summary>남은 대사를 전부 건너뛰라는 요청이 들어와 있는지 여부.
+    /// DialoguePlayer가 매 프레임 확인하고, 켜져 있으면 재생 루프를 빠져나옵니다.</summary>
+    public bool SkipRequested { get; private set; }
+
+    /// <summary>남은 대사를 전부 건너뜁니다. SKIP 버튼의 onClick에 자동으로 연결됩니다.</summary>
+    /// <remarks>
+    /// 여기서 재생을 직접 멈추지 않고 깃발만 세우는 이유는, 재생 루프가 DialoguePlayer의 코루틴이라
+    /// 바깥에서 끊으면 뒷정리(입력 액션 해제·대화창 닫기)가 건너뛰어지기 때문입니다.
+    /// </remarks>
+    public void RequestSkip()
+    {
+        SkipRequested = true;
+        _uiClickFrame = Time.frameCount; // 이 클릭이 "다음 칸"으로도 먹히지 않게 막습니다.
+    }
+
+    /// <summary>건너뛰기 요청을 지웁니다. 재생이 끝날 때 DialoguePlayer가 부릅니다.</summary>
+    public void ClearSkipRequest() => SkipRequested = false;
 
     /// <summary>AUTO를 켜고 끕니다. AUTO 버튼의 onClick에 자동으로 연결됩니다.</summary>
     public void ToggleAutoAdvance()

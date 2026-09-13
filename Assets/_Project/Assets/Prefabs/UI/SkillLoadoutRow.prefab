@@ -33,10 +33,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 856141023383503589}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3027685954663840558
 CanvasRenderer:
@@ -129,10 +129,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 856141023383503589}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 50}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1861301156549417592
 CanvasRenderer:
@@ -164,15 +164,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 2519b0f0f3caf464b81c62be38c99706, type: 2}
-  m_sharedMaterial: {fileID: 6417338504172898681, guid: 2519b0f0f3caf464b81c62be38c99706, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f63437499bed2bf419f6ff68765ad119, type: 2}
+  m_sharedMaterial: {fileID: 9032463621488254220, guid: f63437499bed2bf419f6ff68765ad119, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontColor: {r: 0.62, g: 0.6, b: 0.66, a: 1}
+  m_fontColor: {r: 0.4862745, g: 0.43529412, b: 0.40784314, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -184,7 +184,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -287,10 +287,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 856141023383503589}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 50}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3324442905858450917
 CanvasRenderer:
@@ -322,15 +322,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 2519b0f0f3caf464b81c62be38c99706, type: 2}
-  m_sharedMaterial: {fileID: 6417338504172898681, guid: 2519b0f0f3caf464b81c62be38c99706, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f63437499bed2bf419f6ff68765ad119, type: 2}
+  m_sharedMaterial: {fileID: 9032463621488254220, guid: f63437499bed2bf419f6ff68765ad119, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontColor: {r: 0.95, g: 0.93, b: 0.88, a: 1}
+  m_fontColor: {r: 0.9411765, g: 0.9019608, b: 0.84705883, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -342,7 +342,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -477,7 +477,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.13, g: 0.12, b: 0.18, a: 1}
+  m_Color: {r: 0.13333334, g: 0.101960786, b: 0.10980392, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -601,10 +601,10 @@ MonoBehaviour:
   stateLabel: {fileID: 6190462209278923284}
   iconImage: {fileID: 3294360591052667821}
   button: {fileID: 3210102474722644386}
-  normalColor: {r: 0.13, g: 0.12, b: 0.18, a: 1}
-  highlightColor: {r: 0.26, g: 0.24, b: 0.36, a: 1}
-  nameColor: {r: 0.95, g: 0.93, b: 0.88, a: 1}
-  equippedColor: {r: 1, g: 0.82, b: 0.45, a: 1}
-  cooldownColor: {r: 0.62, g: 0.6, b: 0.66, a: 1}
+  normalColor: {r: 0.13333334, g: 0.101960786, b: 0.10980392, a: 1}
+  highlightColor: {r: 0.22745098, g: 0.17254902, b: 0.18039216, a: 1}
+  nameColor: {r: 0.9411765, g: 0.9019608, b: 0.84705883, a: 1}
+  equippedColor: {r: 0.5568628, g: 0.16862746, b: 0.16862746, a: 1}
+  cooldownColor: {r: 0.4862745, g: 0.43529412, b: 0.40784314, a: 1}
   equippedFormat: "\uC2AC\uB86F {0} \uC7A5\uCC29 \uC911"
   cooldownFormat: "\uCFE8\uD0C0\uC784 {0:F1}\uCD08"

@@ -18,6 +18,10 @@ public class DialogueEffect : MonoBehaviour
     [SerializeField] private float _roundSpeed     = 3f;
     [SerializeField] private float _typeSpeed      = 30f;   // 초당 출력 글자 수, 0 이하면 즉시 전체 출력
 
+    // 설정의 「대사 속도」가 곱하는 배율. 인스펙터의 _typeSpeed 를 직접 덮어쓰지 않는 이유는,
+    // 맞춰둔 연출 속도를 설정이 지워버리면 되돌릴 수가 없기 때문이다. GameSettings 가 적용 시점에 넣어준다.
+    public static float SpeedScale = 1f;
+
     [Header("타이핑 사운드")]
     [SerializeField] private AudioSource _audioSource;            // 비우면 무음
     [SerializeField] private AudioClip[] _typeSounds;            // 여러 개면 랜덤 재생, 비우면 무음
@@ -162,6 +166,11 @@ public class DialogueEffect : MonoBehaviour
             // 방금 출력한 글자의 줄별 속도만큼 대기 (0 이하면 컴포넌트 기본값)
             float speed = idx < _charTypeSpeed.Length ? _charTypeSpeed[idx] : _typeSpeed;
             if (speed <= 0f) speed = _typeSpeed;
+
+            // 설정의 「대사 속도」를 배율로 곱한다. 마크업 <speed> 로 지정한 줄별 속도도 같은 비율로 빨라진다.
+            speed *= SpeedScale;
+            if (speed <= 0f) { CompleteReveal(); break; }
+
             yield return new WaitForSeconds(1f / speed);
         }
         _typeRoutine = null;

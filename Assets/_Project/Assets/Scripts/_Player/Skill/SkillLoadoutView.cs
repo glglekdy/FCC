@@ -40,9 +40,11 @@ public class SkillLoadoutView : MonoBehaviour {
     public Button refundButton;
     public TMP_Text refundButtonLabel;
 
+    // 초록/보라로 갈라 두었더니 화면에 포인트 컬러가 셋(금·적·보라)이 되어 버렸다.
+    // 색을 늘리는 대신 밝기 차로 구분한다 — 바뀌는 수치만 밝고, 그대로인 수치는 거의 꺼둔다.
     [Header("강화 표시 색")]
-    public Color statImprovedColor = new(0.53f, 0.78f, 0.61f, 1f); // 다음 레벨에서 좋아지는 수치.
-    public Color statSameColor = new(0.39f, 0.36f, 0.44f, 1f);     // 레벨이 올라도 그대로인 수치.
+    public Color statImprovedColor = UiTheme.TextHigh; // 다음 레벨에서 좋아지는 수치.
+    public Color statSameColor = UiTheme.TextDim;      // 레벨이 올라도 그대로인 수치.
 
     [Header("문구")]
     // 제목·도움말처럼 고정된 문구는 프리팹의 TMP에 직접 적는다. 여기 있는 것들은 상황에 따라 코드가 갈아끼운다.

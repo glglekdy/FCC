@@ -8,12 +8,14 @@ using UnityEngine.UI;
 
 // 메인 로비(커튼콜 정면 · 메뉴 5개) 프리팹을 한 번 찍어내는 에디터 도구.
 //
-// 와이어프레임 1d 안(960×540)을 기준 해상도 1920×1080 에 2배로 옮겨 담았다. 색은 와이어프레임의
-// 회색 토큰을 그대로 쓴다 — 배치와 정보량을 먼저 확정하는 단계라 아트는 나중에 얹는 전제다.
+// 와이어프레임 1d 안(960×540)을 기준 해상도 1920×1080 에 2배로 옮겨 담았고, 색은 UiTheme 토큰을 쓴다.
 // 점선 테두리는 Unity UI가 기본으로 그리지 못해 같은 색의 실선으로 대신했다(자리표시 프레임이라는 뜻은 같다).
 //
-// 만들고 나면 색·간격·문구는 전부 프리팹 인스펙터에서 고치면 된다.
+// 만들고 나면 간격·문구는 프리팹 인스펙터에서 고치면 되고, 색만 다시 맞추고 싶을 때는 이 메뉴가 아니라
+// Tools ▸ FCC ▸ UI ▸ Apply Theme Colors 을 쓴다.
+//
 // 디자인을 갈아엎어 처음부터 다시 뽑고 싶을 때만 이 메뉴를 다시 실행한다. **다시 실행하면 프리팹을 덮어씁니다.**
+// 지금 프리팹은 생성 뒤 손으로 고쳐 둔 상태라(자리표시 주석과 거울 소품을 지웠다) 다시 실행하면 그것들이 되살아난다.
 //
 // 사용법: Tools ▸ FCC ▸ Build Main Lobby Prefab → Tools ▸ FCC ▸ Place Main Lobby In Scene
 public static class MainLobbyPrefabBuilder {
@@ -22,23 +24,23 @@ public static class MainLobbyPrefabBuilder {
     const string PrefabDir = "Assets/_Project/Assets/Prefabs/UI";
     const string PrefabPath = PrefabDir + "/MainLobby.prefab";
 
-    // 한글 문구를 쓰므로 기본 TMP 폰트(LiberationSans)로 두면 전부 네모로 깨진다.
-    const string FontPath = "Assets/_Project/Assets/Font/SDF/RIDIBatang SDF.asset";
-
-    // 와이어프레임의 회색 토큰(styles.css 의 --color-neutral-*)을 그대로 옮긴 값.
+    // 처음에는 와이어프레임의 회색 토큰(styles.css 의 --color-neutral-*)을 그대로 옮겨 썼다. 배치와 정보량을
+    // 먼저 확정하려던 단계라 밝은 종이 톤이었는데, 아트 디렉션이 「퇴락한 빈티지 극장」으로 확정되면서
+    // 전부 UiTheme 토큰으로 갈아끼웠다. **여기서 색을 새로 만들지 않는다** — 빌더와 프리팹의 색이 갈라지면
+    // Tools ▸ FCC ▸ UI ▸ Apply Theme Colors 으로도 맞출 수 없게 된다.
+    //
     // 이름을 Screen 으로 두면 UnityEngine.Screen 을 가려버려서 뒤에 해상도를 읽는 코드가 들어올 때 헷갈린다.
-    static readonly Color ScreenColor = new(0.918f, 0.906f, 0.906f, 1f); // 무대 바탕.
-    static readonly Color Paper = new(0.973f, 0.957f, 0.957f, 1f); // 골라진 메뉴 줄의 배경.
-    static readonly Color Ink = new(0.267f, 0.255f, 0.255f, 1f);
-    static readonly Color InkStrong = new(0.176f, 0.169f, 0.169f, 1f); // 골라진 줄의 굵은 테두리.
-    static readonly Color Line = new(0.729f, 0.714f, 0.714f, 1f); // 구분선 · 자리표시 프레임.
-    static readonly Color Neutral500 = new(0.608f, 0.592f, 0.592f, 1f);
-    static readonly Color Neutral600 = new(0.490f, 0.475f, 0.475f, 1f);
-    static readonly Color Neutral700 = new(0.376f, 0.365f, 0.365f, 1f);
+    static readonly Color ScreenColor = UiTheme.Stage; // 무대 바탕.
+    static readonly Color Ink = UiTheme.TextBody; // 메뉴 줄의 글자.
+    static readonly Color InkStrong = UiTheme.TextHigh; // 골라진 줄의 글자.
+    static readonly Color FrameColor = UiTheme.Accent; // 골라진 줄을 감싸는 굵은 테두리. 이 화면의 유일한 포인트 컬러다.
+    static readonly Color Line = UiTheme.Line; // 구분선 · 자리표시 프레임.
+    static readonly Color Muted = UiTheme.TextMuted; // 보조 표기 · 주석 · 버전.
+    static readonly Color LockedColor = UiTheme.TextDim; // 아직 못 여는 항목.
 
-    static readonly Color CurtainFill = new(0.267f, 0.255f, 0.255f, 0.07f); // 커튼은 바탕을 살짝 덮기만 한다.
-    static readonly Color SelectedFill = new(0.973f, 0.957f, 0.957f, 0.82f);
-    static readonly Color Transparent = new(0f, 0f, 0f, 0f);
+    static readonly Color CurtainFill = UiTheme.Curtain; // 커튼은 벨벳이라 살짝 덮는 게 아니라 완전히 덮는다.
+    static readonly Color SelectedFill = UiTheme.With(UiTheme.PanelRaised, 0.92f);
+    static readonly Color Transparent = UiTheme.Transparent;
 
     const float CurtainWidth = 300f; // 다 열렸을 때 커튼 한 짝의 폭.
     const float MenuWidth = 580f;
@@ -69,7 +71,7 @@ public static class MainLobbyPrefabBuilder {
 
         EnsureFolder(PrefabDir);
 
-        TMP_FontAsset font = PrefabBuilderFont.Load(FontPath, "MainLobby");
+        TMP_FontAsset font = PrefabBuilderFont.LoadProjectFont("MainLobby");
 
         GameObject rootObj = new GameObject("MainLobby", typeof(RectTransform));
 
@@ -185,14 +187,14 @@ public static class MainLobbyPrefabBuilder {
         // 로고 자리표시 프레임. 실제 로고 이미지가 나오면 이 오브젝트를 Image 로 바꾸면 된다.
         RectTransform logo = CreateRect("LogoFrame", parent);
         Place(logo, new Vector2(0.5f, 1f), new Vector2(0.5f, 1f), new Vector2(0f, -176f), new Vector2(840f, 192f));
-        CreateBorder("Border", logo, Neutral500, 2f);
+        CreateBorder("Border", logo, Line, 2f);
 
-        TextMeshProUGUI logoText = CreateText("LogoText", logo, font, TitleFontSize, TextAlignmentOptions.Center, Neutral600);
+        TextMeshProUGUI logoText = CreateText("LogoText", logo, font, TitleFontSize, TextAlignmentOptions.Center, Muted);
         logoText.text = "TITLE LOGO — Final Curtain Call";
         logoText.characterSpacing = 6f;
         Stretch(logoText.rectTransform);
 
-        TextMeshProUGUI subtitle = CreateText("Subtitle", parent, font, SubtitleFontSize, TextAlignmentOptions.Top, Neutral700);
+        TextMeshProUGUI subtitle = CreateText("Subtitle", parent, font, SubtitleFontSize, TextAlignmentOptions.Top, Muted);
         subtitle.text = "잊혀진 자들의 서커스";
         subtitle.characterSpacing = 22f; // 와이어프레임의 letter-spacing .22em.
         Place(subtitle.rectTransform, new Vector2(0.5f, 1f), new Vector2(0.5f, 1f), new Vector2(0f, -390f), new Vector2(840f, 40f));
@@ -231,7 +233,7 @@ public static class MainLobbyPrefabBuilder {
         Image background = CreateImage($"Item{index}_{action}", parent, Transparent);
         SetHeight(background.rectTransform, ItemHeight);
 
-        GameObject frame = CreateBorder("Frame", background.rectTransform, InkStrong, 4f);
+        GameObject frame = CreateBorder("Frame", background.rectTransform, FrameColor, 4f);
         frame.SetActive(false); // 골라졌을 때만 켜진다.
 
         Image underline = CreateEdge("Underline", background.rectTransform, Line,
@@ -244,7 +246,7 @@ public static class MainLobbyPrefabBuilder {
         label.rectTransform.offsetMin = new Vector2(ItemPadding, 0f);
         label.rectTransform.offsetMax = new Vector2(-(ItemPadding + SuffixWidth), 0f);
 
-        TextMeshProUGUI suffix = CreateText("Suffix", background.rectTransform, font, SuffixFontSize, TextAlignmentOptions.Right, Neutral600);
+        TextMeshProUGUI suffix = CreateText("Suffix", background.rectTransform, font, SuffixFontSize, TextAlignmentOptions.Right, Muted);
         suffix.text = suffixText;
         Place(suffix.rectTransform, new Vector2(1f, 0.5f), new Vector2(1f, 0.5f), new Vector2(-ItemPadding, 0f),
             new Vector2(SuffixWidth, ItemHeight));
@@ -261,8 +263,8 @@ public static class MainLobbyPrefabBuilder {
         view.selectedBackground = SelectedFill;
         view.labelColor = Ink;
         view.selectedLabelColor = InkStrong;
-        view.suffixColor = Neutral600;
-        view.lockedColor = Line;
+        view.suffixColor = Muted;
+        view.lockedColor = LockedColor;
 
         return view;
     }
@@ -276,7 +278,7 @@ public static class MainLobbyPrefabBuilder {
         Place(mirror, new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(372f, 128f), new Vector2(156f, 264f));
         CreateBorder("Border", mirror, Line, 2f);
 
-        TextMeshProUGUI label = CreateText("Label", mirror, font, NoteFontSize, TextAlignmentOptions.Bottom, Neutral600);
+        TextMeshProUGUI label = CreateText("Label", mirror, font, NoteFontSize, TextAlignmentOptions.Bottom, Muted);
         label.text = "거울";
         Place(label.rectTransform, new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(0f, 20f), new Vector2(156f, 30f));
 
@@ -285,11 +287,11 @@ public static class MainLobbyPrefabBuilder {
     }
 
     static TextMeshProUGUI BuildFooter(Transform parent, TMP_FontAsset font) {
-        TextMeshProUGUI version = CreateText("Version", parent, font, SuffixFontSize, TextAlignmentOptions.Left, Neutral600);
+        TextMeshProUGUI version = CreateText("Version", parent, font, SuffixFontSize, TextAlignmentOptions.Left, Muted);
         version.text = "v0.1.0"; // MainLobbyView 가 Application.version 으로 갈아끼운다.
         Place(version.rectTransform, new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(44f, 36f), new Vector2(300f, 32f));
 
-        TextMeshProUGUI hint = CreateText("Hint", parent, font, SuffixFontSize, TextAlignmentOptions.Right, Neutral600);
+        TextMeshProUGUI hint = CreateText("Hint", parent, font, SuffixFontSize, TextAlignmentOptions.Right, Muted);
         hint.text = "↑↓ 선택 · Enter 확인";
         Place(hint.rectTransform, new Vector2(1f, 0f), new Vector2(1f, 0f), new Vector2(-44f, 36f), new Vector2(500f, 32f));
 
@@ -300,7 +302,7 @@ public static class MainLobbyPrefabBuilder {
     static void CreateNote(string name, Transform parent, TMP_FontAsset font, string text,
         Vector2 anchor, Vector2 pivot, Vector2 position, TextAlignmentOptions alignment) {
 
-        TextMeshProUGUI note = CreateText(name, parent, font, NoteFontSize, alignment, Neutral600);
+        TextMeshProUGUI note = CreateText(name, parent, font, NoteFontSize, alignment, Muted);
         note.text = text;
         Place(note.rectTransform, anchor, pivot, position, new Vector2(400f, 28f));
     }
