@@ -139,7 +139,10 @@ public class Player_move : MonoBehaviour
             if (!col.usedByEffector) return true; // 통과되지 않는 일반 지형은 겹친 것만으로 접지로 본다.
 
             if (rigid.linearVelocityY > 0.01f) continue; // 아래에서 뚫고 올라가는 중.
-            if (col.bounds.max.y > footTop) continue;    // 발판 윗면이 발보다 위 = 아직 발판 속을 지나는 중.
+            // 발 윗선이 발판 안에 있으면 아직 발판 속을 지나는 중. bounds.max.y 로 윗면을 재지 않는 이유는,
+            // 타일맵 발판은 층 전체가 CompositeCollider2D 하나로 합쳐져 bounds 가 가장 높은 발판을 가리키므로
+            // 낮은 발판에서는 영영 착지로 인정되지 않기 때문이다.
+            if (col.OverlapPoint(new Vector2(groundCheck.position.x, footTop))) continue;
 
             return true;
         }
