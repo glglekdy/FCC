@@ -160,10 +160,18 @@ public class DungeonGenerator : MonoBehaviour {
         generatedRoot = null;
     }
 
-    // 입구/출구 이탈 트리거가 호출한다. 게이트에 알린 뒤 던전을 해체한다.
+    // 입구/출구 이탈 트리거가 호출한다.
+    //
+    // 해체를 여기서 하지 않고 게이트에 넘기는 이유: 게이트는 퇴장 연출(암전)이 끝난 뒤에 Teardown 을 부른다.
+    // 여기서 바로 치워 버리면 플레이어 눈앞에서 방이 통째로 사라진 다음에야 화면이 어두워진다.
+    // 다만 아무도 구독하지 않았다면 치워 줄 사람이 없으므로 그때는 직접 해체한다.
     public void NotifyExit() {
-        OnDungeonExited?.Invoke();
-        Teardown();
+        if (OnDungeonExited == null) {
+            Teardown();
+            return;
+        }
+
+        OnDungeonExited.Invoke();
     }
 
     #endregion

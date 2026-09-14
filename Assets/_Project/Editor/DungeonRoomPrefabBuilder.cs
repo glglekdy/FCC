@@ -625,12 +625,97 @@ public static class DungeonRoomPrefabBuilder {
         DungeonGateMirror mirror = root.AddComponent<DungeonGateMirror>();
         mirror.intactVisual = intact;
         mirror.brokenVisual = broken;
+        EnsureEnterVfx(intact, mirror);
 
         PrefabUtility.SaveAsPrefabAsset(root, $"{PrefabDir}/GateMirror.prefab");
         Object.DestroyImmediate(root);
 
         AssetDatabase.SaveAssets();
         Debug.Log("[Dungeon] GateMirror 프리팹을 만들었습니다. DungeonGate 의 자식으로 놓고 게이트의 mirror 에 연결하세요.");
+    }
+
+    // 이미 씬에 놓여 있는 GateMirror 에 진입 연출용 판(빛 띠 · 밝아지는 판)만 덧붙인다.
+    //
+    // Build 를 다시 돌리지 않고 이 메뉴를 따로 두는 이유: SaveAsPrefabAsset 으로 통째로 다시 찍으면
+    // 프리팹 안의 오브젝트들이 새 fileID 를 받아, 씬 인스턴스에서 손으로 맞춰 둔 값과 바깥에서 꽂아 둔
+    // 참조(DungeonGate.mirror 등)가 끊긴다. 여기서는 기존 프리팹을 열어 없는 것만 채우고 저장한다.
+    [MenuItem("Tools/FCC/Dungeon/Patch Gate Mirror Enter VFX")]
+    public static void PatchGateMirrorEnterVfx() {
+        string path = $"{PrefabDir}/GateMirror.prefab";
+        GameObject root = PrefabUtility.LoadPrefabContents(path);
+        if (root == null) {
+            Debug.LogError($"[Dungeon] '{path}' 를 열지 못했습니다. 먼저 Build Gate Mirror Prefab 을 실행하세요.");
+            return;
+        }
+
+        DungeonGateMirror mirror = root.GetComponent<DungeonGateMirror>();
+        GameObject intact = mirror != null && mirror.intactVisual != null
+            ? mirror.intactVisual
+            : root.transform.Find("Intact")?.gameObject;
+
+        if (mirror == null || intact == null) {
+            Debug.LogError("[Dungeon] GateMirror 프리팹에서 DungeonGateMirror 또는 Intact 를 찾지 못했습니다.");
+            PrefabUtility.UnloadPrefabContents(root);
+            return;
+        }
+
+        EnsureEnterVfx(intact, mirror);
+
+        PrefabUtility.SaveAsPrefabAsset(root, path);
+        PrefabUtility.UnloadPrefabContents(root);
+        AssetDatabase.SaveAssets();
+
+        Debug.Log("[Dungeon] GateMirror 에 진입 연출(EnterGlow · EnterSweep)을 채웠습니다.");
+    }
+
+    // 거울면 위에 겹치는 두 장. 유리(z=0)보다 앞(z 가 작은 쪽)에 두어야 빛이 유리 위로 보인다.
+    // 평소에는 꺼 두고 DungeonGateMirror 가 진입 순간에만 켠다.
+    static void EnsureEnterVfx(GameObject intact, DungeonGateMirror mirror) {
+        float glassW = MirrorW - 0.35f, glassH = MirrorH - 0.35f;
+
+        Material glowMat = EnsureAdditiveMaterial("GateMirrorGlow", new Color(0.72f, 0.85f, 0.95f));
+        Material sweepMat = EnsureAdditiveMaterial("GateMirrorSweep", new Color(1f, 0.97f, 0.92f));
+
+        GameObject glow = EnsureQuad(intact, "EnterGlow", new Vector3(0f, 0f, -0.01f), new Vector2(glassW, glassH), glowMat);
+        GameObject sweep = EnsureQuad(intact, "EnterSweep", new Vector3(0f, 0f, -0.02f), new Vector2(glassW, 0.35f), sweepMat);
+
+        mirror.enterGlow = glow.GetComponent<MeshRenderer>();
+        mirror.enterSweep = sweep.GetComponent<MeshRenderer>();
+        mirror.enterSweepTravel = glassH; // 유리 위끝에서 아래끝까지 훑는다.
+    }
+
+    static GameObject EnsureQuad(GameObject parent, string name, Vector3 local, Vector2 size, Material material) {
+        Transform found = parent.transform.Find(name);
+        if (found == null) {
+            MirrorQuad(parent, name, local, size, 0f, material);
+            found = parent.transform.Find(name);
+        }
+        else {
+            // 이미 있으면 위치·크기는 손댄 그대로 두고 머티리얼만 맞춘다.
+            found.GetComponent<MeshRenderer>().sharedMaterial = material;
+        }
+
+        found.gameObject.SetActive(false);
+        return found.gameObject;
+    }
+
+    // 빛 연출용 머티리얼. URP Unlit 은 기본이 불투명이라 알파를 내려도 그대로 보인다.
+    // 인스펙터에서 Surface Type 을 Transparent · Blending Mode 를 Additive 로 고른 것과 같은 설정을 코드로 적는다.
+    static Material EnsureAdditiveMaterial(string name, Color color) {
+        Material mat = EnsureMaterial(name, new Color(color.r, color.g, color.b, 0f)); // 평소 알파 0 — 켜자마자 번쩍이지 않도록.
+
+        mat.SetFloat("_Surface", 1f); // 0 Opaque / 1 Transparent
+        mat.SetFloat("_Blend", 1f);   // 0 Alpha / 1 Premultiply / 2 Additive … URP 버전에 따라 다르므로 아래 블렌드도 직접 지정한다.
+        mat.SetFloat("_SrcBlend", (float)UnityEngine.Rendering.BlendMode.SrcAlpha);
+        mat.SetFloat("_DstBlend", (float)UnityEngine.Rendering.BlendMode.One);
+        mat.SetFloat("_ZWrite", 0f);
+        mat.SetFloat("_AlphaClip", 0f);
+        mat.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
+        mat.DisableKeyword("_ALPHATEST_ON");
+        mat.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+
+        EditorUtility.SetDirty(mat);
+        return mat;
     }
 
     static GameObject Child(GameObject parent, string name, Vector3 local) {
@@ -771,6 +856,9 @@ public static class DungeonRoomPrefabBuilder {
         roomTrigger = root.AddComponent<BoxCollider2D>();
         roomTrigger.isTrigger = true;
         roomTrigger.size = new Vector2(w, h);
+
+        // 방을 다시 찍을 때마다 통째로 새로 만들기 때문에, 여기서 붙이지 않으면 타일맵 그리드가 빠진 채 저장된다.
+        TilemapGridBuilder.EnsureGrid(root);
         return root;
     }
 

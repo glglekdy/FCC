@@ -2,8 +2,9 @@ using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
 
-// 던전 입구인 전신 거울이 "클리어하고 나온 뒤 부서지는" 연출을 재생한다.
-// 잠깐 뜸을 들였다가 점점 심하게 흔들리고, 팡 터지면서 멀쩡한 거울이 꺼지고 부서진 거울로 바뀐다.
+// 던전 입구인 전신 거울의 연출 두 가지를 재생한다.
+//  - 진입 : 빛이 거울면을 훑고 지나가며 거울이 미세하게 떤다. "빨려 들어가기 직전" 의 뜸.
+//  - 파괴 : 클리어하고 나온 뒤 점점 심하게 흔들리다 팡 터지고 부서진 거울로 바뀐다.
 //
 // 연출만 담당하고 "언제 재생할지"는 DungeonGate 가 정한다. 클리어 판정과 보상 지급이 이미 게이트에
 // 모여 있어서, 여기서 클리어 여부를 다시 물으면 판정이 두 군데로 갈라진다.
@@ -37,13 +38,36 @@ public class DungeonGateMirror : MonoBehaviour {
     public float burstScale = 1.18f;      // 터지기 직전 부풀어 오르는 배율.
     public float burstShakeForce = 0.8f;  // impulseSource 가 연결돼 있을 때 화면을 흔들 힘.
 
+    [Header("진입 연출 — 연결")]
+    // 거울면을 위에서 아래로 훑고 지나가는 빛 띠. 비우면 훑는 연출만 건너뛴다.
+    public Renderer enterSweep;
+    // 훑는 동안 거울면 전체가 밝아지는 판. 비우면 밝아지는 연출만 건너뛴다.
+    public Renderer enterGlow;
+    public AudioClip enterSound;                   // 유리가 울리는 소리. 비우면 무음.
+    [Range(0f, 1f)] public float enterVolume = 0.8f;
+
+    [Header("진입 연출 — 타이밍")]
+    // 빛이 훑고 지나가는 시간. 이 시간이 끝나면 게이트가 화면을 덮으므로, 늘리면 진입 전체가 그만큼 길어진다.
+    public float enterDuration = 0.75f;
+    public float enterSweepTravel = 2.6f; // 빛 띠가 위에서 아래로 훑는 거리(유닛). 거울 유리 높이에 맞춘다.
+    public float enterGlowPeak = 0.5f;    // 거울면이 가장 밝을 때의 알파.
+    public float enterTremble = 0.025f;   // 훑는 동안 거울이 떠는 폭(유닛). 파괴 때의 흔들림보다 훨씬 작아야 한다.
+
     #endregion
     #region 런타임 변수
+
+    static readonly int BaseColorId = Shader.PropertyToID("_BaseColor"); // URP Unlit 의 색 슬롯.
 
     Vector3 baseLocalPosition;
     Quaternion baseLocalRotation;
     Vector3 baseLocalScale;
     Coroutine routine;
+
+    // 알파를 매 프레임 만지므로 공유 머티리얼이 아니라 인스턴스 사본을 쥔다.
+    // sharedMaterial 을 건드리면 플레이 중에 프로젝트의 .mat 자산이 실제로 변경된다.
+    Material sweepMaterial;
+    Material glowMaterial;
+    Vector3 sweepBaseLocalPosition;
 
     public bool IsBroken { get; private set; }
 
@@ -63,6 +87,77 @@ public class DungeonGateMirror : MonoBehaviour {
         baseLocalScale = t.localScale;
 
         if (brokenVisual != null) brokenVisual.SetActive(false);
+
+        CacheEnterVisuals();
+    }
+
+    // 진입 연출용 판들은 평소 꺼 둔다. 씬에 켜 둔 채로 저장돼 있어도 여기서 정리한다.
+    void CacheEnterVisuals() {
+        if (enterSweep != null) {
+            sweepMaterial = enterSweep.material;
+            sweepBaseLocalPosition = enterSweep.transform.localPosition;
+            enterSweep.gameObject.SetActive(false);
+        }
+
+        if (enterGlow != null) {
+            glowMaterial = enterGlow.material;
+            enterGlow.gameObject.SetActive(false);
+        }
+    }
+
+    #endregion
+    #region 진입 연출
+
+    // 던전에 들어가기 직전 DungeonGate 가 yield return 으로 기다린다. 코루틴을 넘겨주는 이유는,
+    // "빛이 다 지나간 뒤에 화면을 덮는다" 는 순서를 게이트 쪽 한 줄로 읽히게 하기 위함이다.
+    public IEnumerator PlayEnter() {
+        if (IsBroken) yield break;
+
+        if (enterSound != null) AudioSource.PlayClipAtPoint(enterSound, transform.position, enterVolume);
+
+        if (enterSweep != null) enterSweep.gameObject.SetActive(true);
+        if (enterGlow != null) enterGlow.gameObject.SetActive(true);
+
+        Transform t = intactVisual != null ? intactVisual.transform : null;
+        float duration = Mathf.Max(0.01f, enterDuration);
+        float elapsed = 0f;
+
+        // 파괴 연출과 마찬가지로 unscaled 기준이다. 히트스톱이 걸린 채로 거울을 눌러도 연출이 얼면 안 된다.
+        while (elapsed < duration) {
+            elapsed += Time.unscaledDeltaTime;
+            float k = Mathf.Clamp01(elapsed / duration);
+
+            // 0 → 1 → 0. 빛이 들어왔다 빠지는 한 번의 숨. 끝에서 알파가 0으로 돌아오므로 툭 꺼지지 않는다.
+            float pulse = Mathf.Sin(k * Mathf.PI);
+
+            if (enterSweep != null) {
+                float half = enterSweepTravel * 0.5f;
+                enterSweep.transform.localPosition = sweepBaseLocalPosition + Vector3.up * Mathf.Lerp(half, -half, k);
+                SetAlpha(sweepMaterial, pulse);
+            }
+
+            SetAlpha(glowMaterial, pulse * enterGlowPeak);
+
+            // 거울 자신도 미세하게 떤다. 빛만 지나가면 화면 효과처럼 보이고 "물건이 반응했다" 는 느낌이 들지 않는다.
+            if (t != null) {
+                float wave = Mathf.Sin(elapsed * shakeFrequency * Mathf.PI * 2f);
+                t.localPosition = baseLocalPosition + new Vector3(wave * enterTremble * pulse, 0f, 0f);
+            }
+
+            yield return null;
+        }
+
+        if (enterSweep != null) enterSweep.gameObject.SetActive(false);
+        if (enterGlow != null) enterGlow.gameObject.SetActive(false);
+        RestorePose();
+    }
+
+    static void SetAlpha(Material mat, float alpha) {
+        if (mat == null) return;
+
+        Color c = mat.GetColor(BaseColorId);
+        c.a = Mathf.Clamp01(alpha);
+        mat.SetColor(BaseColorId, c);
     }
 
     #endregion
