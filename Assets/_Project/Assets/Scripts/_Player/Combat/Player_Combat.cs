@@ -17,15 +17,11 @@ public class Player_Combat : MonoBehaviour {
     [Header("공격 데미지")]
     public int attackDamage = 10;
 
-    [Header("공격 범위 표시")]
-    public Color rangeIndicatorColor = new(1f, 0f, 0f, 0.85f); // 선딜레이 동안 보여줄 판정 범위 색상.
-
     #endregion
     #region 컴포넌트 변수
 
     AttackState state = AttackState.Idle;
     float stateTimer;
-    SpriteRenderer rangeIndicator;
     Vector3 currentAttackWorldPos; // 공격이 시작된 순간의 월드 좌표. 판정 도중 플레이어가 움직여도 이 위치에 고정된다.
     readonly HashSet<Health> hitTargets = new(); // 한 번의 공격에서 이미 때린 대상. 매번 새로 할당하지 않도록 재사용한다.
 
@@ -34,10 +30,6 @@ public class Player_Combat : MonoBehaviour {
     enum AttackState { Idle, Windup, Cooldown }
 
     #region 유니티 라이프 사이클
-
-    void Awake() {
-        BuildRangeIndicator();
-    }
 
     void Update() {
         switch (state) {
@@ -67,7 +59,6 @@ public class Player_Combat : MonoBehaviour {
         state = AttackState.Windup;
         stateTimer = attackDelay;
         currentAttackWorldPos = attackPoint.position; // 공격 시작 순간의 위치를 고정.
-        ShowRangeIndicator();
     }
 
     void TickWindup() {
@@ -100,7 +91,6 @@ public class Player_Combat : MonoBehaviour {
     void StartCooldown() {
         state = AttackState.Cooldown;
         stateTimer = attackCooldown;
-        HideRangeIndicator();
     }
 
     void TickCooldown() {
@@ -110,31 +100,13 @@ public class Player_Combat : MonoBehaviour {
         }
     }
 
-    // 공격 판정 범위 표시 (에디터 전용)
-    void OnDrawGizmos() {
+    // 공격 판정 범위 표시. 인게임에 원을 띄우던 표시는 뺐고, 범위 조정용으로 씬 뷰에만 남긴다.
+    // 골랐을 때만 그리는 이유는, 항상 그리면 플레이어를 볼 때마다 원이 따라다녀 씬이 지저분해지기 때문이다.
+    void OnDrawGizmosSelected() {
         if (attackPoint == null) return;
 
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
-    }
-
-    #endregion
-    #region 공격 범위 표시
-
-    void BuildRangeIndicator() {
-        if (attackPoint == null) return;
-
-        rangeIndicator = AttackRangeIndicator.Create(attackRange, rangeIndicatorColor);
-    }
-
-    void ShowRangeIndicator() {
-        if (rangeIndicator == null) return;
-        rangeIndicator.transform.position = currentAttackWorldPos;
-        rangeIndicator.gameObject.SetActive(true);
-    }
-
-    void HideRangeIndicator() {
-        if (rangeIndicator != null) rangeIndicator.gameObject.SetActive(false);
     }
 
     #endregion

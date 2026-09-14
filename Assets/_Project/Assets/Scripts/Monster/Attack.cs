@@ -16,10 +16,6 @@ public class Attack : MonoBehaviour {
     [Header("공격 데미지")]
     public int attackDamage = 10;
 
-    [Header("공격 범위 표시")]
-    public Color rangeIndicatorColor = new(1f, 0.5f, 0f, 0.85f); // 선딜레이 동안 보여줄 판정 범위 색상.
-    public float rangeIndicatorScale = 0.6f; // 링의 겉보기 크기 배율. 1보다 작게 하면 실제 판정 범위(attackRange)는 그대로 두고 시각적으로만 작게 보인다.
-
     #endregion
     #region 컴포넌트 변수
 
@@ -27,7 +23,6 @@ public class Attack : MonoBehaviour {
     Animator animator; // 공격 준비·공격 모션 재생용. **비어 있어도 동작하지만 없으면 모션이 재생되지 않는다.**
     AttackState state = AttackState.Idle;
     float stateTimer;
-    SpriteRenderer rangeIndicator;
     Vector3 currentAttackWorldPos; // 공격이 시작된 순간의 월드 좌표. 판정 도중 몬스터가 움직여도 이 위치에 고정된다.
 
     #endregion
@@ -42,7 +37,6 @@ public class Attack : MonoBehaviour {
     void Awake() {
         moveSystem = GetComponent<GroundMoveSystem>();
         animator = GetComponent<Animator>();
-        BuildRangeIndicator();
     }
 
     void Update() {
@@ -77,7 +71,6 @@ public class Attack : MonoBehaviour {
         stateTimer = attackDelay;
         moveSystem.isMovementLocked = true; // 선딜레이 동안 제자리에서 공격 준비.
         currentAttackWorldPos = attackPoint.position; // 공격 시작 순간의 위치를 고정.
-        ShowRangeIndicator();
         if (animator != null) animator.SetTrigger(WindupTrigger);
     }
 
@@ -106,7 +99,6 @@ void DealDamage() {
     void StartCooldown() {
         state = AttackState.Cooldown;
         stateTimer = attackCooldown; // 쿨다운 동안에도 계속 정지 상태 유지.
-        HideRangeIndicator();
     }
 
     void TickCooldown() {
@@ -117,31 +109,13 @@ void DealDamage() {
         }
     }
 
-    // 공격 판정 범위 표시 (에디터 전용)
-    void OnDrawGizmos() {
+    // 공격 판정 범위 표시. 인게임에 원을 띄우던 표시는 뺐고, 범위 조정용으로 씬 뷰에만 남긴다.
+    // 골랐을 때만 그리는 이유는, 항상 그리면 몬스터가 여럿 놓인 방에서 원이 겹쳐 지형이 안 보이기 때문이다.
+    void OnDrawGizmosSelected() {
         if (attackPoint == null) return;
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
-    }
-
-    #endregion
-    #region 공격 범위 표시
-
-    void BuildRangeIndicator() {
-        if (attackPoint == null) return;
-
-        rangeIndicator = AttackRangeIndicator.Create(attackRange, rangeIndicatorColor, visualScale: rangeIndicatorScale);
-    }
-
-    void ShowRangeIndicator() {
-        if (rangeIndicator == null) return;
-        rangeIndicator.transform.position = currentAttackWorldPos;
-        rangeIndicator.gameObject.SetActive(true);
-    }
-
-    void HideRangeIndicator() {
-        if (rangeIndicator != null) rangeIndicator.gameObject.SetActive(false);
     }
 
     #endregion
