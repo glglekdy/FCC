@@ -86,6 +86,14 @@ public class DialogueBackgroundView : MonoBehaviour {
         ChangeTo(entry.Background, fadeDuration);
     }
 
+    /// <summary>진행 중인 전환이 끝날 때까지 기다립니다. 전환 중이 아니면 곧바로 빠져나옵니다.</summary>
+    /// <remarks>대화창을 배경이 다 깔린 뒤에 띄우기 위해 DialoguePlayer 가 재생 직전에 기다립니다.</remarks>
+    public IEnumerator WaitUntilSettled() {
+        // 오브젝트가 꺼지면 전환 코루틴이 끝을 못 보고 멈춰 fadeRoutine 이 남는다. 그때 대사까지
+        // 영영 시작되지 않는 일이 없도록 꺼진 순간 기다림을 푼다.
+        while (fadeRoutine != null && isActiveAndEnabled) yield return null;
+    }
+
     /// <summary>배경을 다른 그림으로 바꿉니다. sprite 가 비어 있으면 배경을 걷어냅니다.</summary>
     public void ChangeTo(Sprite sprite, float duration) {
         if (!ready) return;

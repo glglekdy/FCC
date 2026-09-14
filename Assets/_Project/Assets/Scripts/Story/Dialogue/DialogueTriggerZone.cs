@@ -75,6 +75,11 @@ public class DialogueTriggerZone : MonoBehaviour {
     IEnumerator Start() {
         if (!autoStart) yield break;
 
+        // 첫 칸의 배경을 깨어나기 · 시작 대기보다 먼저 깔아둔다. 재생이 시작될 때 깔면 그 전까지
+        // 배경 없는 게임 카메라 화면이 드러나, 눈을 뜨는 순간 엉뚱한 장면이 보인다.
+        // 씬 시작 시점엔 걷어낼 앞 배경이 없어 페이드 없이 첫 프레임부터 바로 깔린다.
+        if (view != null) DialoguePlayer.PrepareBackground(view, entries);
+
         if (waitForWakeUp) {
             ScreenWakeUp wakeUp = FindAnyObjectByType<ScreenWakeUp>();
 

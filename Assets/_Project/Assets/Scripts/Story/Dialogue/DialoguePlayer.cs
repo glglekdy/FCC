@@ -18,6 +18,11 @@ public static class DialoguePlayer {
                                    InputActionReference advanceAction, bool hideOnFinish) {
         if (view == null || entries == null || entries.Count == 0) yield break;
 
+        // 첫 칸의 배경을 대화창보다 먼저 깔고, 전환이 끝난 뒤에 대사를 시작한다. 이미 깔려 있으면
+        // (강제 시작형이 씬 시작 때 미리 깔아둔 경우) 같은 배경이라 아무 일도 없이 지나간다.
+        PrepareBackground(view, entries);
+        yield return view.WaitForBackground();
+
         // 첫 칸을 띄우기 전에 테이블 로드를 끝내둔다. 그러지 않으면 대화가 시작되는 순간 끊긴다.
         yield return LocalizationText.WaitForInitialization();
 
@@ -71,5 +76,18 @@ public static class DialoguePlayer {
 
         if (enabledByUs) action.Disable();
         if (hideOnFinish) view.Hide();
+    }
+
+    // 첫 칸(비워둔 칸은 건너뜀)의 배경 지시만 대화창 없이 먼저 반영한다. 배경이 비어 있으면 이전 배경을
+    // 그대로 두는 규칙은 Show 와 같다. 대사 재생보다 앞서 화면을 준비해야 하는 쪽(강제 시작형)도 쓴다.
+    public static void PrepareBackground(DialogueView view, IList<DialogueEntry> entries) {
+        if (view == null || entries == null) return;
+
+        foreach (DialogueEntry entry in entries) {
+            if (entry == null) continue;
+
+            view.PrepareBackground(entry);
+            return;
+        }
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -91,6 +92,22 @@ public class DialogueView : MonoBehaviour
         if (_sfxSource != null && entry.Sound != null) _sfxSource.PlayOneShot(entry.Sound);
         if (_background != null) _background.Apply(entry);
         if (_effect != null) _effect.SetText(text);
+    }
+
+    /// <summary>대화창을 띄우지 않고 한 칸의 배경 지시만 먼저 반영합니다.</summary>
+    /// <remarks>
+    /// 첫 칸의 배경이 Show 에서야 깔리면, 그 전까지(깨어나기 연출 · 시작 대기) 배경 없는 게임
+    /// 카메라 화면이 그대로 드러납니다. 재생 측이 대사를 시작하기 전에 불러 막아둡니다.
+    /// </remarks>
+    public void PrepareBackground(DialogueEntry entry)
+    {
+        if (_background != null) _background.Apply(entry);
+    }
+
+    /// <summary>배경 전환이 끝날 때까지 기다립니다. 배경이 없거나 전환 중이 아니면 곧바로 빠져나옵니다.</summary>
+    public IEnumerator WaitForBackground()
+    {
+        if (_background != null) yield return _background.WaitUntilSettled();
     }
 
     /// <summary>배경을 검은 막으로 덮습니다. 대사가 전부 끝난 뒤의 암전에 씁니다.</summary>
