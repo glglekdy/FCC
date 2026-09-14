@@ -17,6 +17,7 @@ public class DialogueView : MonoBehaviour
     [SerializeField] private Image          _portraitLeft;   // 왼쪽 초상화 (선택)
     [SerializeField] private Image          _portraitRight;  // 오른쪽 초상화 (선택)
     [SerializeField] private AudioSource    _sfxSource;      // 칸별 Sound 재생 (비우면 무음)
+    [SerializeField] private DialogueBackgroundView _background; // 장면 배경 (선택)
 
     [Header("자동 진행")]
     [SerializeField] private Button   _autoButton;               // AUTO 토글 버튼 (선택)
@@ -88,7 +89,21 @@ public class DialogueView : MonoBehaviour
         SetRootActive(true);
         SetSpeaker(speaker, entry.Portrait, entry.Side);
         if (_sfxSource != null && entry.Sound != null) _sfxSource.PlayOneShot(entry.Sound);
+        if (_background != null) _background.Apply(entry);
         if (_effect != null) _effect.SetText(text);
+    }
+
+    /// <summary>배경을 검은 막으로 덮습니다. 대사가 전부 끝난 뒤의 암전에 씁니다.</summary>
+    /// <remarks>**덮은 쪽이 ClearBackground 로 걷어주지 않으면 검은 화면에 갇힙니다.**</remarks>
+    public void BlackoutBackground(float duration)
+    {
+        if (_background != null) _background.Blackout(duration);
+    }
+
+    /// <summary>배경을 걷어 게임 화면을 드러냅니다. 암전에서 빠져나오는 길입니다.</summary>
+    public void ClearBackground(float duration)
+    {
+        if (_background != null) _background.Clear(duration);
     }
 
     /// <summary>진행 중인 타자기 출력을 즉시 끝냅니다.</summary>

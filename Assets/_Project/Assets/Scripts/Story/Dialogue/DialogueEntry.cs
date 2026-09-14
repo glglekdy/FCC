@@ -33,4 +33,15 @@ public class DialogueEntry {
 
     /// <summary>이 칸을 띄울 때 한 번 재생할 효과음. 비우면 무음.</summary>
     public AudioClip Sound;
+
+    /// <summary>이 칸에서 바꿀 배경. **비우면 이전 배경이 그대로 남습니다.**</summary>
+    /// <remarks>
+    /// 초상화(Portrait)는 비우면 숨기는데 배경은 비우면 유지하는 이유: 초상화는 칸마다 바뀌는 것이
+    /// 정상이지만, 배경은 한 번 깔면 여러 칸이 함께 쓰는 것이 정상이라 칸마다 다시 지정하게 하면
+    /// 한 칸만 빠뜨려도 화면이 통째로 비어버립니다.
+    /// </remarks>
+    public Sprite Background;
+
+    /// <summary>이 칸에서 배경을 검은 막으로 덮습니다. Background 칸보다 우선합니다.</summary>
+    public bool BlackoutBackground;
 }

@@ -34,6 +34,10 @@ public static class DialogueBoxApplier {
     const float ButtonY = 26f, ButtonW = 96f, ButtonH = 40f;
     const float SkipX = 1689f, AutoX = 1802f;
 
+    // 장면 배경. 대화창(DialogueUI, sortingOrder 0)보다 뒤에 그려져야 하므로 음수를 준다.
+    const string BackgroundName = "StoryBackground";
+    const int BackgroundSortingOrder = -1;
+
     #endregion
     #region 메뉴
 
@@ -66,6 +70,7 @@ public static class DialogueBoxApplier {
             LayoutButtons(ui, font);
             MoveBodyInto(ui, box, font);
             SortDrawOrder(ui);
+            BuildBackground(contents.transform, ui);
 
             PrefabUtility.SaveAsPrefabAsset(contents, PrefabPath);
         } finally {
@@ -77,7 +82,94 @@ public static class DialogueBoxApplier {
 
         Debug.Log("[DialogueBox] 대화창을 설계도(Figma 「대화창」)에 맞췄습니다.\n" +
             "· 대화 상자 배경 · SKIP 버튼 · 다음 표시 · 이름표 강조선을 새로 만들었습니다.\n" +
-            "· 초상화는 스프라이트가 붙는 자리라 흰색 틴트를 그대로 두었습니다(설계도의 자리표시 테두리는 옮기지 않았습니다).");
+            "· 초상화는 스프라이트가 붙는 자리라 흰색 틴트를 그대로 두었습니다(설계도의 자리표시 테두리는 옮기지 않았습니다).\n" +
+            "· 장면 배경(StoryBackground/Back · Front)을 만들고 DialogueView 에 물렸습니다.");
+    }
+
+    #endregion
+    #region 장면 배경
+
+    // 대사 뒤에 깔리는 장면 배경을 만든다. 실제 전환 연출은 DialogueBackgroundView 가 맡는다.
+    //
+    // DialogueUI 의 자식이 아니라 형제로 두는 이유: 프리팹의 DialogueView._root 가 비어 있어
+    // Hide() 가 DialogueUI 자신을 꺼버린다. 자식으로 넣으면 대화창이 닫히는 순간 배경까지 같이 사라진다.
+    static void BuildBackground(Transform root, Transform ui) {
+        Transform found = root.Find(BackgroundName);
+
+        if (found == null) {
+            GameObject obj = new GameObject(BackgroundName, typeof(RectTransform));
+            obj.transform.SetParent(root, false);
+            found = obj.transform;
+        }
+
+        // 자기 Canvas 를 가져야 sortingOrder 로 대화창 뒤에 깔 수 있다. GraphicRaycaster 는 일부러
+        // 붙이지 않는다 — 대사 진행이 마우스 클릭에도 묶여 있어 배경이 클릭을 먹으면 대사가 멈춘다.
+        Canvas canvas = found.GetComponent<Canvas>();
+        if (canvas == null) canvas = found.gameObject.AddComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        canvas.sortingOrder = BackgroundSortingOrder;
+
+        CanvasScaler scaler = found.GetComponent<CanvasScaler>();
+        if (scaler == null) scaler = found.gameObject.AddComponent<CanvasScaler>();
+        scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+        scaler.referenceResolution = new Vector2(1920f, 1080f);
+        scaler.matchWidthOrHeight = 0.5f;
+
+        // 뒤 형제가 위에 그려진다. Back(도착할 배경)이 Front(걷혀 나갈 배경) 밑에 있어야
+        // 앞 장이 투명해지면서 뒤 장이 그대로 드러난다.
+        Image back = BuildBackgroundLayer(found, "Back");
+        Image front = BuildBackgroundLayer(found, "Front");
+        back.transform.SetSiblingIndex(0);
+        front.transform.SetSiblingIndex(1);
+
+        DialogueBackgroundView view = found.GetComponent<DialogueBackgroundView>();
+        if (view == null) view = found.gameObject.AddComponent<DialogueBackgroundView>();
+        view.back = back;
+        view.front = front;
+        view.blackoutColor = UiTheme.Stage;
+
+        WireBackground(ui, view);
+    }
+
+    static Image BuildBackgroundLayer(Transform parent, string name) {
+        // 스프라이트가 붙는 자리라 흰색 틴트여야 그림이 원래 색으로 나온다. 알파 0 으로 시작해
+        // 씬을 열어둔 것만으로 게임 화면이 가려지지 않게 한다.
+        Image image = Ensure(parent, name, new Color(1f, 1f, 1f, 0f));
+        image.enabled = false;
+
+        // AspectRatioFitter(EnvelopeParent)가 크기를 직접 몰아주므로 앵커는 가운데로 모은다.
+        // 늘림(stretch) 앵커로 두면 피터가 정한 크기와 앵커가 정한 크기가 싸운다.
+        RectTransform rect = image.rectTransform;
+        rect.anchorMin = new Vector2(0.5f, 0.5f);
+        rect.anchorMax = new Vector2(0.5f, 0.5f);
+        rect.pivot = new Vector2(0.5f, 0.5f);
+        rect.anchoredPosition = Vector2.zero;
+        rect.sizeDelta = new Vector2(1920f, 1080f);
+
+        // 화면을 꽉 채우고 남는 쪽을 잘라낸다. Image.preserveAspect 는 반대로 여백을 남기는 방식이라
+        // 배경에 쓰면 16:9 가 아닌 창에서 위아래에 띠가 생긴다.
+        AspectRatioFitter fitter = image.GetComponent<AspectRatioFitter>();
+        if (fitter == null) fitter = image.gameObject.AddComponent<AspectRatioFitter>();
+        fitter.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent;
+        fitter.aspectRatio = 16f / 9f;
+
+        return image;
+    }
+
+    // 새로 만든 배경을 DialogueView 에 물려준다. 안 물리면 오브젝트만 있고 배경이 한 번도 뜨지 않는다.
+    static void WireBackground(Transform ui, DialogueBackgroundView background) {
+        DialogueView view = ui.GetComponent<DialogueView>();
+        if (view == null) return;
+
+        SerializedObject so = new SerializedObject(view);
+        SerializedProperty prop = so.FindProperty("_background");
+        if (prop == null) {
+            Debug.LogWarning("[DialogueBox] DialogueView 에 _background 필드가 없습니다. 스크립트가 옛 버전인지 확인하세요.");
+            return;
+        }
+
+        prop.objectReferenceValue = background;
+        so.ApplyModifiedPropertiesWithoutUndo();
     }
 
     #endregion
@@ -118,7 +210,11 @@ public static class DialogueBoxApplier {
 
     // 본문은 상자의 자식으로 옮긴다. 상자를 움직이면 글자도 따라와야 하기 때문이다.
     static void MoveBodyInto(Transform ui, RectTransform box, TMP_FontAsset font) {
-        Transform body = ui.Find("Text (TMP)");
+        // 이미 한 번 돌렸다면 본문은 상자 안에 있다. 바깥만 찾으면 두 번째 실행부터 매번
+        // "찾지 못했습니다" 경고가 떠서, 정작 진짜 경고가 묻힌다.
+        // ?? 대신 != null 로 가르는 이유는 파괴된 오브젝트에서도 C# 참조가 남아 ?? 가 속는 경우가 있어서다.
+        Transform body = box.Find("Text (TMP)");
+        if (body == null) body = ui.Find("Text (TMP)");
         if (body == null) { Debug.LogWarning("[DialogueBox] 본문(Text (TMP))을 찾지 못했습니다."); return; }
 
         body.SetParent(box, false);

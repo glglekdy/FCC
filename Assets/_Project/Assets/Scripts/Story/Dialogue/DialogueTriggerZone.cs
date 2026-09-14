@@ -40,6 +40,13 @@ public class DialogueTriggerZone : MonoBehaviour {
     public bool lockPlayerMovement = true; // 대사 중 이동 잠금 (Player_move.isMovementLocked 재사용).
     public string objectiveId; // 비어있지 않으면 대사가 끝날 때 해당 목표를 완료 처리.
 
+    [Header("끝난 뒤")]
+    // 대사가 전부 끝나면 검은 막으로 화면을 덮는다. ScreenFader 와 같은 함정이라
+    // **막을 걷는 쪽(다음 컷씬 · 씬 전환 · DialogueView.ClearBackground)이 반드시 있어야 합니다.**
+    // 없으면 검은 화면에서 그대로 멈춥니다.
+    public bool blackoutOnFinish;
+    public float blackoutDuration = 1f; // 막이 내려오는 데 걸리는 시간(초).
+
     #endregion
     #region 이벤트
 
@@ -119,6 +126,11 @@ public class DialogueTriggerZone : MonoBehaviour {
         if (playerMove != null) playerMove.isMovementLocked = true;
 
         yield return DialoguePlayer.Play(view, entries, advanceAction, hideOnFinish);
+
+        // 암전을 DialoguePlayer 가 아니라 여기서 부르는 이유: 이것은 "이 대사 묶음"의 연출이지
+        // 재생 루프의 규칙이 아니다. 루프에 넣으면 같은 루프를 쓰는 NpcDialogue · DialogueStep 까지
+        // 대화가 끝날 때마다 화면이 까매진다.
+        if (blackoutOnFinish) view.BlackoutBackground(blackoutDuration);
 
         if (playerMove != null) playerMove.isMovementLocked = false;
 
