@@ -36,9 +36,6 @@ public class Player_move : MonoBehaviour
 
     public bool useFacingRotation = false; // 플레이어가 바라보는 방향을 정하는 방식이 회전인지 스케일인지 여부. true면 회전, false면 스케일로 방향 전환.
 
-    [Header("걷기 애니메이션")]
-    public SpriteFlipbook walkAnimator; // 걷기 프레임 재생 담당. **Player_Renderer 오브젝트에 붙이고 연결하세요.**
-
     private bool IsFacingRight; // 플레이어가 오른쪽을 바라보고 있는지 여부.
 
     [Header("Ground Check")]
@@ -47,6 +44,13 @@ public class Player_move : MonoBehaviour
     public LayerMask groundLayer; // Ground 레이어 설정 필요
 
     private bool isGrounded;
+
+    [Header("진단")]
+    // 접지 판정은 점프·코요테·애니메이션이 모두 올라타 있는 값이라, 어긋나면 원인을 바깥에서 알 길이
+    // 없다. 판정 결과뿐 아니라 "왜 그렇게 판정했는지"까지 플레이 중 인스펙터에서 바로 읽게 남긴다.
+    [SerializeField] bool debugGrounded; // 이번 물리 프레임의 접지 판정 결과.
+    [SerializeField] int debugGroundHits; // 발밑 상자에 걸린 ground 레이어 콜라이더 수.
+    [SerializeField] string debugGroundReason; // 그렇게 판정한 근거.
 
     // OverlapBox 결과를 매 FixedUpdate 마다 새 배열로 받으면 GC가 계속 쌓이므로 버퍼를 재사용한다.
     readonly Collider2D[] groundHits = new Collider2D[8];
@@ -65,6 +69,13 @@ public class Player_move : MonoBehaviour
 
     [HideInInspector]
     public bool isMovementLocked; // Player_Combat 등 외부 시스템이 공격 중 이동을 멈출 때 사용.
+
+    // Player_Animator 가 매 프레임 읽어 포즈(정지·걷기·상승·낙하·착지)를 고른다. 이동 로직이 이미
+    // 들고 있는 값을 그대로 넘기는 이유는, 애니메이션 쪽에서 접지 판정을 다시 하면 판정 기준이
+    // 갈라져 실제로는 땅에 있는데 공중 포즈가 나오는 식으로 어긋나기 때문이다.
+    public bool IsGrounded => isGrounded;
+    public float MoveInputX => moveInput.x;
+    public float VerticalVelocity => rigid != null ? rigid.linearVelocityY : 0f;
 
     #endregion
     #region 컴포넌트 변수
@@ -93,7 +104,6 @@ public class Player_move : MonoBehaviour
             TurnCheck();
         }
 
-        UpdateWalkAnimation();
         SaveLoadSystem(); // 저장 & 불러오기
     }
 
@@ -103,6 +113,7 @@ public class Player_move : MonoBehaviour
         // 보간된 값이라 실제 물리 위치와 어긋날 수 있고, 이 오차가 점프 이륙/착지 순간의
         // isGrounded 판정을 한두 프레임 틀리게 만들어 점프가 살짝 걸리는 느낌으로 체감됐다.
         isGrounded = CheckGrounded();
+        debugGrounded = isGrounded;
 
         coyoteJumpTime(); // 코요테
         JumpBufferTime(); // 점프 버퍼 (착지 전 미리 누른 점프 입력 처리)
@@ -132,21 +143,35 @@ public class Player_move : MonoBehaviour
         int count = Physics2D.OverlapBox(groundCheck.position, groundCheckSize, 0f, groundFilter, groundHits);
         float footTop = groundCheck.position.y + groundCheckSize.y * 0.5f;
 
+        debugGroundHits = count;
+
         for (int i = 0; i < count; i++) {
             Collider2D col = groundHits[i];
             if (col == null) continue;
 
-            if (!col.usedByEffector) return true; // 통과되지 않는 일반 지형은 겹친 것만으로 접지로 본다.
+            if (!col.usedByEffector) { // 통과되지 않는 일반 지형은 겹친 것만으로 접지로 본다.
+                debugGroundReason = "일반 지형을 밟음";
+                return true;
+            }
 
-            if (rigid.linearVelocityY > 0.01f) continue; // 아래에서 뚫고 올라가는 중.
+            if (rigid.linearVelocityY > 0.01f) { // 아래에서 뚫고 올라가는 중.
+                debugGroundReason = "통과형 발판을 뚫고 상승 중";
+                continue;
+            }
+
             // 발 윗선이 발판 안에 있으면 아직 발판 속을 지나는 중. bounds.max.y 로 윗면을 재지 않는 이유는,
             // 타일맵 발판은 층 전체가 CompositeCollider2D 하나로 합쳐져 bounds 가 가장 높은 발판을 가리키므로
             // 낮은 발판에서는 영영 착지로 인정되지 않기 때문이다.
-            if (col.OverlapPoint(new Vector2(groundCheck.position.x, footTop))) continue;
+            if (col.OverlapPoint(new Vector2(groundCheck.position.x, footTop))) {
+                debugGroundReason = $"발 윗선({footTop:0.00})이 '{col.name}' 안에 있음 - 아직 통과 중으로 판정";
+                continue;
+            }
 
+            debugGroundReason = "통과형 발판 위에 올라섬";
             return true;
         }
 
+        if (count == 0) debugGroundReason = "발밑 상자에 ground 레이어 지형이 하나도 안 걸림";
         return false;
     }
 
@@ -179,15 +204,6 @@ public class Player_move : MonoBehaviour
         else if (rigid.linearVelocityX <= maxSpeed * (-1)) {
             rigid.linearVelocity = new Vector2(maxSpeed * (-1), rigid.linearVelocityY);
         }
-    }
-
-    // 접지 상태에서 좌우 입력이 있을 때만 걷기 프레임을 재생한다. 공중에서는 걷는 것처럼 보이면 안 되므로 정지시킨다.
-    void UpdateWalkAnimation() {
-        if (walkAnimator == null) return;
-
-        bool isWalking = isGrounded && !isMovementLocked && moveInput.x != 0f;
-        if (isWalking) walkAnimator.Play();
-        else walkAnimator.Stop();
     }
 
     public void ApplyKnockback(Vector2 force, float duration = 0.15f) {

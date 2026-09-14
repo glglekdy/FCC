@@ -46,7 +46,7 @@ public class Player_DashAfterimage : MonoBehaviour {
     }
 
     // 플레이어는 FixedUpdate 에서 움직이고 Rigidbody2D Interpolation 이 걸려 있어, 화면에 보이는
-    // 위치는 LateUpdate 시점의 transform 이 가장 정확하다. SpriteFlipbook 의 프레임 교체도 Update 에서
+    // 위치는 LateUpdate 시점의 transform 이 가장 정확하다. Player_Animator 의 프레임 교체도 Update 에서
     // 끝나므로 여기서 읽어야 그 순간의 포즈가 잔상에 담긴다.
     void LateUpdate() {
         TrackSpawning();

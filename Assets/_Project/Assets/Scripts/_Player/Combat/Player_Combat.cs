@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -16,6 +17,14 @@ public class Player_Combat : MonoBehaviour {
 
     [Header("공격 데미지")]
     public int attackDamage = 10;
+
+    #endregion
+    #region 이벤트
+
+    // 공격이 받아들여진 순간 (공격 원점, 바라보는 방향 +1/-1) 전달. Player_AttackSlash 가 구독해 휘두르는 궤적을 그린다.
+    // 판정이 들어가는 순간이 아니라 선딜레이 시작에 쏘는 이유: 아직 공격 모션이 없어 이 궤적이 곧 공격 동작이다.
+    // 판정 시점에 띄우면 버튼을 누르고 attackDelay 동안 아무 반응이 없어 입력이 씹힌 것처럼 느껴진다.
+    public event Action<Vector2, float> OnAttackStarted;
 
     #endregion
     #region 컴포넌트 변수
@@ -59,6 +68,11 @@ public class Player_Combat : MonoBehaviour {
         state = AttackState.Windup;
         stateTimer = attackDelay;
         currentAttackWorldPos = attackPoint.position; // 공격 시작 순간의 위치를 고정.
+
+        // 방향은 판정점이 몸의 어느 쪽에 있는지로 정한다. Player_move 의 좌우 반전이 스케일 방식이든
+        // 회전 방식이든 판정점 위치에는 똑같이 반영되므로, 반전 방식을 몰라도 된다.
+        float facing = currentAttackWorldPos.x >= transform.position.x ? 1f : -1f;
+        OnAttackStarted?.Invoke(currentAttackWorldPos, facing);
     }
 
     void TickWindup() {
