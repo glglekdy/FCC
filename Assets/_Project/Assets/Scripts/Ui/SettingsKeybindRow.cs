@@ -1,11 +1,12 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 // 키보드·게임패드 할당을 보여주는 줄. 컨트롤 탭의 10줄이 쓴다.
 //
 // **지금은 표시와 값 보관까지만 합니다.** 실제 재지정(Input System 의 PerformInteractiveRebinding)은
-// 프로젝트에 아직 없어서, Enter 를 누르면 입력 대기 모양만 켜고 다음 입력에서 빠져나온다.
+// 프로젝트에 아직 없어서, Enter 를 누르거나 키보드 칸을 클릭하면 입력 대기 모양만 켜고 다음 입력에서 빠져나온다.
 // 리바인딩을 붙일 때는 BeginRebind() 안의 표시해둔 자리에서 시작하면 된다.
 //
 // **Prefabs/UI/SettingsPanel.prefab 의 컨트롤 탭 줄에 붙어 있습니다.**
@@ -36,6 +37,8 @@ public class SettingsKeybindRow : SettingsRowView {
     #region 상태
 
     public bool IsWaiting { get; private set; }
+
+    public override bool HoldsFocus => IsWaiting;
 
     #endregion
     #region 표시
@@ -87,6 +90,15 @@ public class SettingsKeybindRow : SettingsRowView {
 
         BeginRebind();
         return true;
+    }
+
+    // 키보드 칸을 눌렀을 때만 Enter 와 같게 동작한다. 동작 이름 쪽을 누른 것은 줄을 고른 것일 뿐이다.
+    // 패드 칸은 아직 대기 상태가 키보드 칸에만 있어 받지 않는다.
+    protected override void PointerClicked(PointerEventData eventData) {
+        if (keyChip == null) return;
+        if (!RectTransformUtility.RectangleContainsScreenPoint(keyChip.rectTransform, eventData.position, eventData.pressEventCamera)) return;
+
+        Submit();
     }
 
     void BeginRebind() {

@@ -1,10 +1,11 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 // 켜고 끄는 줄. 데미지 수치 표시 · 수직 동기화가 쓴다.
 //
-// Unity 의 Toggle 대신 손잡이 위치를 직접 옮긴다. 마우스 클릭이 아니라 방향키로 넘기는 화면이고,
+// Unity 의 Toggle 대신 손잡이 위치를 직접 옮긴다. 방향키·Enter·마우스가 모두 같은 Adjust 를 거쳐야 하고,
 // 켜짐/꺼짐을 색과 위치 둘 다로 보여줘야 어두운 화면에서 구분이 되기 때문이다.
 //
 // **Prefabs/UI/SettingsPanel.prefab 의 토글 줄에 붙어 있습니다.**
@@ -66,6 +67,11 @@ public class SettingsToggleRow : SettingsRowView {
     // Enter 로도 넘길 수 있게 한다. 토글은 "확정" 할 것이 따로 없어 그대로 뒤집으면 된다.
     public override bool Submit() {
         return Adjust(1);
+    }
+
+    // 줄 어디를 눌러도 뒤집는다. 64px 짜리 스위치만 과녁으로 두면 라벨을 누른 사람은 반응이 없다고 느낀다.
+    protected override void PointerClicked(PointerEventData eventData) {
+        Adjust(1);
     }
 
     #endregion

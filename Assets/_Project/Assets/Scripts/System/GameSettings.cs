@@ -14,7 +14,6 @@ public class SettingsData {
     public int bgmVolume = 70;
     public int sfxVolume = 85;
 
-    public int dialogueSpeedIndex = 1; // 0 느림 · 1 보통 · 2 빠름.
     public int screenShake = 100; // 흔들림 세기 %. 0이면 카메라가 아예 안 흔들린다.
     public bool damageNumbers = true;
 
@@ -52,9 +51,6 @@ public static class GameSettings {
     const string PrefsKey = "FCC_Settings";
 
     // 화면에 보이는 문구와 실제 값의 대응표. 선택형 행(< 값 >)이 이 순서를 그대로 쓴다.
-    public static readonly string[] DialogueSpeedLabels = { "느림", "보통", "빠름" };
-    public static readonly float[] DialogueSpeedScales = { 0.6f, 1f, 1.8f };
-
     public static readonly string[] ScreenModeLabels = { "전체 화면", "테두리 없는 창", "창 모드" };
     static readonly FullScreenMode[] ScreenModes = {
         FullScreenMode.ExclusiveFullScreen,
@@ -247,8 +243,7 @@ public static class GameSettings {
     }
 
     static void ApplyPresentation() {
-        // 두 값 모두 배율이라 원본 수치를 건드리지 않는다. 인스펙터에서 맞춰둔 감각을 설정이 덮어쓰면 안 되기 때문이다.
-        DialogueEffect.SpeedScale = DialogueSpeedScales[Mathf.Clamp(Current.dialogueSpeedIndex, 0, DialogueSpeedScales.Length - 1)];
+        // 배율이라 원본 수치를 건드리지 않는다. 인스펙터에서 맞춰둔 감각을 설정이 덮어쓰면 안 되기 때문이다.
         HitFeedback.ShakeScale = Mathf.Clamp01(Current.screenShake / 100f);
 
         // 데미지 수치 표시는 붙일 곳(DamagePopup)이 아직 없어 값만 보관한다.

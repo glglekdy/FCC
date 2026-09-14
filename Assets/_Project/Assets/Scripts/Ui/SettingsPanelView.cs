@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
@@ -12,8 +13,11 @@ using UnityEngine.UI;
 //
 // 조작은 전부 Time.unscaledDeltaTime 기준이다. 일시정지 중(timeScale 0)에 열리는 화면이기 때문이다.
 //
+// 키보드와 마우스를 함께 받는다. 줄 위의 마우스는 각 줄(SettingsRowView)이 받고, 탭 클릭은 여기서 받는다 —
+// 탭 문구에는 클릭을 받는 면이 따로 없어, 화면 바탕(Screen)까지 내려온 클릭을 탭 칸 위치와 대조한다.
+//
 // **Prefabs/UI/SettingsPanel.prefab 의 루트에 붙어 있습니다.**
-public class SettingsPanelView : MonoBehaviour {
+public class SettingsPanelView : MonoBehaviour, IPointerClickHandler {
     #region 인스펙터 변수
 
     [Serializable]
@@ -21,7 +25,7 @@ public class SettingsPanelView : MonoBehaviour {
         public string name; // 하이어라키에서 알아보기 위한 이름. 화면에는 쓰이지 않는다.
         public TMP_Text label; // 탭바의 문구.
         public GameObject content; // 이 탭이 켜질 때만 보이는 내용 묶음.
-        public RectTransform selectedBackground; // 골라진 탭 뒤에 깔리는 면. 탭마다 x 위치가 다르다.
+        public RectTransform selectedBackground; // 골라진 탭 뒤에 깔리는 면. 탭 칸과 크기가 같아 마우스 클릭 범위로도 쓴다.
         public RectTransform selectedMarker; // 탭 아래 3px 포인트 선.
         public TMP_Text hint; // 화면 맨 아래 안내 문구. 탭마다 내용이 다르다.
     }
@@ -66,12 +70,23 @@ public class SettingsPanelView : MonoBehaviour {
         if (applyButton != null) applyButton.onClick.AddListener(ApplyAndClose);
         if (cancelButton != null) cancelButton.onClick.AddListener(CancelAndClose);
         if (resetButton != null) resetButton.onClick.AddListener(ResetToDefaults);
+
+        // 꺼진 탭의 줄까지 여기서 한 번에 물린다. 탭을 넘길 때마다 물리면 같은 줄에 콜백이 겹쳐 쌓인다.
+        if (tabs != null) {
+            foreach (Tab t in tabs) {
+                if (t.content == null) continue;
+                foreach (SettingsRowView row in t.content.GetComponentsInChildren<SettingsRowView>(true)) {
+                    row.Bind(OnRowHovered, OnRowPressed);
+                }
+            }
+        }
     }
 
     void OnEnable() {
         GameSettings.Load();
         GameSettings.Cancel(); // 열 때마다 Draft 를 확정값으로 되돌린다. 지난번에 취소하고 닫은 값이 남아 있으면 안 된다.
 
+        ClearUiSelection();
         SelectTab(0);
     }
 
@@ -103,6 +118,21 @@ public class SettingsPanelView : MonoBehaviour {
         SetRow(0);
     }
 
+    // 탭 칸 위를 눌렀는지 본다. 꺼져 있는 탭의 selectedBackground 도 RectTransform 크기는 그대로라 대조에 쓸 수 있다.
+    public void OnPointerClick(PointerEventData eventData) {
+        if (eventData.button != PointerEventData.InputButton.Left) return;
+        if (tabs == null) return;
+
+        for (int i = 0; i < tabs.Length; i++) {
+            RectTransform slot = tabs[i].selectedBackground;
+            if (slot == null) continue;
+            if (!RectTransformUtility.RectangleContainsScreenPoint(slot, eventData.position, eventData.pressEventCamera)) continue;
+
+            if (i != tabIndex) SelectTab(i);
+            return;
+        }
+    }
+
     // 켜져 있는 탭의 줄만 모은다. 꺼진 탭의 줄까지 섞이면 방향키가 안 보이는 줄로 내려간다.
     void CollectRows() {
         rows.Clear();
@@ -126,6 +156,24 @@ public class SettingsPanelView : MonoBehaviour {
         rowIndex = (index % rows.Count + rows.Count) % rows.Count;
 
         for (int i = 0; i < rows.Count; i++) rows[i].SetFocused(i == rowIndex);
+    }
+
+    // 커서가 스친 줄로 포커스를 옮긴다. 키 입력을 기다리는 줄이 있으면 넘기지 않는다 — 커서를 치우다 대기가 풀리면 안 된다.
+    void OnRowHovered(SettingsRowView row) {
+        if (rows.Count > 0 && rows[rowIndex].HoldsFocus) return;
+        FocusRow(row);
+    }
+
+    // 누른 줄은 무조건 넘긴다. 사용자가 분명히 그 줄을 고른 것이다.
+    void OnRowPressed(SettingsRowView row) {
+        FocusRow(row);
+    }
+
+    void FocusRow(SettingsRowView row) {
+        int index = rows.IndexOf(row);
+        if (index < 0 || index == rowIndex) return; // 같은 줄에 다시 SetFocused 를 부르면 키 재지정 대기가 흔들린다.
+
+        SetRow(index);
     }
 
     void HandleNavigation() {
@@ -210,11 +258,21 @@ public class SettingsPanelView : MonoBehaviour {
         }
 
         SetRow(rowIndex);
+        ClearUiSelection();
     }
 
     void Close() {
+        ClearUiSelection();
         gameObject.SetActive(false);
         if (OnClosed != null) OnClosed();
+    }
+
+    // 버튼을 마우스로 누르면 EventSystem 이 그 버튼을 "선택됨" 으로 붙잡아 둔다. 그대로 두면 다음에 Enter/Space 를
+    // 누를 때 줄의 Submit 과 함께 그 버튼이 한 번 더 눌린다(「기본값 복원」이 두 번 실행되는 식). 설정창은 줄 이동을
+    // 직접 처리하므로 EventSystem 의 선택은 늘 비워둔다. 열 때도 비우는 이유는, 뒤에 깔린 일시정지 메뉴의 버튼이
+    // 선택된 채로 남아 있으면 같은 일이 생기기 때문이다.
+    static void ClearUiSelection() {
+        if (EventSystem.current != null) EventSystem.current.SetSelectedGameObject(null);
     }
 
     #endregion

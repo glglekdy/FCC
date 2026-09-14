@@ -177,6 +177,7 @@ public static class SettingsPanelPrefabBuilder {
         float x, float width, Color fill, Color textColor, bool outlined) {
 
         Image bg = Box(parent, name, fill);
+        bg.raycastTarget = true; // 버튼은 자기 이미지가 클릭을 받아야 눌린다.
         Place(bg.rectTransform, x, 36f, width, 44f);
         if (outlined) Border(bg.rectTransform, "Border", UiTheme.Line, 1f);
 
@@ -220,10 +221,10 @@ public static class SettingsPanelPrefabBuilder {
         Slider(sound, font, "Row_BgmVolume", "배경음 볼륨", SettingsField.BgmVolume, 86f, "");
         Slider(sound, font, "Row_SfxVolume", "효과음 볼륨", SettingsField.SfxVolume, 138f, "");
 
-        RectTransform presentation = Section(page, font, "대사와 연출", 276f, 238f, 30f);
-        Selector(presentation, font, "Row_DialogueSpeed", "대사 속도", SettingsField.DialogueSpeed, 64f, true);
-        Slider(presentation, font, "Row_ScreenShake", "화면 흔들림", SettingsField.ScreenShake, 112f, "%");
-        Toggle(presentation, font, "Row_DamageNumbers", "데미지 수치 표시", SettingsField.DamageNumbers, 160f);
+        // Figma 안에는 맨 위에 「대사 속도」 줄이 있었지만 설정에서 뺐다. 빈자리를 남기지 않도록 아래 두 줄을 한 칸 당겼다.
+        RectTransform presentation = Section(page, font, "대사와 연출", 276f, 190f, 30f);
+        Slider(presentation, font, "Row_ScreenShake", "화면 흔들림", SettingsField.ScreenShake, 64f, "%");
+        Toggle(presentation, font, "Row_DamageNumbers", "데미지 수치 표시", SettingsField.DamageNumbers, 112f);
     }
 
     #endregion
@@ -248,6 +249,7 @@ public static class SettingsPanelPrefabBuilder {
             float y = 34f + i * 48f;
 
             Image bg = Box(page, "Row_" + i + "_" + actions[i].Replace(" ", ""), UiTheme.Transparent);
+            bg.raycastTarget = true; // 줄의 마우스 입력(SettingsRowView)을 이 배경이 받는다.
             Place(bg.rectTransform, 0f, y, ContentW, RowH);
 
             GameObject marker = FocusMarker(bg.rectTransform);
@@ -314,6 +316,7 @@ public static class SettingsPanelPrefabBuilder {
 
     static Image RowBase(RectTransform parent, string name, float y, out GameObject marker) {
         Image bg = Box(parent, name, UiTheme.Transparent);
+        bg.raycastTarget = true; // 줄의 마우스 입력(SettingsRowView)을 이 배경이 받는다. 투명해도 클릭은 받는다.
         Place(bg.rectTransform, 0f, y, ContentW, RowH);
         marker = FocusMarker(bg.rectTransform);
         return bg;
@@ -456,7 +459,7 @@ public static class SettingsPanelPrefabBuilder {
 
         Image image = obj.AddComponent<Image>();
         image.color = color;
-        image.raycastTarget = false; // 줄 배경이 클릭을 가로채면 푸터 버튼이 안 눌린다.
+        image.raycastTarget = false; // 기본은 끈다. 클릭을 받아야 하는 면(바탕 · 줄 배경 · 버튼)만 만든 쪽에서 켠다.
         return image;
     }
 

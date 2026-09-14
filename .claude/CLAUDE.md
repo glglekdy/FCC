@@ -163,7 +163,9 @@ GameSettings        Draft / Current · PlayerPrefs 저장 · 시스템 반영  (
 - 저장은 세이브 파일이 아니라 **PlayerPrefs**(`FCC_Settings`)입니다. 설정은 세이브 슬롯이 아니라 이 PC에 붙는 값이기 때문입니다.
 - 부팅 시 반영은 `[RuntimeInitializeOnLoadMethod]` 로 자동 실행됩니다. 씬마다 오브젝트를 놓게 하면 하나만 빠뜨려도 조용히 어긋납니다.
 - **설정 항목을 추가할 때 고칠 곳은 `SettingsField` 열거형 + `SettingsAccess` 대응표 + 프리팹 빌더 세 군데뿐입니다.**
-- 감각을 건드리는 항목은 원본 수치를 덮어쓰지 않고 **배율**로 곱합니다 — `HitFeedback.ShakeScale`, `DialogueEffect.SpeedScale`. 인스펙터에서 맞춰둔 값을 설정이 지워버리면 되돌릴 수 없기 때문입니다.
+- **`SettingsField` 는 프리팹에 정수로 저장됩니다.** 중간 항목을 지우면 뒤 항목의 번호가 밀려 줄마다 엉뚱한 값을 만지게 되므로, 항목을 뺄 때는 프리팹 각 줄의 `field` 값도 함께 당겨야 합니다 (「대사 속도」를 뺄 때 이렇게 처리했습니다). 새 항목은 가능하면 `Keybind` 앞이 아니라 맨 뒤에 추가합니다.
+- 키보드와 마우스를 함께 받습니다. 줄 위의 마우스는 각 `SettingsRowView` 가(커서가 올라온 줄 = 포커스, 슬라이더는 누르기·끌기, 선택형은 값 칸 왼쪽/오른쪽 절반 클릭, 토글은 줄 클릭, 키 설정은 키보드 칸 클릭), 탭 클릭은 `SettingsPanelView` 가 받습니다. **줄 배경 Image 는 투명해도 `raycastTarget` 이 켜져 있어야 합니다.** 버튼을 클릭하면 EventSystem 이 선택을 붙잡아 Enter 에 한 번 더 눌리므로, 설정창은 선택을 늘 비워 둡니다(`ClearUiSelection`).
+- 감각을 건드리는 항목은 원본 수치를 덮어쓰지 않고 **배율**로 곱합니다 — `HitFeedback.ShakeScale`. 인스펙터에서 맞춰둔 값을 설정이 지워버리면 되돌릴 수 없기 때문입니다.
 - **아직 값만 보관하는 항목**: 배경음·효과음 볼륨(`AudioMixer` 미존재 — 마스터만 `AudioListener.volume` 로 동작), 데미지 수치 표시(`DamagePopup` 미존재), 키 리바인딩(Input System 인터랙티브 리바인딩 미구현). 각각 붙일 자리에 `**` 주석으로 표시해 두었습니다.
 
 ### 입력
