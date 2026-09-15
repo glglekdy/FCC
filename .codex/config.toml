@@ -8,3 +8,7 @@ env_vars = [
     "NOTION_API_TOKEN",
     "NOTION_API_KEY",
 ]
+
+[mcp_servers.unity]
+command = "C:\\Users\\kimji\\AppData\\Local\\Unity\\bin\\unity.exe"
+args = ["mcp","--project-path","D:\\01_Unity\\00_Project\\00_Circus\\FCC"]
