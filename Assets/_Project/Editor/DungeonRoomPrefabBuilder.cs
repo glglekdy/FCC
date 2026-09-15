@@ -448,7 +448,10 @@ public static class DungeonRoomPrefabBuilder {
             new Vector2(WallThick, exitOpeningBottom - roomBottom));
 
         Transform entry = Anchor(root, "EntryAnchor", new Vector3(-w / 2f + 3f, a, 0f));
-        Transform exit = Anchor(root, "ExitAnchor", new Vector3(0f, topY + 1.4f, 0f));
+        // 퇴장 소켓은 오른쪽 퇴장 구멍 앞, 다른 방과 같은 "오른쪽 끝에서 1.5" 자리에 둔다.
+        // 예전에는 가로 가운데(x=0)에 있어서 다음 방이 갱도 오른쪽 절반을 통째로 덮었고, 그 방의 발판·
+        // 이동 발판·낙사 트리거가 갱도 안으로 내려와 오르던 플레이어가 낙사 판정에 걸렸다.
+        Transform exit = Anchor(root, "ExitAnchor", new Vector3(w / 2f - 1.5f, topY + 1.4f, 0f));
         Transform branch = Anchor(root, "BranchAnchor", new Vector3(alcove.X, g + alcove.YUp + 0.3f, 0f));
         Transform respawn = Anchor(root, "RespawnPoint", new Vector3(-w / 2f + 3f, a, 0f));
 

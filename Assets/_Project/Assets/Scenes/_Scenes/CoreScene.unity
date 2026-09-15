@@ -790,12 +790,20 @@ PrefabInstance:
       value: GateMirror
       objectReference: {fileID: 0}
     - target: {fileID: 8064861110482505619, guid: cf72bcb111a109c40a5cf64ca2796cf8, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.175
+      objectReference: {fileID: 0}
+    - target: {fileID: 8064861110482505619, guid: cf72bcb111a109c40a5cf64ca2796cf8, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8064861110482505619, guid: cf72bcb111a109c40a5cf64ca2796cf8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8064861110482505619, guid: cf72bcb111a109c40a5cf64ca2796cf8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.21
       objectReference: {fileID: 0}
     - target: {fileID: 8064861110482505619, guid: cf72bcb111a109c40a5cf64ca2796cf8, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3975,7 +3983,7 @@ Transform:
   m_GameObject: {fileID: 1083104578}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -26.3, y: -33.44, z: 0}
+  m_LocalPosition: {x: -25.17, y: -33.74, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4702,6 +4710,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveManager
   fileName: save.json
+  slotCount: 3
   playerTag: Player
 --- !u!4 &1370555729 stripped
 Transform:
@@ -5288,7 +5297,7 @@ Transform:
   m_GameObject: {fileID: 1463536967}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -32.41, y: -38.66, z: 0}
+  m_LocalPosition: {x: -32.2, y: -38.45, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6914,7 +6923,7 @@ Transform:
   m_GameObject: {fileID: 1961808984}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -29.86, y: -34.51, z: 0}
+  m_LocalPosition: {x: -30.19, y: -34.51, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8097,6 +8106,10 @@ PrefabInstance:
     - target: {fileID: 36192822004090676, guid: cabab95ff4eda1949993ac056ea25c50, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5468832485090638928, guid: cabab95ff4eda1949993ac056ea25c50, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.26
       objectReference: {fileID: 0}
     - target: {fileID: 8576524948119994719, guid: cabab95ff4eda1949993ac056ea25c50, type: 3}
       propertyPath: m_Name
