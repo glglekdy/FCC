@@ -1,0 +1,289 @@
+fileFormatVersion: 2
+guid: b65e1ccb4ddae554a820689f397a89bc
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -5064045412535441029
+    second: Monster_Ground_Move_0
+  - first:
+      213: 7545066762124452954
+    second: Monster_Ground_Move_1
+  - first:
+      213: 2301873074267559735
+    second: Monster_Ground_Move_2
+  - first:
+      213: -96134019473977051
+    second: Monster_Ground_Move_3
+  - first:
+      213: 7182009291635263660
+    second: Monster_Ground_Move_4
+  - first:
+      213: 1760991004304342568
+    second: Monster_Ground_Move_5
+  - first:
+      213: 6011699295289417459
+    second: Monster_Ground_Move_6
+  - first:
+      213: -7232740263417930391
+    second: Monster_Ground_Move_7
+  - first:
+      213: 3641032236055141541
+    second: Monster_Ground_Move_8
+  - first:
+      213: 2223223830537790227
+    second: Monster_Ground_Move_9
+  - first:
+      213: 4724308816173161873
+    second: Monster_Ground_Move_10
+  - first:
+      213: -4567047319687017105
+    second: Monster_Ground_Move_11
+  - first:
+      213: 640945638227670464
+    second: Monster_Ground_Move_12
+  - first:
+      213: -8859506032813044611
+    second: Monster_Ground_Move_13
+  - first:
+      213: 6163103372238186256
+    second: Monster_Ground_Move_14
+  - first:
+      213: 314749233458874126
+    second: Monster_Ground_Move_15
+  - first:
+      213: -2668180236707820819
+    second: Monster_Ground_Move_16
+  - first:
+      213: 8562508243358505672
+    second: Monster_Ground_Move_17
+  - first:
+      213: 6945595104947919198
+    second: Monster_Ground_Move_18
+  - first:
+      213: 7900698298403598489
+    second: Monster_Ground_Move_19
+  - first:
+      213: -6024669331602979271
+    second: Monster_Ground_Move_20
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Monster_Ground_Move_0
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 652
+        width: 500
+        height: 588
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b79e06b1785e8b9b0800000000000000
+      internalID: -5064045412535441029
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster_Ground_Move_1
+      rect:
+        serializedVersion: 2
+        x: 678
+        y: 660
+        width: 471
+        height: 578
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a54e803ae3675b860800000000000000
+      internalID: 7545066762124452954
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster_Ground_Move_17
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 33
+        width: 507
+        height: 568
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8cadcb791e324d670800000000000000
+      internalID: 8562508243358505672
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster_Ground_Move_19
+      rect:
+        serializedVersion: 2
+        x: 690
+        y: 39
+        width: 454
+        height: 560
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 99031e12e3be4ad60800000000000000
+      internalID: 7900698298403598489
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 08aefc9bcec8e34439a50cbd4f59e89e
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Monster_Ground_Move_0: -5064045412535441029
+      Monster_Ground_Move_1: 7545066762124452954
+      Monster_Ground_Move_10: 4724308816173161873
+      Monster_Ground_Move_11: -4567047319687017105
+      Monster_Ground_Move_12: 640945638227670464
+      Monster_Ground_Move_13: -8859506032813044611
+      Monster_Ground_Move_14: 6163103372238186256
+      Monster_Ground_Move_15: 314749233458874126
+      Monster_Ground_Move_16: -2668180236707820819
+      Monster_Ground_Move_17: 8562508243358505672
+      Monster_Ground_Move_18: 6945595104947919198
+      Monster_Ground_Move_19: 7900698298403598489
+      Monster_Ground_Move_2: 2301873074267559735
+      Monster_Ground_Move_20: -6024669331602979271
+      Monster_Ground_Move_3: -96134019473977051
+      Monster_Ground_Move_4: 7182009291635263660
+      Monster_Ground_Move_5: 1760991004304342568
+      Monster_Ground_Move_6: 6011699295289417459
+      Monster_Ground_Move_7: -7232740263417930391
+      Monster_Ground_Move_8: 3641032236055141541
+      Monster_Ground_Move_9: 2223223830537790227
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

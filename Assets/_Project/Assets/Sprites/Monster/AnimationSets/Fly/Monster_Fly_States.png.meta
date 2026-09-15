@@ -1,0 +1,253 @@
+fileFormatVersion: 2
+guid: 64b0c098099aa80489cdda3eb5ce203a
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -3334326921421979160
+    second: Monster_Fly_States_0
+  - first:
+      213: -2643766470868812036
+    second: Monster_Fly_States_1
+  - first:
+      213: -2066357668050366487
+    second: Monster_Fly_States_2
+  - first:
+      213: 1993110740684927028
+    second: Monster_Fly_States_3
+  - first:
+      213: 3246401323817207697
+    second: Monster_Fly_States_4
+  - first:
+      213: 1932475146297106407
+    second: Monster_Fly_States_5
+  - first:
+      213: -8809172314878109091
+    second: Monster_Fly_States_6
+  - first:
+      213: -8197492252516623879
+    second: Monster_Fly_States_7
+  - first:
+      213: -1627061201392019810
+    second: Monster_Fly_States_8
+  - first:
+      213: -4808191161982859938
+    second: Monster_Fly_States_9
+  - first:
+      213: -8662994581771567361
+    second: Monster_Fly_States_10
+  - first:
+      213: 5247944597527957678
+    second: Monster_Fly_States_11
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Monster_Fly_States_0
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 692
+        width: 497
+        height: 453
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8e10f9bb4571ab1d0800000000000000
+      internalID: -3334326921421979160
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster_Fly_States_3
+      rect:
+        serializedVersion: 2
+        x: 670
+        y: 655
+        width: 519
+        height: 475
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4307a80a8a3f8ab10800000000000000
+      internalID: 1993110740684927028
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster_Fly_States_8
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 147
+        width: 412
+        height: 432
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e96553735748b69e0800000000000000
+      internalID: -1627061201392019810
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster_Fly_States_10
+      rect:
+        serializedVersion: 2
+        x: 731
+        y: 88
+        width: 454
+        height: 431
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ffe3f5e835cd6c780800000000000000
+      internalID: -8662994581771567361
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 7d0b427ca12610f4e944a4d67ef72858
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Monster_Fly_States_0: -3334326921421979160
+      Monster_Fly_States_1: -2643766470868812036
+      Monster_Fly_States_10: -8662994581771567361
+      Monster_Fly_States_11: 5247944597527957678
+      Monster_Fly_States_2: -2066357668050366487
+      Monster_Fly_States_3: 1993110740684927028
+      Monster_Fly_States_4: 3246401323817207697
+      Monster_Fly_States_5: 1932475146297106407
+      Monster_Fly_States_6: -8809172314878109091
+      Monster_Fly_States_7: -8197492252516623879
+      Monster_Fly_States_8: -1627061201392019810
+      Monster_Fly_States_9: -4808191161982859938
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

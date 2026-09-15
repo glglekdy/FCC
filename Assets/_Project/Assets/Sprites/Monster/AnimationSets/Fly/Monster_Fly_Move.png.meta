@@ -1,0 +1,245 @@
+fileFormatVersion: 2
+guid: 31aaa840559a259419e7537ab68f5a23
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -508574110719513572
+    second: Monster_Fly_Move_0
+  - first:
+      213: -8965336527513956867
+    second: Monster_Fly_Move_1
+  - first:
+      213: 2435029939758802670
+    second: Monster_Fly_Move_2
+  - first:
+      213: -4104816204107926503
+    second: Monster_Fly_Move_3
+  - first:
+      213: -5421697296890272747
+    second: Monster_Fly_Move_4
+  - first:
+      213: 8289257139865736224
+    second: Monster_Fly_Move_5
+  - first:
+      213: 5107847151864763339
+    second: Monster_Fly_Move_6
+  - first:
+      213: -3731995194764157465
+    second: Monster_Fly_Move_7
+  - first:
+      213: -4328725209293133480
+    second: Monster_Fly_Move_8
+  - first:
+      213: 6645356649502103245
+    second: Monster_Fly_Move_9
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Monster_Fly_Move_0
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 634
+        width: 588
+        height: 548
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c1c6a947a8e21f8f0800000000000000
+      internalID: -508574110719513572
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster_Fly_Move_2
+      rect:
+        serializedVersion: 2
+        x: 647
+        y: 688
+        width: 586
+        height: 532
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ee6a3c034d6fac120800000000000000
+      internalID: 2435029939758802670
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster_Fly_Move_3
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 77
+        width: 576
+        height: 490
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 91431ed1963c807c0800000000000000
+      internalID: -4104816204107926503
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster_Fly_Move_5
+      rect:
+        serializedVersion: 2
+        x: 720
+        y: 57
+        width: 505
+        height: 554
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0245199437b590370800000000000000
+      internalID: 8289257139865736224
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 2f31f0b1b4e2fd24b827068284ab268b
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Monster_Fly_Move_0: -508574110719513572
+      Monster_Fly_Move_1: -8965336527513956867
+      Monster_Fly_Move_2: 2435029939758802670
+      Monster_Fly_Move_3: -4104816204107926503
+      Monster_Fly_Move_4: -5421697296890272747
+      Monster_Fly_Move_5: 8289257139865736224
+      Monster_Fly_Move_6: 5107847151864763339
+      Monster_Fly_Move_7: -3731995194764157465
+      Monster_Fly_Move_8: -4328725209293133480
+      Monster_Fly_Move_9: 6645356649502103245
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
