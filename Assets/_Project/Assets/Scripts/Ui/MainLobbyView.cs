@@ -1,24 +1,22 @@
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
-// 메인 로비(커튼콜 정면) 화면. 커튼이 좌우로 열리면서 타이틀과 메뉴 5개가 떠오르고,
-// ↑↓ 와 마우스로 항목을 고른다. 와이어프레임 1d 안을 그대로 옮긴 화면이다.
+// 메인 로비(커튼콜 정면) 화면. 타이틀과 메뉴 5개를 띄우고 ↑↓ 와 마우스로 항목을 고른다.
+// Figma 「FCC_UI」의 MainLobby_new 안을 옮긴 화면이다.
 //
-// 생김새(커튼·타이틀·메뉴 줄·거울 소품)는 전부 프리팹 Prefabs/UI/MainLobby.prefab 에 들어 있고,
+// 예전에는 시작할 때 커튼이 좌우로 열리며 알맹이가 떠오르는 연출이 있었는데 뺐다. 커튼은 이제 화면 가장자리에
+// 고정된 무대 막이라 이 스크립트가 만지지 않는다 (씬 전환의 암전은 ScreenFader 가 따로 맡는다).
+//
+// 생김새(커튼·타이틀·메뉴 줄)는 전부 프리팹 Prefabs/UI/MainLobby.prefab 에 들어 있고,
 // 이 스크립트는 선택 상태 계산과 입력만 맡는다 (SkillLoadoutView와 같은 구조). 줄 하나의 표시는 MainLobbyItemView 담당.
 // 프리팹을 처음부터 다시 찍어내려면 에디터 메뉴 Tools ▸ FCC ▸ Build Main Lobby Prefab.
 public class MainLobbyView : MonoBehaviour {
     #region 인스펙터 변수
 
     [Header("연결 — 프리팹이 채워 둔 값입니다")]
-    // 커튼이 열리는 동안 숨겨둘 알맹이(타이틀·메뉴·소품). 커튼 뒤에서 미리 보이면 연출이 죽는다.
-    public CanvasGroup contentGroup;
-    public RectTransform curtainLeft; // 왼쪽 커튼. 폭을 줄여서 연다 (왼쪽 가장자리에 앵커가 붙어 있다).
-    public RectTransform curtainRight; // 오른쪽 커튼.
     // 메뉴 5줄. **배열 순서가 그대로 ↑↓ 이동 순서입니다.** 무엇을 하는 줄인지는 각 줄의 action이 정한다.
     public MainLobbyItemView[] items;
     public TMP_Text versionLabel; // 좌하단 버전 표기. Application.version 을 그대로 찍는다.
@@ -26,6 +24,9 @@ public class MainLobbyView : MonoBehaviour {
     [Header("연결 — 씬에서 직접 이어주세요")]
     // **씬의 설정 패널 오브젝트를 물려주세요.** 비어 있으면 [설정] 줄이 잠긴 채로 표시된다.
     public GameObject settingsPanel;
+    // **씬의 기록 선택 화면(SaveSlotSelect 프리팹)을 물려주세요.** [새로 시작]·[이어하기]가 이 화면에서 자리를 고르게 된다.
+    // 비워두면 예전처럼 [새로 시작]은 곧바로 첫 씬으로, [이어하기]는 마지막 기록으로 바로 넘어간다.
+    public SaveSlotSelectView saveSlotPanel;
 
     [Header("씬 이름")]
     // **빌드 세팅(File ▸ Build Profiles)에 등록된 씬 이름을 정확히 적으세요.**
@@ -34,25 +35,17 @@ public class MainLobbyView : MonoBehaviour {
 
     [Header("문구")]
     public string versionFormat = "v{0}"; // {0} = Application.version.
-    public string continueEmptyText = "저장된 기록 없음"; // 세이브가 없을 때 [이어하기] 오른쪽에 붙는 표기.
+    public string continueEmptyText = "저장된 기억 없음"; // 세이브가 없을 때 [이어하기] 오른쪽에 붙는 표기.
     // {0} = 저장된 씬 이름, {1} = 저장 시각. 챕터·일차 표기는 SaveData에 해당 필드가 생기면 여기만 바꾸면 된다.
     public string continueFormat = "{0} · {1}";
-
-    [Header("커튼 연출")]
-    public bool playOpening = true; // 끄면 커튼이 처음부터 열린 상태로 시작한다 (배치 확인용).
-    public float openDuration = 1.2f; // 커튼이 다 열리기까지 걸리는 시간.
-    public float contentFadeDelay = 0.35f; // 커튼이 조금 열린 뒤에 알맹이가 떠오르도록 늦추는 시간.
-    public float contentFadeDuration = 0.6f;
-    public float closedCurtainWidth = 960f; // 닫혔을 때 커튼 한 짝의 폭. 기준 해상도 1920의 절반이라 화면이 꽉 덮인다.
 
     #endregion
     #region 컴포넌트 변수
 
     InputAction escapeAction; // 설정창을 닫는 ESC. MainMenuController와 같은 방식으로 코드에서 만든다.
 
-    SaveData continueTarget; // [이어하기]가 열 세이브. 없으면 null이고 그 줄은 잠긴다.
-    float leftOpenWidth; // 프리팹에 적혀 있던 커튼 폭. 다 열렸을 때 돌아갈 값이다.
-    float rightOpenWidth;
+    SaveData continueTarget; // [이어하기]가 열 세이브(마지막으로 고른 자리). 없으면 null.
+    bool hasAnySave; // 어느 자리든 기록이 하나라도 있는지. 없으면 [이어하기] 줄이 잠긴다.
     int selectedIndex = -1;
     bool isReady; // 프리팹 연결이 온전한지. 어긋난 채로 두면 NullReference가 쏟아지므로 Awake에서 한 번만 검사한다.
     bool isBusy; // 씬 전환을 시작한 뒤. 연타로 두 번 넘어가는 것을 막는다.
@@ -70,10 +63,22 @@ public class MainLobbyView : MonoBehaviour {
             item.Bind(HandleItemHovered, HandleItemClicked);
         }
 
-        leftOpenWidth = curtainLeft.rect.width;
-        rightOpenWidth = curtainRight.rect.width;
-
         if (settingsPanel != null) settingsPanel.SetActive(false);
+
+        if (saveSlotPanel != null) {
+            saveSlotPanel.gameObject.SetActive(false);
+            saveSlotPanel.OnNewGameRequested += HandleNewGameRequested;
+            saveSlotPanel.OnLoadRequested += HandleLoadRequested;
+            saveSlotPanel.OnClosed += HandleSaveSlotClosed;
+        }
+    }
+
+    void OnDestroy() {
+        if (saveSlotPanel == null) return;
+
+        saveSlotPanel.OnNewGameRequested -= HandleNewGameRequested;
+        saveSlotPanel.OnLoadRequested -= HandleLoadRequested;
+        saveSlotPanel.OnClosed -= HandleSaveSlotClosed;
     }
 
     void OnEnable() { escapeAction.Enable(); }
@@ -86,8 +91,6 @@ public class MainLobbyView : MonoBehaviour {
         RefreshVersion();
         RefreshLocks();
         SelectFirstUnlocked();
-
-        StartCoroutine(PlayOpening());
     }
 
     void Update() {
@@ -99,6 +102,9 @@ public class MainLobbyView : MonoBehaviour {
             return;
         }
 
+        // 기록 선택 화면은 ESC 까지 자기 입력을 스스로 받는다. 떠 있는 동안 로비는 손을 뗀다.
+        if (IsSaveSlotOpen()) return;
+
         HandleInput();
     }
 
@@ -109,10 +115,6 @@ public class MainLobbyView : MonoBehaviour {
     // 무엇이 비었는지 이름으로 찍어준다. 하나라도 비면 화면을 아예 굴리지 않는다.
     bool ValidateReferences() {
         List<string> missing = new();
-
-        if (contentGroup == null) missing.Add(nameof(contentGroup));
-        if (curtainLeft == null) missing.Add(nameof(curtainLeft));
-        if (curtainRight == null) missing.Add(nameof(curtainRight));
 
         if (items == null || items.Length == 0) {
             missing.Add($"{nameof(items)}(메뉴 줄이 하나도 없습니다)");
@@ -131,66 +133,30 @@ public class MainLobbyView : MonoBehaviour {
     }
 
     #endregion
-    #region 커튼 연출
-
-    // 커튼을 좌우로 밀어 열고, 조금 늦게 알맹이를 띄운다.
-    // 전부 unscaledDeltaTime 기준이다 — 로비에서 timeScale이 0으로 남아 들어와도 연출이 멈추면 안 되기 때문.
-    IEnumerator PlayOpening() {
-        if (!playOpening || openDuration <= 0f) {
-            SetCurtainWidth(leftOpenWidth, rightOpenWidth);
-            contentGroup.alpha = 1f;
-            yield break;
-        }
-
-        SetCurtainWidth(closedCurtainWidth, closedCurtainWidth);
-        contentGroup.alpha = 0f;
-
-        StartCoroutine(FadeInContent());
-
-        for (float elapsed = 0f; elapsed < openDuration; elapsed += Time.unscaledDeltaTime) {
-            // 끝에서 부드럽게 멈추도록 감속을 준다. 실제 커튼도 등속으로 열리지 않는다.
-            float t = Mathf.SmoothStep(0f, 1f, elapsed / openDuration);
-            SetCurtainWidth(Mathf.Lerp(closedCurtainWidth, leftOpenWidth, t), Mathf.Lerp(closedCurtainWidth, rightOpenWidth, t));
-            yield return null;
-        }
-
-        SetCurtainWidth(leftOpenWidth, rightOpenWidth);
-    }
-
-    IEnumerator FadeInContent() {
-        yield return new WaitForSecondsRealtime(contentFadeDelay);
-
-        for (float elapsed = 0f; elapsed < contentFadeDuration; elapsed += Time.unscaledDeltaTime) {
-            contentGroup.alpha = Mathf.Clamp01(elapsed / contentFadeDuration);
-            yield return null;
-        }
-
-        contentGroup.alpha = 1f;
-    }
-
-    void SetCurtainWidth(float left, float right) {
-        curtainLeft.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, left);
-        curtainRight.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, right);
-    }
-
-    #endregion
     #region 표시 갱신
 
     // 세이브 파일을 읽어 [이어하기] 줄에 어느 지점인지 적어둔다.
     // SaveManager는 씬을 넘어 살아남는 싱글턴이라 로비 씬에 없을 수도 있는데, 그때는 세이브가 없는 것으로 본다.
     void RefreshContinue() {
-        continueTarget = SaveManager.Instance != null ? SaveManager.Instance.Read() : null;
+        SaveManager saves = SaveManager.Instance;
+
+        continueTarget = saves != null ? saves.Read() : null;
+        if (continueTarget != null && string.IsNullOrEmpty(continueTarget.sceneName)) continueTarget = null;
+
+        // 기록 선택 화면이 있으면 마지막 자리가 비어 있어도 다른 자리의 기록을 골라 불러올 수 있다.
+        hasAnySave = continueTarget != null || (saveSlotPanel != null && saves != null && saves.HasAnySlot());
 
         MainLobbyItemView item = FindItem(MainLobbyAction.Continue);
         if (item == null) return;
 
-        if (continueTarget == null || string.IsNullOrEmpty(continueTarget.sceneName)) {
-            continueTarget = null;
-            item.SetSuffix(continueEmptyText);
+        if (continueTarget == null) {
+            item.SetSuffix(hasAnySave ? "" : continueEmptyText);
             return;
         }
 
-        item.SetSuffix(string.Format(continueFormat, continueTarget.sceneName, continueTarget.savedAt));
+        // 씬 이름(CoreScene 등)이 그대로 보이지 않도록 기록 선택 화면의 이름 대응표를 함께 쓴다.
+        string region = saveSlotPanel != null ? saveSlotPanel.DescribeRegion(continueTarget) : continueTarget.sceneName;
+        item.SetSuffix(string.Format(continueFormat, region, continueTarget.savedAt));
     }
 
     void RefreshVersion() {
@@ -206,7 +172,7 @@ public class MainLobbyView : MonoBehaviour {
 
     bool IsUnlocked(MainLobbyAction action) {
         return action switch {
-            MainLobbyAction.Continue => continueTarget != null,
+            MainLobbyAction.Continue => hasAnySave,
             MainLobbyAction.MemoryRoom => !string.IsNullOrEmpty(memoryRoomSceneName), // 기억의 방 씬이 생기기 전까지는 잠김.
             MainLobbyAction.Settings => settingsPanel != null,
             _ => true,
@@ -274,6 +240,7 @@ public class MainLobbyView : MonoBehaviour {
     void HandleItemHovered(MainLobbyItemView item) {
         if (isBusy) return;
         if (settingsPanel != null && settingsPanel.activeSelf) return;
+        if (IsSaveSlotOpen()) return;
 
         int index = System.Array.IndexOf(items, item);
         if (index >= 0) Select(index);
@@ -282,6 +249,7 @@ public class MainLobbyView : MonoBehaviour {
     void HandleItemClicked(MainLobbyItemView item) {
         if (isBusy) return;
         if (settingsPanel != null && settingsPanel.activeSelf) return;
+        if (IsSaveSlotOpen()) return;
 
         HandleItemHovered(item); // 클릭한 줄을 먼저 고른 뒤 실행한다. 키보드 흐름과 결과가 같도록.
         Activate();
@@ -297,8 +265,8 @@ public class MainLobbyView : MonoBehaviour {
         if (!item.IsUnlocked) return;
 
         switch (item.action) {
-            case MainLobbyAction.Continue: Continue(); break;
-            case MainLobbyAction.NewGame: LoadScene(newGameSceneName); break;
+            case MainLobbyAction.Continue: OpenContinue(); break;
+            case MainLobbyAction.NewGame: OpenNewGame(); break;
             case MainLobbyAction.MemoryRoom: LoadScene(memoryRoomSceneName); break;
             case MainLobbyAction.Settings: OpenSettings(); break;
             case MainLobbyAction.Quit: Quit(); break;
@@ -337,6 +305,41 @@ public class MainLobbyView : MonoBehaviour {
 
         isBusy = true;
         ScreenFader.LoadScene(sceneName);
+    }
+
+    // 기록 선택 화면이 연결돼 있으면 자리를 먼저 고르게 한다. 비어 있으면 예전처럼 곧바로 넘어간다
+    // (기록 선택 화면을 아직 올리지 않은 씬에서도 메뉴가 막히지 않게 하기 위함이다).
+    void OpenNewGame() {
+        if (saveSlotPanel != null) saveSlotPanel.Open(SaveSlotSelectView.Mode.NewGame);
+        else LoadScene(newGameSceneName);
+    }
+
+    void OpenContinue() {
+        if (saveSlotPanel != null) saveSlotPanel.Open(SaveSlotSelectView.Mode.Load);
+        else Continue();
+    }
+
+    // 자리는 SaveSlotSelectView 가 이미 SaveManager 에 정해두고 넘어온다. 로비는 씬만 넘긴다.
+    void HandleNewGameRequested(int slot) {
+        LoadScene(newGameSceneName);
+    }
+
+    // 고른 기록을 [이어하기] 대상으로 삼아 기존 흐름(씬 열기 → 상태 되돌리기)을 그대로 탄다.
+    void HandleLoadRequested(int slot, SaveData data) {
+        continueTarget = data;
+        Continue();
+    }
+
+    // 기록 선택 화면에서 기록을 지우고 나왔을 수 있다. [이어하기]의 잠금과 표기를 다시 맞춘다.
+    void HandleSaveSlotClosed() {
+        RefreshContinue();
+        RefreshLocks();
+
+        if (selectedIndex < 0 || !items[selectedIndex].IsUnlocked) SelectFirstUnlocked();
+    }
+
+    bool IsSaveSlotOpen() {
+        return saveSlotPanel != null && saveSlotPanel.gameObject.activeSelf;
     }
 
     void OpenSettings() {

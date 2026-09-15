@@ -28,10 +28,10 @@ public class MainLobbyItemView : MonoBehaviour, IPointerEnterHandler, IPointerCl
 
     [Header("연결")]
     public Image background; // 골라졌을 때만 칠해지는 배경. **투명해도 raycastTarget은 켜두세요 — 마우스를 이 이미지가 받습니다.**
-    public GameObject frame; // 골라진 줄을 감싸는 굵은 테두리. 켜고 끄기만 한다.
-    public GameObject underline; // 항목 사이 구분선. 마지막 줄만 꺼둔다.
+    public GameObject frame; // 골라진 줄을 감싸는 굵은 테두리. 켜고 끄기만 한다. 비워도 된다(지금 로비 디자인에는 없다).
+    public GameObject underline; // 항목 사이 구분선. 비워도 된다(지금 로비 디자인에는 없다).
     public TMP_Text label; // "이어하기" 같은 항목 이름. 고정 문구라 프리팹에 직접 적혀 있다.
-    public TMP_Text suffixLabel; // "CH1 · 3일차" 처럼 오른쪽에 붙는 보조 표기. 상황에 따라 코드가 갈아끼운다.
+    public TMP_Text suffixLabel; // "CH1 · 3일차" 처럼 오른쪽에 붙는 보조 표기. 비워도 된다(지금 로비 디자인에는 없다).
 
     // 기본값은 UiTheme 토큰이지만, 실제로 화면에 나가는 값은 프리팹에 박힌 쪽이다.
     // UiTheme 을 고쳤다면 Tools ▸ FCC ▸ UI ▸ Apply Theme Colors 을 한 번 돌려야 프리팹까지 맞춰진다.
@@ -42,6 +42,11 @@ public class MainLobbyItemView : MonoBehaviour, IPointerEnterHandler, IPointerCl
     public Color selectedLabelColor = UiTheme.TextHigh;
     public Color suffixColor = UiTheme.TextMuted;
     public Color lockedColor = UiTheme.TextDim; // 아직 못 여는 항목(기억의 방 등)은 통째로 흐리게.
+
+    [Header("선택 표시")]
+    // 골라진 줄을 굵기로도 구분할지. Figma MainLobby_new 는 테두리 없이 글자 밝기만으로 고른 줄을 보여줘서 기본은 끈다.
+    // 대표 폰트가 이미 Bold 라서 켜면 SDF 를 한 번 더 부풀린 가짜 굵기가 된다.
+    public bool boldWhenSelected = false;
 
     #endregion
     #region 런타임 변수
@@ -74,8 +79,7 @@ public class MainLobbyItemView : MonoBehaviour, IPointerEnterHandler, IPointerCl
 
         if (label != null) {
             label.color = IsUnlocked ? (on ? selectedLabelColor : labelColor) : lockedColor;
-            // 굵기로도 구분을 준다. 색만으로는 무대 배경 위에서 어느 줄인지 잘 안 읽힌다.
-            label.fontStyle = on ? FontStyles.Bold : FontStyles.Normal;
+            label.fontStyle = on && boldWhenSelected ? FontStyles.Bold : FontStyles.Normal;
         }
 
         if (suffixLabel != null) suffixLabel.color = IsUnlocked ? suffixColor : lockedColor;
