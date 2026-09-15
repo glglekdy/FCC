@@ -24,10 +24,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 코드에 직접 매핑되는 핵심 설정:
 
 - **자아 게이지** = 체력입니다. 0이 되면 게임오버 처리됩니다. 코드상으로는 `Health` 컴포넌트입니다.
-- **기억 조각** = 핵심 수집 재화입니다. 회복 아이템 겸 스킬 포인트 재료로 사용됩니다. 챕터1 10개 / 챕터2 20개 / 챕터4 큰 조각 1개입니다. **수집·소비 로직은 아직 미구현 상태입니다.**
-- **거울** = 세이브포인트 겸 스킬 "정비하기" 지점입니다. 코드상으로는 `SaveMirror` 입니다 (저장 + 자아 게이지 전량 회복까지 구현되어 있으며, 정비 UI는 미구현 상태입니다).
+- **기억 조각** = 핵심 수집 재화입니다. 회복 아이템 겸 스킬 강화 재료로 사용됩니다. 챕터1 10개 / 챕터2 20개 / 챕터4 큰 조각 1개입니다. 코드상으로는 `Player_MemoryShardInventory` 이며 **소비(스킬 강화·되돌리기)는 구현되어 있습니다.** 획득 경로는 던전 보상(`DungeonBonusPickup` · `DungeonGate`)뿐이고 **본편 맵에 놓는 수집 오브젝트는 아직 없습니다** (개발 중에는 F6 키로 10개씩 넣을 수 있으며, 디버그 빌드에서만 동작합니다).
+- **거울** = 세이브포인트 겸 스킬 "정비하기" 지점입니다. 코드상으로는 `SaveMirror` 입니다 (저장 + 자아 게이지 전량 회복 + 정비 화면 열기까지 구현되어 있습니다. 아래 「스킬」 항목 참고).
 - **오염도 게이지** (챕터2~) = 최대 100이며 시간당 누적되고, "팥" 섭취 시 0으로 초기화됩니다. 게이지가 다 차면 사망합니다. **아직 미구현 상태입니다.** 추가 시 `SaveData` 에 필드를 추가하는 방식으로 구현합니다 (구버전 세이브 호환은 아래 세이브 항목을 참고해 주시기 바랍니다).
-- **스킬 6종** — Pure Dream(주인공, 정화) / Broken Phantasm(칼잡이, 투사체) / Cycle of Fate(저글러, 스택 폭발) / Invisible Reality(마임, 투명 벽) / Bent Spirit(컨토셔니스트, 회피+은신) / Close Call(곡예사, 이동기 🟡미확정). 최대 3개 장착 가능하며, 기억 조각으로 업그레이드합니다. `**Skill.cs`/`SkillManager.cs` 는 아직 뼈대(껍데기) 상태입니다.**
+- **스킬 6종** — Pure Dream(주인공, 정화) / Broken Phantasm(칼잡이, 투사체) / Cycle of Fate(저글러, 스택 폭발) / Invisible Reality(마임, 투명 벽) / Bent Spirit(컨토셔니스트, 회피+은신) / Close Call(곡예사, 이동기 🟡미확정). 최대 3개 장착 가능하며, 기억 조각으로 업그레이드합니다. **앞의 4종은 에셋(`Assets/Skill/Skill_*.asset`)으로 구현되어 있고 발동 · 장착 · 강화 · 해금이 동작합니다** (Bent Spirit · Close Call 은 아직 없습니다). 아래 「스킬」 항목 참고.
 - **챕터 구조** — 1 서커스 극장 → 2 저승 도시 → 3 지하감옥 → 4 무대(보스전) → 엔딩 2분기로 구성되어 있습니다.
 
 문서에서 🟡 표시는 미확정 항목입니다. **장르 구조는 메트로배니아로 최종 확정**되었으므로, 맵 구조 및 레벨 디자인 설계 시 메트로배니아 방식의 동선과 탐험 요소(능력 해금 기반 지형 통과 등)를 기본으로 적용해 주시기 바랍니다.
@@ -131,6 +131,43 @@ String Table은 2종입니다 — `**Dialogue**`(대사·화자명), `**Objectiv
 - `Player_move.isMovementLocked` 가 켜져 있으면(대사·컷씬 중) 상호작용이 통째로 차단됩니다. 대사 진행키와 겹쳐 대화가 끝나는 순간 동일한 입력이 중복 실행되는 것을 방지하기 위함입니다.
 - 프롬프트 연출은 전부 `Time.unscaledDeltaTime` 기준입니다 (히트스톱 중에도 정상 속도로 표시되어야 하기 때문입니다).
 
+### 스킬 (장착 · 강화 · 해금)
+
+`SkillManager`(플레이어에 부착)가 장착 슬롯 3칸 · 레벨 · 기억 조각 지출을 모두 들고 있고, 화면은 거울에서 여는
+정비 화면(`SkillLoadoutView`)과 상시 노출 HUD(`PlayerHudView` ← `HudSkillSlotView`) 두 곳입니다.
+
+```
+SaveMirror.Interact() → Health.RestoreFull() → SaveManager.SaveGame(...)
+                      → SkillLoadoutView.Instance.Open(manager, 닫힌 뒤 다시 저장)
+                            └ SkillSlotView(장착 3칸) · SkillRowView(보유 스킬 줄)
+```
+
+- **레벨 값은 스킬 에셋의 `levels[]` 배열**에 들어 있고, 인덱스가 곧 레벨입니다(Lv0 = 강화 전). `MaxLevel` 은
+  `levels.Length - 1` 이라 배열을 늘리면 강화 단계가 늘어납니다. **`Skill_PureDream` 의 Lv1·Lv2 수치는 임시값입니다.**
+- 진행 중 레벨의 주인은 `SkillManager` 입니다. 스킬 에셋의 `runtimeLevel` 은 파생 클래스가 수치를 읽기 위한 사본일
+  뿐이며, 에셋은 하나를 공유하므로 `Awake` 에서 시작 레벨을 다시 심습니다(에디터에서 직전 판의 값이 남는 것을 막습니다).
+- **강화 비용은 보유량에 따라 달라집니다** — `max(하한[3, 5], floor(보유량 × [10%, 20%]))`. 그리는 시점마다
+  `GetUpgradeCost` 를 다시 물어야 하며, 하한이 걸렸는지는 `IsUpgradeCostAtMinimum` 으로 구분해 문구를 고릅니다.
+- **되돌리기는 그때 낸 값을 그대로 돌려줍니다**(`paidShards` 에 단계별로 기록). 지금 보유량으로 다시 계산하면
+  조각이 적을 때 강화해 두고 많아진 뒤 되돌려 차액을 버는 무한 증식이 생깁니다.
+- 해금은 **스토리에서만** 일어납니다. 진입점은 `SkillUnlocker.Unlock(skill)` 한 곳이고, 붙이는 방법이 3가지입니다 —
+  `SkillUnlockZone`(영역에 들어가면), `SkillUnlockStep`(컷씬 단계), `DialogueTriggerZone.unlockSkill`(대사가 끝나면).
+  **어느 장면에서 무엇이 열리는지는 아직 배치하지 않았습니다.**
+- 해금되면 `SkillManager.UnlockFromStory` 가 빈 슬롯에 자동 장착하고 `AreaTitleView` 로 이름을 띄웁니다
+  (`autoEquipOnUnlock` · `announceUnlock` 으로 끕니다).
+- 아직 되찾지 못한 스킬도 정비 화면 목록에 **이름을 가린 줄**(`? ? ?`)로 보여 줍니다. 앞으로 무엇이 더 있는지는
+  알리되 이름은 해금 순간의 보상으로 남기기 위해서입니다. 목록에 나오려면 `SkillManager.allSkills` 에 들어 있어야 합니다.
+- **정비 화면(`InGameUi/SkillLoadout`)은 켜진 상태여야 합니다.** 꺼 두면 `Awake` 가 돌지 않아 `Instance` 가 비고,
+  거울이 저장만 하고 정비 화면을 열지 못합니다(평소에는 스크립트가 창 `windowRoot` 만 숨깁니다).
+- 정비 화면 조작: `↑↓`(`W`/`S`) 스킬 고르기 · `1` `2` `3` 슬롯 고르기 · `Enter`/`Space` 장착과 해제 · `Delete` 해제 ·
+  `E` 강화 · `R` 되돌리기 · `ESC`/`Tab` 닫기. 마우스로도 줄과 슬롯을 고를 수 있습니다.
+  **`E` 는 거울을 여는 키와 같아서**, 연 프레임의 입력을 무시하는 `openedFrame` 검사가 들어 있습니다.
+- HUD 스킬 칸은 아이콘이 없으면 이름의 머리글자(Broken Phantasm → `BP`)를 적고, 쿨타임 동안에는 칸을 어둡게 덮고
+  남은 초만 보여 줍니다(머리글자와 숫자가 같은 자리를 써서 겹치기 때문입니다).
+- 프리팹은 `Tools ▸ FCC ▸ Build Skill Loadout Prefab` 으로 다시 찍을 수 있습니다. **다시 찍으면 안쪽 오브젝트의
+  fileID 가 전부 바뀌어 `InGameUi` 에 중첩된 인스턴스의 오버라이드가 엉뚱한 칸에 들러붙습니다** — 찍은 뒤에는
+  중첩 인스턴스를 통째로 Revert 하고 다시 켜 주세요.
+
 ### 세이브
 
 `SaveManager` 가 파일 입출력(`Write`/`Read`/`DeleteSave`)과 상태 수집·복원(`SaveGame`/`LoadGame`)을 전담합니다. 저장 위치는 `Application.persistentDataPath/save.json` 이며, 직렬화에는 `JsonUtility` 를 사용합니다.
@@ -147,6 +184,10 @@ SaveMirror.Interact()  → Health.RestoreFull()          // 회복이 먼저 진
 - `SaveData` 는 `**JsonUtility` 가 다루므로 전부 public 필드**여야 합니다. 필드를 새로 추가하더라도 기존 세이브는 그대로 읽히며(없는 필드는 0/null), `maxHealth == 0` 이면 체력을 기록하지 않던 구버전 세이브로 판단하여 체력을 건드리지 않습니다. 후속 시스템(오염도·기억 조각)은 여기에 필드를 추가하여 확장합니다.
 - `LoadGame()` 은 **같은 씬 안에서만** 복원합니다. 메인 메뉴 → 이어하기처럼 씬 전환이 필요한 경우 `Read()` 로 `sceneName` 을 먼저 확인하여 씬을 전환한 뒤 호출해야 합니다.
 - `SaveManager.Awake()` 는 `transform.SetParent(null)` 을 먼저 호출합니다. `DontDestroyOnLoad` 는 루트 오브젝트에서만 동작하는데, 씬에서는 `GAME_MANAGER` 하위에 배치되어 있기 때문입니다.
+- **기록 자리(슬롯)는 3개**입니다(`SaveManager.slotCount`). 01번은 예전 단일 세이브 이름 `save.json` 을 그대로 쓰고 02번부터 `save_2.json` · `save_3.json` 입니다 — 01번까지 이름을 바꾸면 기존 세이브가 [이어하기]에서 사라지기 때문입니다. `Read` · `Write` · `HasSave` · `LoadGame` 과 거울 저장은 전부 **현재 자리(`ActiveSlot`)** 를 향하며, 자리는 `UseSlot(i)` 로 바꾸고 PlayerPrefs `FCC_ActiveSaveSlot` 에 기억됩니다. 자리별 조회는 `ReadSlot` · `HasSlot` · `HasAnySlot` · `DeleteSlot` 을 씁니다.
+- 자리 고르기는 **`SaveSlotSelectView`**(`Prefabs/UI/SaveSlotSelect.prefab` + 줄 `SaveSlotRow.prefab`, `Tools ▸ FCC ▸ Build Save Slot Prefabs`)가 맡습니다. 메인 로비의 [새로 시작]은 `Mode.NewGame`(빈자리 → 새로 시작, 기록 있는 자리 → 덮어쓰기 확인), [이어하기]는 `Mode.Load`(마지막 자리에 포커스)로 같은 화면을 엽니다. 자리 변경은 화면이, 씬 전환은 로비가 `OnNewGameRequested` / `OnLoadRequested` 를 받아서 합니다. 덮어쓰기·지우기 확인 창은 되돌릴 수 없는 동작이라 매번 「취소」에 포커스를 두고 열립니다. **플레이어에게 보이는 문구는 "기록"이 아니라 "기억"으로 씁니다**(기억 선택 · 기억 불러오기 · 새 기억 만들기 · 저장된 기억 없음) — 기억 조각을 되찾는 게임 설정에 맞춘 용어입니다. 코드 주석의 "기록 자리"는 내부 설명용이라 그대로 둡니다.
+- **`Main_menu` 씬에도 `SaveManager` 가 있어야 합니다.** 없으면 부팅 직후 [이어하기]가 잠기고 기록 선택 화면이 전부 빈자리로 보입니다(실제로 이 상태로 한동안 [이어하기]가 동작하지 않았습니다). 게임 씬(First · CoreScene)의 `SaveManager` 는 메뉴에서 넘어온 것과 겹쳐 스스로 지워지므로 그대로 둬도 됩니다.
+- 슬롯에 보이는 지역 · 거울 이름은 `SaveSlotSelectView` 인스펙터의 `sceneNames` / `checkpointNames` 대응표에서 옵니다. **거울을 새로 놓으면 `checkpointNames` 에 id 와 이름을 추가하세요.** 빠지면 내부 id 대신 "거울에서 저장"으로 표시됩니다.
 
 ### 설정 (Settings)
 
@@ -172,12 +213,14 @@ GameSettings        Draft / Current · PlayerPrefs 저장 · 시스템 반영  (
 
 `Assets/_Project/Assets/Input/Client.inputactions` 를 사용합니다 (루트의 `InputSystem_Actions.inputactions` 는 Unity 기본 템플릿으로 미사용됩니다).
 
-- `Client ▸ Player` — Move / Jump / Attack / Interact (`E` · 패드 남쪽 버튼)
+- `Client ▸ Player` — Move / Jump / Attack / Interact (`E` · 패드 남쪽 버튼) / Skill1 · Skill2 · Skill3 (`1` `2` `3` · 패드 LB · RB · RT)
 - `Client ▸ Ui` — NextDialogue (대사 다음/스킵)
 
 `Player_Combat`(`OnAttack`)과 `PlayerInteractor`(`OnInteract`)는 `PlayerInput` 의 SendMessage 방식(`void OnXxx(InputValue)`)을 사용하며, 대사 쪽은 `InputActionReference` 를 인스펙터로 주입받습니다.
 
-키 바인딩을 변경하면 `PlayerInteractor.keyLabel`(프롬프트에 표시되는 `[E]`)도 함께 수정해야 합니다. 자동 연동되지 않습니다.
+`SkillManager` 는 슬롯 번호로 액션을 찾습니다 — `slotActionNames`(기본 `Skill1`·`Skill2`·`Skill3`)에 적힌 이름을 `PlayerInput.actions` 에서 꺼내 쓰므로, 액션 이름을 바꾸면 이 배열도 함께 고쳐야 합니다.
+
+키 바인딩을 변경하면 `PlayerInteractor.keyLabel`(프롬프트에 표시되는 `[E]`)과 HUD 스킬 칸의 `Key` 라벨(프리팹에 적힌 `1`·`2`·`3`)도 함께 수정해야 합니다. 자동 연동되지 않습니다.
 
 ### 씬
 
@@ -251,8 +294,8 @@ public class HitReactor : MonoBehaviour {
 | `TextBody` | `#C2B4A6` | 본문 · 메뉴 라벨 |
 | `TextMuted` | `#7C6F68` | 보조 표기 · 힌트 · 버전 |
 | `TextDim` | `#4A3F42` | 잠긴 항목 · 완료되어 꺼진 항목 |
-| `Accent` | `#8E2B2B` | **포인트** — 선택 테두리 · "장착 중" · 완료 체크 |
-| `AccentBright` | `#A83030` | **포인트(넓은 면적)** — 자아 게이지 채움 |
+| `Accent` | `#8E2B2B` | **포인트** — 선택 테두리 · 완료 체크처럼 면이나 획이 또렷한 곳 |
+| `AccentBright` | `#A83030` | **포인트(넓은 면적 · 글자)** — 자아 게이지 채움 · "장착 중"처럼 포인트 컬러로 적는 글자 (가는 획에서는 `Accent` 가 바탕에 묻혀 읽히지 않습니다) |
 
 **포인트 컬러는 `Accent` 계열 하나뿐입니다.** 금색 · 청록 · 보라 같은 두 번째 포인트를 추가하지 않습니다. 상태를 구분해야 할 때는 색을 늘리지 말고 **밝기 단계**(`TextHigh` → `TextBody` → `TextMuted` → `TextDim`)로 가릅니다. 스킬 강화 화면의 "좋아지는 수치 / 그대로인 수치"가 초록·보라였다가 밝기 차로 바뀐 것이 이 방식입니다.
 
