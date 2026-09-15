@@ -3,8 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-// 화면 좌측 상단에 상시 노출되는 인게임 플레이어 HUD. 지금은 자아 게이지(체력)만 그린다.
-// 기억 조각 카운터·스킬 슬롯은 이 뿌리 밑에 이어 붙이면 되도록 자리를 비워 두었다.
+// 화면 좌측 상단에 상시 노출되는 인게임 플레이어 HUD. 자아 게이지(체력) · 장착 스킬 3칸과 쿨타임 · 기억 조각 수를 그린다.
 //
 // 생김새는 전부 프리팹 Prefabs/UI/PlayerHud.prefab 에 있고 이 스크립트는 값 갱신만 한다.
 // 처음부터 다시 찍어내려면 에디터 메뉴 Tools ▸ FCC ▸ Build Player HUD Prefab.
@@ -20,6 +19,11 @@ public class PlayerHudView : MonoBehaviour {
     public Image delayedFillImage; // 깎인 양을 잠깐 남기며 뒤따라 줄어드는 잔상 바. 비워도 된다.
     public TMP_Text valueLabel;    // "72 / 100" 표기. 비워도 된다.
 
+    [Header("연결 — 스킬 · 기억 조각 (비워도 된다)")]
+    // 슬롯 0·1·2 순서. **배열 순서가 그대로 스킬 키 1 · 2 · 3 입니다.**
+    public HudSkillSlotView[] skillSlots;
+    public TMP_Text shardValueLabel; // 보유한 기억 조각 수.
+
     [Header("대상 — 비우면 Player 태그로 찾습니다")]
     // 특정 Health 를 강제하고 싶을 때만 채운다. 평소에는 비워 두면 씬의 플레이어를 자동으로 문다.
     public Health overrideTarget;
@@ -33,6 +37,9 @@ public class PlayerHudView : MonoBehaviour {
     #region 런타임 변수
 
     Health health;         // 실제로 값을 읽는 대상. 사망으로 파괴되면 다시 찾는다.
+    SkillManager skills;   // 장착 스킬과 쿨타임을 읽는 대상. 플레이어와 함께 찾는다.
+    Player_MemoryShardInventory shards;
+    int shownShards = -1;  // 마지막으로 적은 조각 수. 같으면 문자열을 다시 만들지 않는다.
     float delayedRatio = 1f;
     float drainTimer;
 
@@ -64,6 +71,8 @@ public class PlayerHudView : MonoBehaviour {
         fillImage.fillAmount = ratio;
         UpdateDelayed(ratio);
         UpdateLabel();
+        UpdateSkills();
+        UpdateShards();
     }
 
     #endregion
@@ -80,6 +89,13 @@ public class PlayerHudView : MonoBehaviour {
         if (health != null) health.OnDamaged -= HandleDamaged;
         health = found;
         if (health != null) health.OnDamaged += HandleDamaged;
+
+        // 스킬 · 조각은 체력과 같은 플레이어에 붙어 있다. 대상을 바꿀 때 함께 다시 문다.
+        skills = health != null ? health.GetComponentInParent<SkillManager>() : null;
+        if (skills == null && health != null) skills = health.GetComponentInChildren<SkillManager>();
+        shards = health != null ? health.GetComponentInParent<Player_MemoryShardInventory>() : null;
+        if (shards == null && health != null) shards = health.GetComponentInChildren<Player_MemoryShardInventory>();
+        shownShards = -1;
     }
 
     #endregion
@@ -125,6 +141,26 @@ public class PlayerHudView : MonoBehaviour {
     void UpdateLabel() {
         if (valueLabel == null || health == null) return;
         valueLabel.text = $"{Mathf.Max(0, health.CurrentHealth)} / {health.MaxHealth}";
+    }
+
+    // 장착은 거울 정비 · 스토리 해금으로만 바뀌지만, 이벤트를 구독하면 씬 전환 때마다 풀고 다시 걸어야 해서
+    // 매 프레임 슬롯 3개만 읽는다. HudSkillSlotView 가 바뀐 경우에만 다시 그리므로 비용은 거의 없다.
+    void UpdateSkills() {
+        if (skillSlots == null || skills == null) return;
+
+        for (int i = 0; i < skillSlots.Length; i++) {
+            if (skillSlots[i] == null) continue;
+            skillSlots[i].Set(skills.GetSkillInSlot(i));
+            skillSlots[i].Tick();
+        }
+    }
+
+    void UpdateShards() {
+        if (shardValueLabel == null || shards == null) return;
+        if (shards.Count == shownShards) return;
+
+        shownShards = shards.Count;
+        shardValueLabel.text = shownShards.ToString();
     }
 
     #endregion
