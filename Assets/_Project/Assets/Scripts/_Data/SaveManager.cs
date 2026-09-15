@@ -11,7 +11,8 @@ public class SaveManager : MonoBehaviour {
     #region 인스펙터 변수
 
     [Header("파일")]
-    public string fileName = "save.json"; // Application.persistentDataPath 아래에 저장된다.
+    public string fileName = "save.json"; // 01번 기록의 파일 이름. Application.persistentDataPath 아래에 저장된다.
+    public int slotCount = 3; // 기록 선택 화면에 보이는 자리 수. 02번부터는 save_2.json 처럼 번호가 붙는다.
 
     [Header("대상")]
     public string playerTag = "Player"; // 저장·복원할 플레이어를 찾을 태그. SaveManager는 씬을 넘어 살아남으므로 매번 새로 찾는다.
@@ -25,7 +26,13 @@ public class SaveManager : MonoBehaviour {
     #endregion
     #region 컴포넌트 변수
 
+    // 마지막으로 고른 기록 자리. 다음 실행의 [이어하기]가 이 자리를 연다.
+    // 세이브 파일 안이 아니라 PlayerPrefs 에 두는 이유: "어느 파일을 열지"를 파일을 열기 전에 알아야 하기 때문이다.
+    const string ActiveSlotKey = "FCC_ActiveSaveSlot";
+
     string savePath;
+
+    public int ActiveSlot { get; private set; } // 지금 저장·불러오기가 향하는 자리(0부터).
 
     public bool HasSave => !string.IsNullOrEmpty(savePath) && File.Exists(savePath);
 
@@ -43,7 +50,8 @@ public class SaveManager : MonoBehaviour {
             return;
         }
 
-        savePath = Path.Combine(Application.persistentDataPath, fileName);
+        ActiveSlot = Mathf.Clamp(PlayerPrefs.GetInt(ActiveSlotKey, 0), 0, Mathf.Max(0, slotCount - 1));
+        savePath = SlotPath(ActiveSlot);
     }
 
     #endregion
@@ -60,6 +68,58 @@ public class SaveManager : MonoBehaviour {
 
     public void DeleteSave() {
         if (HasSave) File.Delete(savePath);
+    }
+
+    #endregion
+    #region 기록 자리
+
+    // 01번은 예전 단일 세이브의 파일 이름을 그대로 쓴다. 여기에도 번호를 붙이면 기존 플레이어의 save.json 이
+    // 어느 자리에도 잡히지 않아 [이어하기]에서 사라진다. 02번부터는 화면에 보이는 번호를 파일 이름에 붙인다.
+    public string SlotPath(int slot) {
+        if (slot <= 0) return Path.Combine(Application.persistentDataPath, fileName);
+
+        string name = Path.GetFileNameWithoutExtension(fileName) + "_" + (slot + 1) + Path.GetExtension(fileName);
+        return Path.Combine(Application.persistentDataPath, name);
+    }
+
+    public bool HasSlot(int slot) {
+        return File.Exists(SlotPath(slot));
+    }
+
+    // 로비가 [이어하기]를 잠글지 정할 때 쓴다. 마지막 자리가 비어도 다른 자리에 기록이 있으면 불러올 수 있어야 한다.
+    public bool HasAnySlot() {
+        for (int i = 0; i < slotCount; i++) {
+            if (HasSlot(i)) return true;
+        }
+        return false;
+    }
+
+    // 기록 선택 화면이 자리마다 부른다. 파일 하나가 깨졌다고 화면 전체가 예외로 멈추면 안 되므로
+    // 읽지 못한 자리는 경고만 남기고 빈자리로 돌려준다 (JsonUtility 는 형식이 틀리면 예외를 던진다).
+    public SaveData ReadSlot(int slot) {
+        string path = SlotPath(slot);
+        if (!File.Exists(path)) return null;
+
+        try {
+            return JsonUtility.FromJson<SaveData>(File.ReadAllText(path));
+        } catch (Exception e) {
+            Debug.LogWarning($"[SaveManager] {slot + 1}번 기록을 읽지 못했습니다({path}) — {e.Message}", this);
+            return null;
+        }
+    }
+
+    public void DeleteSlot(int slot) {
+        string path = SlotPath(slot);
+        if (File.Exists(path)) File.Delete(path);
+    }
+
+    // 이후의 저장·불러오기(거울·이어하기)가 이 자리를 향하게 한다. 새로 시작할 자리를 골랐을 때 부른다.
+    public void UseSlot(int slot) {
+        ActiveSlot = Mathf.Clamp(slot, 0, Mathf.Max(0, slotCount - 1));
+        savePath = SlotPath(ActiveSlot);
+
+        PlayerPrefs.SetInt(ActiveSlotKey, ActiveSlot);
+        PlayerPrefs.Save(); // 곧바로 씬을 넘기므로 종료 시점의 자동 저장을 기다리지 않는다.
     }
 
     #endregion
