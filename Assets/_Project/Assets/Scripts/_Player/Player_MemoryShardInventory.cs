@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 // 플레이어가 보유한 기억 조각 수량. SaveManager가 이 값을 세이브 파일과 동기화한다.
 // 회복 소비·스킬 포인트 전환 등 후속 기능은 아직 없고, 지금은 보유 수량만 들고 있다.
@@ -7,6 +8,23 @@ public class Player_MemoryShardInventory : MonoBehaviour {
 
     [Header("기억 조각")]
     public int count; // 보유한 기억 조각 수.
+
+    [Header("개발용")]
+    // 에디터 · 개발 빌드에서만 동작한다(Player_move 의 F5/F9 퀵세이브와 같은 성격). 강화를 시험해 볼 조각을 바로 채운다.
+    public Key debugAddKey = Key.F6;
+    public int debugAddAmount = 10;
+
+    #endregion
+    #region 유니티 라이프 사이클
+
+    void Update() {
+        // 정식 빌드에서는 조각을 공짜로 얻는 길이 생기면 안 되므로 개발 빌드 여부부터 본다.
+        if (!Debug.isDebugBuild || debugAddKey == Key.None || Keyboard.current == null) return;
+        if (!Keyboard.current[debugAddKey].wasPressedThisFrame) return;
+
+        Add(debugAddAmount);
+        Debug.Log($"[MemoryShard] 개발용 단축키로 기억 조각 {debugAddAmount}개를 더했습니다. 보유 {count}");
+    }
 
     #endregion
     #region 조회

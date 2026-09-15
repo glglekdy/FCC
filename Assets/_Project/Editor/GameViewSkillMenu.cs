@@ -11,7 +11,7 @@ using UnityEngine.UIElements;
 // 같은 방식으로 구현했다 — PopupField를 GameView의 rootVisualElement에 직접 얹는다.
 //
 // 플레이 모드에서만 의미가 있으므로(SkillManager가 씬에 있어야 함) 플레이 모드 진입 시에만 붙이고 나가면 뗀다.
-// 슬롯(Q·W·E) 하나당 드롭다운 하나씩 세로로 쌓아 놓고, 고르면 그 자리에서 바로 장착된다.
+// 슬롯(1·2·3) 하나당 드롭다운 하나씩 세로로 쌓아 놓고, 고르면 그 자리에서 바로 장착된다.
 //
 // 목록은 프로젝트에 있는 SkillBase 에셋 전부를 훑는다. 아직 해금되지 않은 스킬도 테스트할 수 있어야 하므로
 // SkillManager.unlockedSkills에 없으면 고르는 순간 자동으로 해금 처리한다 — **테스트 전용 동작이며 실제
@@ -93,11 +93,14 @@ static class GameViewSkillMenu {
         return menu;
     }
 
+    // 슬롯 키는 이제 Input System 액션(Skill1~3)에서 나오므로 에디터가 키 코드를 직접 읽을 수 없다.
+    // 기본 바인딩이 숫자 1 · 2 · 3 이라 번호를 그대로 적고, 어떤 액션에 물려 있는지 괄호로 덧붙인다.
     static string SlotLabel(SkillManager skillManager, int slotIndex) {
-        if (skillManager.slotKeys != null && slotIndex < skillManager.slotKeys.Length) {
-            return skillManager.slotKeys[slotIndex].ToString();
-        }
-        return $"슬롯{slotIndex + 1}";
+        string action = skillManager.slotActionNames != null && slotIndex < skillManager.slotActionNames.Length
+            ? skillManager.slotActionNames[slotIndex]
+            : null;
+
+        return string.IsNullOrEmpty(action) ? $"슬롯{slotIndex + 1}" : $"{slotIndex + 1} ({action})";
     }
 
     static string FormatSkill(SkillBase skill) {

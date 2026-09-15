@@ -39,6 +39,7 @@ public class DialogueTriggerZone : MonoBehaviour {
     [Header("진행 중 처리")]
     public bool lockPlayerMovement = true; // 대사 중 이동 잠금 (Player_move.isMovementLocked 재사용).
     public string objectiveId; // 비어있지 않으면 대사가 끝날 때 해당 목표를 완료 처리.
+    public SkillBase unlockSkill; // 비어있지 않으면 대사가 끝날 때 이 스킬을 되찾는다(해금 알림 · 빈 슬롯 자동 장착).
 
     [Header("끝난 뒤")]
     // 대사가 전부 끝나면 검은 막으로 화면을 덮는다. ScreenFader 와 같은 함정이라
@@ -146,6 +147,8 @@ public class DialogueTriggerZone : MonoBehaviour {
         if (!string.IsNullOrEmpty(objectiveId) && ObjectiveManager.Instance != null) {
             ObjectiveManager.Instance.CompleteObjective(objectiveId);
         }
+
+        if (unlockSkill != null) SkillUnlocker.Unlock(unlockSkill);
     }
 
     #endregion

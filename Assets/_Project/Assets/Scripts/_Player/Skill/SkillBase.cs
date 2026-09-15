@@ -14,6 +14,7 @@ public abstract class SkillBase : ScriptableObject {
     // 세이브·장착 슬롯 복원에 쓰는 고유 id. **에셋마다 겹치지 않게 지으세요.** 비워두면 에셋 이름을 대신 쓴다.
     public string skillID;
     public string skillName = "이름 없는 스킬"; // 슬롯·목록 UI에 표시되는 이름.
+    public string roleLabel; // 정비 화면에서 이름 아래 붙는 한 줄. "칼잡이 · 투사체" 처럼 누구의 어떤 기술인지.
     [TextArea(2, 4)]
     public string description; // 정비 UI에서 보여줄 설명문.
     public Sprite icon; // 슬롯·목록 UI에 표시할 아이콘.

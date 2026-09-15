@@ -14,21 +14,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Skill_BrokenPhantasm
   skillID: broken_phantasm
   skillName: Broken Phantasm
+  roleLabel: "\uCE7C\uC7A1\uC774 \xB7 \uD22C\uC0AC\uCCB4"
   description: "\uCE7C\uC7A1\uC774\uC758 \uD22C\uC0AC\uCCB4 \uC2A4\uD0AC. \uC804\uBC29\uC73C\uB85C
     \uCE7C\uC744 \uBD80\uCC44\uAF34\uB85C \uB358\uC838 \uB9DE\uC740 \uB300\uC0C1\uC5D0\uAC8C
     \uD53C\uD574\uB97C \uC900\uB2E4."
   icon: {fileID: 0}
   cooldown: 2.5
+  startingLevel: 0
   lastUsedTime: -9999
+  runtimeLevel: 0
+  levels:
+  - damage: 30
+    range: 30
+    speed: 60
+    pierceCount: 1
+  - damage: 42
+    range: 50
+    speed: 72
+    pierceCount: 1
+  - damage: 60
+    range: 50
+    speed: 84
+    pierceCount: 2
   projectilePrefab: {fileID: 2048856885348808225, guid: 6484bee7af784364db9ebf2b7d3c6ee6, type: 3}
   targetLayer:
     serializedVersion: 2
     m_Bits: 256
-  projectileSpeed: 60
   projectileLifetime: 0.5
-  pierceCount: 1
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 2147483648
   knifeCount: 1
   spreadAngle: 15
-  damage: 15
   forwardOffset: 0.6
   heightOffset: 0.5
+  aimLineColor: {r: 1, g: 1, b: 1, a: 0.5}
+  aimLineWidth: 0.05

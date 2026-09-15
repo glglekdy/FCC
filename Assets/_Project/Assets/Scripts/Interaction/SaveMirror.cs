@@ -104,7 +104,17 @@ public class SaveMirror : MonoBehaviour, IInteractable {
         if (SkillLoadoutView.Instance == null) return; // 아직 정비 화면을 씬에 올리지 않았으면 저장만 하고 끝낸다.
 
         // PlayerInteractor가 플레이어 루트가 아닌 자식에 붙어 있어도 찾아지도록 GetComponentInParent를 쓴다.
-        SkillLoadoutView.Instance.Open(interactor.GetComponentInParent<SkillManager>());
+        SkillLoadoutView.Instance.Open(interactor.GetComponentInParent<SkillManager>(), SaveAfterLoadout);
+    }
+
+    // 정비 창은 저장이 끝난 뒤에 열리므로, 창에서 바꾼 장착 · 강화는 방금 저장에 들어가지 않았다.
+    // 닫을 때 같은 거울 · 같은 복귀 지점으로 한 번 더 기록해 두면, 다음 거울까지 가기 전에 게임을 꺼도 정비가 남는다.
+    // 회복 · 목표 · 연출은 이미 처리했으므로 저장만 다시 한다.
+    void SaveAfterLoadout() {
+        if (SaveManager.Instance == null) return;
+
+        Vector2 respawnPosition = respawnPoint != null ? respawnPoint.position : transform.position;
+        SaveManager.Instance.SaveGame(mirrorId, respawnPosition);
     }
 
     #endregion

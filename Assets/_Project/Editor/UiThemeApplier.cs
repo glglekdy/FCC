@@ -44,6 +44,8 @@ public static class UiThemeApplier {
         touched += Apply("ObjectiveItemRow", font, flat, ObjectiveItemRow);
         touched += Apply("AreaTitle", font, flat, AreaTitle);
         touched += Apply("Settingpanel", font, flat, Settingpanel);
+        touched += Apply("SaveSlotSelect", font, flat, SaveSlotSelect);
+        touched += Apply("SaveSlotRow", font, flat, SaveSlotRow);
 
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
@@ -56,29 +58,21 @@ public static class UiThemeApplier {
     #endregion
     #region 프리팹별 적용표
 
+    // Figma MainLobby_new 기준. 옛 안의 로고 틀 · 줄 테두리(Frame) · 구분선(Underline) · 보조 표기(Suffix) ·
+    // 커튼(열리는 연출과 함께 지웠다)은 새 안에 없다. 표에 남겨두면 찾지 못했다는 경고만 쌓인다.
     static void MainLobby(GameObject root) {
         Img(root, "Screen", UiTheme.Stage); // 알파가 0이라 카메라의 기본 청회색이 그대로 비쳤다.
 
-        ImgTree(root, "LogoFrame/Border", UiTheme.Line);
-        Txt(root, "LogoText", UiTheme.TextMuted); // 검정으로 손보여 있어 어두운 무대에서 보이지 않았다.
+        Txt(root, "Title", UiTheme.TextHigh); // Figma 는 #DED6C7 이지만 토큰에 없는 값이라 가장 가까운 TextHigh 로 맞춘다.
         Txt(root, "Subtitle", UiTheme.TextMuted);
-
-        ImgTree(root, "Frame", UiTheme.Accent); // 골라진 줄을 감싸는 굵은 테두리. 이 화면에서 포인트 컬러가 쓰이는 자리다.
-        Img(root, "Underline", UiTheme.Line);
         Txt(root, "Label", UiTheme.TextBody);
-        Txt(root, "Suffix", UiTheme.TextMuted);
 
         Txt(root, "Version", UiTheme.TextMuted);
         Txt(root, "Hint", UiTheme.TextMuted);
 
-        // 커튼은 자기 자신만 칠한다. 트리로 칠하면 안쪽 모서리 선(Edge)까지 벨벳색으로 덮인다.
-        Img(root, "CurtainLeft", UiTheme.Curtain);
-        Img(root, "CurtainRight", UiTheme.Curtain);
-        Img(root, "Edge", UiTheme.Line);
-
         foreach (MainLobbyItemView item in root.GetComponentsInChildren<MainLobbyItemView>(true)) {
             item.normalBackground = UiTheme.Transparent;
-            item.selectedBackground = UiTheme.With(UiTheme.PanelRaised, 0.92f);
+            item.selectedBackground = UiTheme.Transparent; // 새 안은 면을 칠하지 않고 글자 밝기만으로 고른 줄을 보여준다.
             item.labelColor = UiTheme.TextBody;
             item.selectedLabelColor = UiTheme.TextHigh;
             item.suffixColor = UiTheme.TextMuted;
@@ -91,56 +85,102 @@ public static class UiThemeApplier {
         Img(root, "DelayedFill", UiTheme.With(UiTheme.TextBody, 0.65f)); // 방금 깎인 만큼 뒤늦게 줄어드는 잔상.
         Img(root, "Fill", UiTheme.AccentBright); // 자아 게이지. 면적이 넓어 Accent 보다 한 단계 밝은 쪽을 쓴다.
         Txt(root, "Value", UiTheme.TextHigh);
+
+        // 스킬 칸 3개는 속이 같은 구조라 이름이 겹친다. 경로 끝으로 찾으므로 한 줄이 세 칸을 모두 칠한다.
+        Img(root, "SkillSlot0", UiTheme.Panel);
+        Img(root, "SkillSlot1", UiTheme.Panel);
+        Img(root, "SkillSlot2", UiTheme.Panel);
+        ImgTree(root, "Border", UiTheme.Line);
+        Txt(root, "Key", UiTheme.TextMuted);
+        Txt(root, "Monogram", UiTheme.TextHigh);
+        Img(root, "Cooldown", UiTheme.With(UiTheme.Stage, 0.82f)); // 쿨타임 동안 칸을 덮는 막. 아래 글자가 비쳐야 해서 완전히 불투명하지는 않다.
+        Txt(root, "CooldownText", UiTheme.TextHigh);
+
+        Txt(root, "Shard_Label", UiTheme.TextMuted);
+        Txt(root, "Shard_Value", UiTheme.TextHigh);
+
+        foreach (HudSkillSlotView slot in root.GetComponentsInChildren<HudSkillSlotView>(true)) {
+            slot.monogramColor = UiTheme.TextHigh;
+            slot.emptyColor = UiTheme.TextDim;
+        }
     }
 
+    // 두 열 구조(왼쪽 장착 슬롯 · 보유 스킬 / 오른쪽 상세 · 강화)로 다시 지은 뒤의 적용표다.
+    // 옛 표에 있던 ListTitle · Description · UpgradeButton 같은 이름은 프리팹에서 사라져 함께 지웠다.
     static void SkillLoadout(GameObject root) {
         Img(root, "Dim", UiTheme.Dim);
-        Img(root, "Window", UiTheme.With(UiTheme.Panel, 0.98f));
-        Txt(root, "Title", UiTheme.TextHigh); // 금색이었다. 포인트 컬러를 둘로 늘리지 않으려고 상아로 내렸다.
+        Img(root, "Window", UiTheme.Panel);
 
+        // 창 · 슬롯 · 되돌리기 버튼의 테두리가 모두 "Border" 라 한 줄로 함께 칠한다.
+        ImgTree(root, "Border", UiTheme.Line);
+        ImgTree(root, "FocusBorder", UiTheme.Accent); // 지금 고른 슬롯에만 켜지는 테두리.
+
+        Txt(root, "Header/Title", UiTheme.TextHigh); // 금색이었다. 포인트 컬러를 둘로 늘리지 않으려고 상아로 내렸다.
+        Txt(root, "Header/ShardLabel", UiTheme.TextMuted);
+        Txt(root, "Header/ShardCount", UiTheme.TextHigh);
+        Img(root, "Header/Divider", UiTheme.Line);
+
+        Txt(root, "SlotsCaption", UiTheme.TextMuted);
+        Txt(root, "ListCaption", UiTheme.TextMuted);
         Img(root, "Slot0", UiTheme.PanelRaised);
         Img(root, "Slot1", UiTheme.PanelRaised);
         Img(root, "Slot2", UiTheme.PanelRaised);
         Txt(root, "SlotLabel", UiTheme.TextMuted);
         Txt(root, "SkillLabel", UiTheme.TextHigh);
+        Img(root, "ColumnDivider", UiTheme.Line);
 
-        Txt(root, "ListTitle", UiTheme.TextMuted);
-        Txt(root, "Description", UiTheme.TextBody);
+        Txt(root, "Detail/Name", UiTheme.TextHigh);
+        Txt(root, "Detail/Role", UiTheme.TextMuted);
+        Txt(root, "Detail/Description", UiTheme.TextBody);
+        Txt(root, "Detail/EquipStatus", UiTheme.TextMuted);
+
+        Txt(root, "LevelLabel", UiTheme.TextMuted); // 슬롯 칸과 레벨 줄 양쪽에 있는 이름인데 둘 다 보조 표기라 한 줄로 칠한다.
+        Txt(root, "StatsHeader", UiTheme.TextMuted);
+        Img(root, "StatsDivider", UiTheme.Line);
+        Txt(root, "Stats", UiTheme.TextBody);
+        Img(root, "ActionDivider", UiTheme.Line);
+        Txt(root, "Cost", UiTheme.TextHigh);
+
+        Img(root, "Btn_Upgrade", UiTheme.Accent); // 조각을 쓰는 버튼 하나만 면을 칠한다.
+        Txt(root, "Btn_Upgrade/Label", UiTheme.TextHigh);
+        Img(root, "Btn_Refund", UiTheme.Panel);
+        Txt(root, "Btn_Refund/Label", UiTheme.TextBody);
+
+        Img(root, "FooterDivider", UiTheme.Line);
         Txt(root, "Help", UiTheme.TextMuted);
 
-        // 강화 패널은 빌더에만 있고 지금 프리팹에는 아직 없다(빌더를 다시 돌리지 않았다).
-        // 나중에 생겼을 때 색이 어긋나지 않도록 미리 적어두되, 없다고 경고하지는 않는다.
-        Txt(root, "LevelLabel", UiTheme.Accent, false);
-        Txt(root, "StatsLabel", UiTheme.TextHigh, false);
-        Txt(root, "CostLabel", UiTheme.Accent, false);
-        Img(root, "UpgradeButton", UiTheme.Accent, false);
-        Img(root, "RefundButton", UiTheme.PanelRaised, false);
-
         foreach (SkillSlotView slot in root.GetComponentsInChildren<SkillSlotView>(true)) {
-            slot.normalColor = UiTheme.PanelRaised;
-            slot.selectedColor = UiTheme.Accent;
             slot.skillTextColor = UiTheme.TextHigh;
-            slot.emptyTextColor = UiTheme.TextMuted;
+            slot.emptyTextColor = UiTheme.TextDim; // "비어 있음"은 잠긴 항목과 같은 밝기로 낮춘다.
         }
 
         foreach (SkillLoadoutView view in root.GetComponentsInChildren<SkillLoadoutView>(true)) {
             // 좋아지는 수치와 그대로인 수치를 초록/보라로 갈랐었다. 색을 늘리는 대신 밝기 차로 구분한다.
             view.statImprovedColor = UiTheme.TextHigh;
             view.statSameColor = UiTheme.TextDim;
+            view.pipOnColor = UiTheme.AccentBright;
+            view.pipOffColor = UiTheme.PanelRaised;
+            view.mutedTextColor = UiTheme.TextMuted;
         }
     }
 
     static void SkillLoadoutRow(GameObject root) {
-        Img(root, "SkillLoadoutRow", UiTheme.PanelRaised);
-        Txt(root, "Name", UiTheme.TextHigh);
+        // 줄 바탕은 커서가 올라온 줄에만 칠해진다. **투명이어도 raycastTarget 은 켜져 있어야 마우스를 받습니다.**
+        Img(root, "SkillLoadoutRow", UiTheme.Transparent);
+        Img(root, "FocusMarker", UiTheme.Accent);
+        Txt(root, "Name", UiTheme.TextBody);
         Txt(root, "State", UiTheme.TextMuted);
 
         foreach (SkillRowView row in root.GetComponentsInChildren<SkillRowView>(true)) {
-            row.normalColor = UiTheme.PanelRaised;
-            row.highlightColor = UiTheme.Line; // 커서가 올라간 줄. 면으로 쓰기엔 Accent 가 세서 경계선 색을 면으로 돌려 쓴다.
-            row.nameColor = UiTheme.TextHigh;
-            row.equippedColor = UiTheme.Accent; // 이 줄에서 포인트 컬러를 쓰는 곳은 "장착 중" 하나뿐이다.
-            row.cooldownColor = UiTheme.TextMuted;
+            row.normalColor = UiTheme.Transparent;
+            row.highlightColor = UiTheme.PanelRaised;
+            row.nameColor = UiTheme.TextBody;
+            row.highlightNameColor = UiTheme.TextHigh;
+            row.stateColor = UiTheme.TextMuted;
+            // 글자에 쓰는 포인트 컬러. 가는 획에서는 Accent 가 바탕에 거의 묻혀서 한 단계 밝은 쪽을 쓴다
+            // (기억 선택 화면의 「삭제」 글자와 같은 이유).
+            row.equippedColor = UiTheme.AccentBright;
+            row.lockedColor = UiTheme.TextDim;
         }
     }
 
@@ -170,6 +210,79 @@ public static class UiThemeApplier {
     static void Settingpanel(GameObject root) {
         Img(root, "Settingpanel", UiTheme.With(UiTheme.Panel, 0.96f)); // 흰색 39% 반투명이라 유리판처럼 보였다.
         Txt(root, "Text (TMP)", UiTheme.TextHigh);
+    }
+
+    static void SaveSlotSelect(GameObject root) {
+        Img(root, "Screen", UiTheme.Stage);
+        Img(root, "Curtain_L", UiTheme.Curtain);
+        Img(root, "Curtain_R", UiTheme.Curtain);
+
+        Txt(root, "Header/Title", UiTheme.TextHigh);
+        Txt(root, "Header/Subtitle", UiTheme.TextMuted);
+        Img(root, "Header/Divider", UiTheme.Line);
+
+        Img(root, "Footer/Divider", UiTheme.Line);
+        Txt(root, "Footer/Hint", UiTheme.TextMuted);
+        Img(root, "Btn_Back", UiTheme.Panel);
+        ImgTree(root, "Btn_Back/Border", UiTheme.Line);
+        Txt(root, "Btn_Back/Label", UiTheme.TextBody);
+
+        Img(root, "ConfirmDim", UiTheme.Dim);
+        Img(root, "ConfirmWindow", UiTheme.Panel);
+        ImgTree(root, "ConfirmWindow/Border", UiTheme.Line);
+        Txt(root, "ConfirmWindow/Title", UiTheme.TextHigh);
+        Txt(root, "ConfirmWindow/Summary", UiTheme.TextMuted);
+        Txt(root, "ConfirmWindow/Warning", UiTheme.TextBody);
+        Img(root, "ConfirmWindow/Divider", UiTheme.Line);
+        ImgTree(root, "Btn_Cancel/Border", UiTheme.Line);
+        ImgTree(root, "Btn_Accept/Border", UiTheme.Line);
+        ImgTree(root, "Btn_Cancel/FocusBorder", UiTheme.Accent);
+        ImgTree(root, "Btn_Accept/FocusBorder", UiTheme.Accent);
+
+        // 확인 창 버튼의 면과 글자는 포커스에 따라 뷰가 칠한다. 프리팹 색이 아니라 뷰의 색 필드를 맞춰야 실행 중에 따라온다.
+        foreach (SaveSlotSelectView view in root.GetComponentsInChildren<SaveSlotSelectView>(true)) {
+            view.buttonColor = UiTheme.Panel;
+            view.focusedButtonColor = UiTheme.PanelRaised;
+            view.cancelLabelColor = UiTheme.TextBody;
+            view.focusedCancelLabelColor = UiTheme.TextHigh;
+            view.dangerLabelColor = UiTheme.AccentBright; // 되돌릴 수 없는 버튼. 면이 아니라 글자에만 포인트 컬러를 쓴다.
+        }
+    }
+
+    static void SaveSlotRow(GameObject root) {
+        Img(root, "SaveSlotRow", UiTheme.Panel);
+        ImgTree(root, "Border", UiTheme.Line); // 줄 테두리와 장착 스킬 칸 테두리가 같은 이름이라 한 줄로 함께 칠한다.
+        ImgTree(root, "FocusBorder", UiTheme.Accent);
+        Txt(root, "Number", UiTheme.TextMuted);
+        Img(root, "VDivider", UiTheme.Line);
+
+        Txt(root, "Filled/Region", UiTheme.TextHigh);
+        Txt(root, "Filled/Checkpoint", UiTheme.TextMuted);
+        Txt(root, "Filled/Ego_Label", UiTheme.TextMuted);
+        Img(root, "Filled/Ego_Track", UiTheme.TextDim);
+        Img(root, "Ego_Fill", UiTheme.AccentBright); // 자아 게이지. HUD 와 같은 색이어야 같은 값으로 읽힌다.
+        Txt(root, "Filled/Ego_Value", UiTheme.TextBody);
+        Txt(root, "Filled/Shard_Label", UiTheme.TextMuted);
+        Txt(root, "Filled/Shard_Value", UiTheme.TextBody);
+        Txt(root, "Filled/Skills_Label", UiTheme.TextMuted);
+        Img(root, "Skill_0", UiTheme.PanelRaised);
+        Img(root, "Skill_1", UiTheme.PanelRaised);
+        Img(root, "Skill_2", UiTheme.PanelRaised);
+        Txt(root, "Filled/SavedAt", UiTheme.TextMuted);
+
+        Txt(root, "Empty/Title", UiTheme.TextBody);
+        Txt(root, "Empty/Sub", UiTheme.TextMuted);
+        Img(root, "Btn_Create", UiTheme.Accent);
+        Txt(root, "Btn_Create/Label", UiTheme.TextHigh);
+
+        foreach (SaveSlotRowView row in root.GetComponentsInChildren<SaveSlotRowView>(true)) {
+            row.normalColor = UiTheme.Panel;
+            row.focusedColor = UiTheme.PanelRaised;
+            row.numberColor = UiTheme.TextMuted;
+            row.focusedNumberColor = UiTheme.TextHigh;
+            row.skillFilledColor = UiTheme.PanelRaised;
+            row.skillEmptyColor = UiTheme.Panel;
+        }
     }
 
     #endregion

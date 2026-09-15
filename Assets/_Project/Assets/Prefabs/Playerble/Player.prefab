@@ -205,7 +205,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.14, y: 0.14, z: 0.14}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 36192822004090676}
@@ -316,6 +316,10 @@ MonoBehaviour:
   - {fileID: -1879760664134576416, guid: 81a52d458b7c39a47b4cd10a01f8eebd, type: 3}
   - {fileID: -3983143353720398026, guid: 81a52d458b7c39a47b4cd10a01f8eebd, type: 3}
   attackFrameRate: 16
+  logStateChanges: 0
+  debugState: 
+  debugGrounded: 0
+  debugVerticalVelocity: 0
 --- !u!1 &6540972368390760520
 GameObject:
   m_ObjectHideFlags: 0
@@ -582,6 +586,9 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 2147483648
+  debugGrounded: 0
+  debugGroundHits: 0
+  debugGroundReason: 
   coyoteDuration: 0.15
   coyoteCounter: 0
   jumpBufferDuration: 0.15
@@ -731,16 +738,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SkillManager
   unlockedSkills:
   - {fileID: 11400000, guid: 7267f24ee051bd64fac54df058e10596, type: 2}
-  allSkills: []
+  allSkills:
+  - {fileID: 11400000, guid: 7267f24ee051bd64fac54df058e10596, type: 2}
+  - {fileID: 11400000, guid: 27f10c585109ba746a85b164113fa2ee, type: 2}
+  - {fileID: 11400000, guid: c196a40f292b3c941bbb5c25cf356802, type: 2}
+  - {fileID: 11400000, guid: ca9191503b44ce8438c91180dd2a5b76, type: 2}
   equippedSkills:
   - {fileID: 11400000, guid: 7267f24ee051bd64fac54df058e10596, type: 2}
   - {fileID: 0}
   - {fileID: 0}
-  slotKeys: 1f0000002500000013000000
+  slotActionNames:
+  - Skill1
+  - Skill2
+  - Skill3
   upgradePercents:
   - 0.1
   - 0.2
   upgradeMinimums: 0300000005000000
+  autoEquipOnUnlock: 1
+  announceUnlock: 1
+  unlockAnnounceSubtitle: "\uB418\uCC3E\uC740 \uAE30\uC5B5"
   logCooldown: 1
 --- !u!114 &905950734729212233
 MonoBehaviour:

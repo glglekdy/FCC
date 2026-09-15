@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Controls;
 
 // 해금된 스킬 중 최대 3개를 슬롯에 장착하고, 입력에 맞춰 발동시킨다.
 // 기획서상 장착 수는 3개 고정이고 교체는 거울(정비하기)에서 한다.
@@ -31,9 +30,10 @@ public class SkillManager : MonoBehaviour {
     public SkillBase[] equippedSkills = new SkillBase[SlotCount];
 
     [Header("입력")]
-    // 슬롯 0·1·2를 발동시킬 키. Client.inputactions에 아직 스킬 액션이 없어 키보드를 직접 읽는다.
-    // **Skill1~3 액션이 생기면 이 배열 대신 InputActionReference로 갈아끼우세요.**
-    public Key[] slotKeys = { Key.Q, Key.W, Key.E };
+    // 슬롯 0·1·2를 발동시킬 입력 액션 이름. 플레이어의 PlayerInput(Client.inputactions ▸ Player)에서 찾는다.
+    // 키보드 1 · 2 · 3 / 패드 LB · RB · RT 에 묶여 있다. 예전에는 Q · W · E 를 직접 읽었는데, 3번이 상호작용(E)과
+    // 겹쳐 거울 앞에서 스킬이 같이 나갔다. 액션으로 옮겨 두면 설정창의 키 재지정도 이 값을 그대로 따라온다.
+    public string[] slotActionNames = { "Skill1", "Skill2", "Skill3" };
 
     [Header("강화 비용")]
     // 강화 비용 = max(하한, 그때 보유한 조각 × 비율). 인덱스 = 강화 단계(0: Lv0→1, 1: Lv1→2).
@@ -43,6 +43,12 @@ public class SkillManager : MonoBehaviour {
     // 단계별 하한을 함께 둔다. 초반(가난할 때)에는 하한이, 후반에는 비율이 값을 정한다.
     public float[] upgradePercents = { 0.10f, 0.20f };
     public int[] upgradeMinimums = { 3, 5 };
+
+    [Header("해금")]
+    // 스토리에서 새 스킬을 되찾았을 때(UnlockFromStory)만 쓰인다. 세이브 복원·시작 장착은 조용히 해금한다.
+    public bool autoEquipOnUnlock = true; // 빈 슬롯이 있으면 바로 끼운다. 거울까지 가기 전에 써 봐야 보상으로 느껴진다.
+    public bool announceUnlock = true; // 화면 위에 스킬 이름을 띄운다 (AreaTitleView).
+    public string unlockAnnounceSubtitle = "되찾은 기억"; // 알림에서 스킬 이름 아래 붙는 문구.
 
     [Header("디버그")]
     public bool logCooldown = true; // 쿨타임 중에 눌렀을 때 남은 시간을 콘솔에 찍는다. 감각 조정용이라 빌드에선 꺼도 된다.
@@ -59,11 +65,17 @@ public class SkillManager : MonoBehaviour {
     // (스킬, 바뀐 레벨) — 강화·환불·세이브 복원으로 레벨이 달라졌을 때. 정비 UI가 구독해 수치를 다시 그린다.
     public event Action<SkillBase, int> onSkillLeveled;
 
+    // 스토리에서 새 스킬을 되찾았을 때. 세이브 복원처럼 조용히 늘어난 경우에는 오지 않는다.
+    public event Action<SkillBase> onSkillUnlocked;
+
     #endregion
     #region 컴포넌트 변수
 
     Player_move playerMove; // 대사·컷씬 중에는 스킬도 막아야 해서 이동 잠금 상태를 본다.
     Player_MemoryShardInventory shards; // 강화 비용을 내고 환불을 돌려받는 지갑.
+    PlayerInput playerInput; // 슬롯 입력 액션을 꺼내 올 곳. PlayerInput 이 쓰는 바로 그 액션이라 켜고 끄는 상태가 맞는다.
+    readonly InputAction[] slotActions = new InputAction[SlotCount];
+    bool warnedMissingActions; // 액션을 못 찾았다는 경고를 한 번만 찍는다.
 
     // 스킬 id → 지금 레벨. 스킬 에셋(SkillBase.runtimeLevel)에도 같은 값을 넣어주지만, 진짜 소유자는 여기다.
     // 에셋에만 두면 여러 세이브 슬롯·새 게임 사이에 값이 새어 나간다.
@@ -83,6 +95,7 @@ public class SkillManager : MonoBehaviour {
     void Awake() {
         playerMove = GetComponentInParent<Player_move>();
         shards = GetComponentInParent<Player_MemoryShardInventory>();
+        playerInput = GetComponentInParent<PlayerInput>();
 
         // 인스펙터에서 배열 크기를 잘못 건드려도 슬롯 수가 어긋나지 않게 맞춰 둔다.
         if (equippedSkills == null || equippedSkills.Length != SlotCount) {
@@ -104,7 +117,7 @@ public class SkillManager : MonoBehaviour {
     }
 
     void Update() {
-        if (Keyboard.current == null) return; // 패드만 연결된 상황 등.
+        if (!ResolveSlotActions()) return;
 
         if (IsInputBlocked()) {
             CancelAllAiming(); // 조준 도중 대사·컷씬이 끼어들면 조준선이 화면에 남지 않도록 정리한다.
@@ -124,26 +137,50 @@ public class SkillManager : MonoBehaviour {
         return playerMove != null && playerMove.isMovementLocked;
     }
 
-    void HandleSlotInput(int slotIndex) {
-        if (slotKeys == null || slotIndex >= slotKeys.Length) return;
+    // PlayerInput 은 자기 Awake/OnEnable 에서 액션을 준비하므로, 순서가 어긋나도 되도록 처음 쓸 때 찾는다.
+    bool ResolveSlotActions() {
+        if (slotActions[0] != null) return true;
+        if (playerInput == null || playerInput.actions == null) {
+            WarnMissingActions("플레이어에 PlayerInput 이 없습니다");
+            return false;
+        }
 
-        Key key = slotKeys[slotIndex];
-        if (key == Key.None) return; // Keyboard.current[Key.None]은 예외를 던진다.
+        for (int i = 0; i < SlotCount; i++) {
+            string actionName = slotActionNames != null && i < slotActionNames.Length ? slotActionNames[i] : null;
+            slotActions[i] = string.IsNullOrEmpty(actionName) ? null : playerInput.actions.FindAction(actionName);
+        }
+
+        if (slotActions[0] == null) {
+            WarnMissingActions($"입력 액션 '{(slotActionNames != null && slotActionNames.Length > 0 ? slotActionNames[0] : "")}' 을 찾지 못했습니다");
+            return false;
+        }
+        return true;
+    }
+
+    void WarnMissingActions(string reason) {
+        if (warnedMissingActions) return;
+        warnedMissingActions = true;
+        Debug.LogError($"[SkillManager] {reason}. Client.inputactions ▸ Player 에 Skill1~3 액션이 있어야 스킬을 쓸 수 있습니다.", this);
+    }
+
+    void HandleSlotInput(int slotIndex) {
+        InputAction action = slotActions[slotIndex];
+        if (action == null) return;
 
         SkillBase skill = equippedSkills[slotIndex];
         if (skill == null) return;
 
         // 조준형 스킬(IAimableSkill)은 누름·유지·뗌을 전부 스킬에 넘겨준다. 아니면 기존처럼 누르는 즉시 발동.
         if (skill is IAimableSkill aimable) {
-            HandleAimableInput(slotIndex, skill, aimable, Keyboard.current[key]);
+            HandleAimableInput(slotIndex, skill, aimable, action);
         }
-        else if (Keyboard.current[key].wasPressedThisFrame) {
+        else if (action.WasPressedThisFrame()) {
             UseSkillInSlot(slotIndex);
         }
     }
 
-    void HandleAimableInput(int slotIndex, SkillBase skill, IAimableSkill aimable, ButtonControl control) {
-        if (control.wasPressedThisFrame) {
+    void HandleAimableInput(int slotIndex, SkillBase skill, IAimableSkill aimable, InputAction action) {
+        if (action.WasPressedThisFrame()) {
             if (!skill.IsReady()) {
                 if (logCooldown) {
                     Debug.Log($"[SkillManager] '{skill.DisplayName}' 쿨타임 — 남은 시간 {skill.GetRemainingCooldown():F1}초");
@@ -158,7 +195,7 @@ public class SkillManager : MonoBehaviour {
 
         if (!isAimingSlot[slotIndex]) return; // 쿨타임 중이라 조준을 시작하지 못했던 경우 등.
 
-        if (control.wasReleasedThisFrame) {
+        if (action.WasReleasedThisFrame()) {
             isAimingSlot[slotIndex] = false;
 
             // ReleaseAim이 항상 발동으로 이어지는 건 아니다 — Invisible Reality처럼 좌클릭으로 이미 설치를
@@ -168,7 +205,7 @@ public class SkillManager : MonoBehaviour {
             aimable.ReleaseAim(transform, GetMouseWorldPosition());
             if (skill.lastUsedTime != beforeUse) onSkillUsed?.Invoke(slotIndex, skill);
         }
-        else if (control.isPressed) {
+        else if (action.IsPressed()) {
             aimable.UpdateAim(transform, GetMouseWorldPosition());
         }
     }
@@ -230,11 +267,36 @@ public class SkillManager : MonoBehaviour {
         return EquipSkill(slotIndex, null);
     }
 
-    // 기억 조각으로 새 스킬을 얻었을 때 호출. 이미 있으면 아무 일도 하지 않는다.
+    // 해금 목록에 조용히 넣는다. 시작 장착·세이브 복원처럼 "원래 가지고 있던" 경우에 쓴다. 이미 있으면 false.
+    // 스토리에서 새로 되찾는 순간에는 알림·자동 장착이 붙는 UnlockFromStory 를 쓴다.
     public bool UnlockSkill(SkillBase skill) {
         if (skill == null || unlockedSkills.Contains(skill)) return false;
 
         unlockedSkills.Add(skill);
+        return true;
+    }
+
+    // 스토리 진행으로 새 스킬을 되찾았을 때. 해금 + 빈 슬롯 자동 장착 + 화면 알림.
+    // 이미 가진 스킬이면 아무것도 하지 않는다 — 불러오기 뒤 같은 컷씬을 다시 봐도 알림이 반복되지 않게 하기 위함이다.
+    // 씬에서는 SkillUnlockZone · SkillUnlockStep · DialogueTriggerZone.unlockSkill 이 SkillUnlocker 를 거쳐 부른다.
+    public bool UnlockFromStory(SkillBase skill) {
+        if (!UnlockSkill(skill)) return false;
+
+        // 새로 합류한 스킬의 레벨을 시작값으로 맞춘다. 인스펙터의 allSkills 에 없던 스킬이면 아직 레벨이 심어지지 않았다.
+        if (!skillLevels.ContainsKey(skill.SkillId)) SetLevelInternal(skill, skill.startingLevel, notify: false);
+
+        if (autoEquipOnUnlock) {
+            for (int i = 0; i < SlotCount; i++) {
+                if (equippedSkills[i] != null) continue;
+                EquipSkill(i, skill);
+                break;
+            }
+        }
+
+        // 파괴된 뒤에도 C# 참조가 남을 수 있어 ?. 대신 != null 로 Unity의 == 오버로드를 탄다.
+        if (announceUnlock && AreaTitleView.Instance != null) AreaTitleView.Announce(skill.DisplayName, unlockAnnounceSubtitle);
+
+        onSkillUnlocked?.Invoke(skill);
         return true;
     }
 
@@ -274,6 +336,9 @@ public class SkillManager : MonoBehaviour {
             SetLevelInternal(skill, skill.startingLevel, notify: false);
         }
     }
+
+    // 게임에 있는 모든 스킬(해금 여부와 무관). 정비 화면이 아직 못 배운 스킬을 이름을 가린 줄로 보여줄 때 쓴다.
+    public IEnumerable<SkillBase> KnownSkills => EnumerateKnownSkills();
 
     // 이 매니저가 아는 모든 스킬. allSkills에 넣는 것을 깜빡해도 해금·장착 목록에 있으면 함께 챙긴다.
     IEnumerable<SkillBase> EnumerateKnownSkills() {
