@@ -13,6 +13,11 @@ public class Health : MonoBehaviour
     // 몬스터에 무적을 주면 공격 쿨타임보다 길어져 때려도 반응이 없는 것처럼 보인다.
     public float invincibleTime = 0f;
 
+    [Header("처형")]
+    // 체력 비율로 즉사시키는 기술(곡예사의 Close Call)을 받지 않는다. **보스·정예 몬스터는 켜세요.**
+    // 구속과 피해는 그대로 받는다 — 막는 것은 "남은 체력과 무관하게 한 번에 끝내는 것"뿐이다.
+    public bool executionImmune = false;
+
     #endregion
     #region 이벤트
 

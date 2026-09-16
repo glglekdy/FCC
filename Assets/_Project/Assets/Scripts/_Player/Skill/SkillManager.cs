@@ -31,8 +31,8 @@ public class SkillManager : MonoBehaviour {
 
     [Header("입력")]
     // 슬롯 0·1·2를 발동시킬 입력 액션 이름. 플레이어의 PlayerInput(Client.inputactions ▸ Player)에서 찾는다.
-    // 키보드 1 · 2 · 3 / 패드 LB · RB · RT 에 묶여 있다. 예전에는 Q · W · E 를 직접 읽었는데, 3번이 상호작용(E)과
-    // 겹쳐 거울 앞에서 스킬이 같이 나갔다. 액션으로 옮겨 두면 설정창의 키 재지정도 이 값을 그대로 따라온다.
+    // 키보드 Q · W · E / 패드 LB · RB · RT 에 묶여 있다. 예전에는 Q · W · E 를 직접 읽었는데, 3번이 상호작용(당시 E)과
+    // 겹쳐 거울 앞에서 스킬이 같이 나갔다. 그래서 상호작용은 F 로 옮겼다. 액션으로 두면 설정창의 키 재지정도 이 값을 그대로 따라온다.
     public string[] slotActionNames = { "Skill1", "Skill2", "Skill3" };
 
     [Header("강화 비용")]
@@ -133,8 +133,12 @@ public class SkillManager : MonoBehaviour {
     #region 입력 처리
 
     // 대사·컷씬 중에는 스킬을 막는다. PlayerInteractor가 상호작용을 막는 것과 같은 기준.
+    // Close Call 로 줄을 타고 날아가는 중에도 막는다 — 날아가는 도중 조준을 시작하면 조준선이 궤적과 엉킨다.
+    // 일시정지(timeScale 0) 중에도 막는다 — 설정창이 Q/E 로 탭을 넘기고 W 로 줄을 올리므로, 안 막으면 그때마다 스킬이 함께 나간다.
+    // 히트스톱은 0 이 아니라 아주 작은 값(HitFeedback.hitStopTimeScale)이라 여기에 걸리지 않는다.
     bool IsInputBlocked() {
-        return playerMove != null && playerMove.isMovementLocked;
+        if (Time.timeScale == 0f) return true;
+        return playerMove != null && (playerMove.isMovementLocked || playerMove.isExternallyDriven);
     }
 
     // PlayerInput 은 자기 Awake/OnEnable 에서 액션을 준비하므로, 순서가 어긋나도 되도록 처음 쓸 때 찾는다.
@@ -144,6 +148,10 @@ public class SkillManager : MonoBehaviour {
             WarnMissingActions("플레이어에 PlayerInput 이 없습니다");
             return false;
         }
+
+        // 설정에서 바꾼 키를 이 에셋에도 걸어야 한다. 씬이 열릴 때 PlayerInput.all 로도 찾지만,
+        // 플레이어가 나중에 생성되는 경우(던전 입장 등)를 위해 쓰는 쪽에서도 한 번 알린다.
+        InputBindings.Register(playerInput.actions);
 
         for (int i = 0; i < SlotCount; i++) {
             string actionName = slotActionNames != null && i < slotActionNames.Length ? slotActionNames[i] : null;
@@ -155,6 +163,14 @@ public class SkillManager : MonoBehaviour {
             return false;
         }
         return true;
+    }
+
+    // HUD 가 칸에 적을 키 이름을 알아내려고 묻는다. 아직 액션을 찾지 못했으면 null.
+    public InputAction GetSlotAction(int slotIndex) {
+        if (slotIndex < 0 || slotIndex >= SlotCount) return null;
+        if (!ResolveSlotActions()) return null;
+
+        return slotActions[slotIndex];
     }
 
     void WarnMissingActions(string reason) {

@@ -18,7 +18,9 @@ public class Monster_Bomber : MonoBehaviour {
 
     [Header("연결")]
     public Transform visual; // 부풀릴 스프라이트 자식. **몬스터 밑의 Renderer 오브젝트를 연결하세요.**
-    public SpriteStateAnimator spriteAnimator; // 상태별 스프라이트 전환 담당. **visual과 같은 Renderer 오브젝트에 붙이고 연결하세요.**
+    public Animator animator; // 걷기·점화 모션. GroundMoveSystem 과 같은 루트의 Animator 다. **컨트롤러에 Fuse 스테이트가 있어야 합니다.**
+    public SpriteStateAnimator spriteAnimator; // (구) 상태별 정지 이미지 한 장. animator를 연결하면 쓰이지 않는다.
+    public GameObject explosionPrefab; // 터질 때 사망 잔해 대신 남길 폭발 모션. **Monster_Bomber_Explosion 프리팹을 넣으세요.** 비우면 일반 시체가 남는다.
 
     [Header("레이어")]
     public LayerMask playerLayer; // 점화 조건을 검사할 레이어. **Player(3) 를 지정하세요.**
@@ -51,6 +53,7 @@ public class Monster_Bomber : MonoBehaviour {
     GroundMoveSystem moveSystem;
     Health health;
     HitFlash hitFlash; // 점화 중에는 꺼 둔다. 아래 LightFuse() 주석 참고.
+    HitReactor hitReactor; // 터질 때 남길 잔해를 폭발 모션으로 바꿔 끼운다. 아래 UseExplosionRemains() 주석 참고.
 
     SpriteRenderer[] renderers;
     Color[] baseColors; // 깜빡임이 꺼진 순간 되돌릴 원래 색.
@@ -73,6 +76,7 @@ public class Monster_Bomber : MonoBehaviour {
         moveSystem = GetComponent<GroundMoveSystem>();
         health = GetComponent<Health>();
         hitFlash = GetComponent<HitFlash>();
+        hitReactor = GetComponent<HitReactor>();
 
         renderers = GetComponentsInChildren<SpriteRenderer>(true);
         baseColors = new Color[renderers.Length];
@@ -96,8 +100,13 @@ public class Monster_Bomber : MonoBehaviour {
     void Update() {
         if (health.IsDead) return;
 
-        if (!fuseLit) CheckTrigger();
-        else TickFuse(Time.deltaTime);
+        // 묶여 있으면 불을 붙이지 못한다. 이미 붙은 도화선은 구속과 무관하게 계속 탄다 — 꺼지지 않는다는 규칙은 그대로다.
+        if (!fuseLit) {
+            if (!moveSystem.IsRestrained) CheckTrigger();
+        }
+        else {
+            TickFuse(Time.deltaTime);
+        }
     }
 
     void OnDestroy() {
@@ -128,8 +137,30 @@ public class Monster_Bomber : MonoBehaviour {
         // 이쪽 연출이 훨씬 중요한 정보이므로 피격 플래시를 통째로 양보받는다.
         if (hitFlash != null) hitFlash.enabled = false;
 
-        if (spriteAnimator != null) spriteAnimator.Play("Fuse");
+        PlayFuseMotion();
         warningRing.gameObject.SetActive(true);
+
+        // 불이 붙은 뒤 처치당해도 그 자리에서 터지므로, 잔해도 지금 폭발 쪽으로 바꿔 둔다.
+        if (detonateOnFuseDeath) UseExplosionRemains();
+    }
+
+    void PlayFuseMotion() {
+        if (animator != null) {
+            int hash = Animator.StringToHash("Fuse");
+            // 스테이트 이름이 어긋나면 Animator.Play 가 조용히 아무것도 안 해 점화 모션이 통째로 사라진다.
+            if (animator.HasState(0, hash)) animator.Play(hash, 0, 0f);
+            else Debug.LogWarning($"[Monster_Bomber] '{name}' — Animator 에 스테이트 'Fuse' 가 없습니다. 컨트롤러의 스테이트 이름을 맞추세요.", this);
+            return;
+        }
+
+        if (spriteAnimator != null) spriteAnimator.Play("Fuse");
+    }
+
+    // 잔해는 HitReactor 가 OnDeath 에서 한 번 찍어 낸다. 이 몬스터의 사망 이벤트를 HitReactor 와 이 컴포넌트가
+    // 함께 받는데 둘의 구독 순서는 정해져 있지 않아, 죽는 순간에 갈아 끼우면 이미 쓰러지는 시체가 찍힌 뒤일 수 있다.
+    // 그래서 죽기 전(점화 순간 · 스스로 터지기 직전)에 미리 바꿔 둔다.
+    void UseExplosionRemains() {
+        if (hitReactor != null && explosionPrefab != null) hitReactor.deathCorpsePrefab = explosionPrefab;
     }
 
     void TickFuse(float dt) {
@@ -190,6 +221,7 @@ public class Monster_Bomber : MonoBehaviour {
         if (HitVfx.Instance != null) HitVfx.Instance.PlayDeath(center);
 
         ApplyExplosionDamage(center);
+        UseExplosionRemains();
         KillSelf(center);
     }
 

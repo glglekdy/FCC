@@ -3,18 +3,20 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-// 키보드·게임패드 할당을 보여주는 줄. 컨트롤 탭의 10줄이 쓴다.
+// 키보드·게임패드 할당을 보여주고 다시 지정하는 줄. 컨트롤 탭의 10줄이 쓴다.
 //
-// **지금은 표시와 값 보관까지만 합니다.** 실제 재지정(Input System 의 PerformInteractiveRebinding)은
-// 프로젝트에 아직 없어서, Enter 를 누르거나 키보드 칸을 클릭하면 입력 대기 모양만 켜고 다음 입력에서 빠져나온다.
-// 리바인딩을 붙일 때는 BeginRebind() 안의 표시해둔 자리에서 시작하면 된다.
+// 실제 재지정은 InputBindings 가 Input System 의 PerformInteractiveRebinding 으로 한다. 이 줄은 대기 모양과 결과 표시만 맡고,
+// 새 키는 GameSettings.Draft.bindingOverrides 에만 적힌다 — 「적용」을 눌러야 게임에 반영된다.
+//
+// 조작: Enter · 키보드 칸 클릭 → 키보드/마우스 입력 대기 / 게임패드 칸 클릭 → 패드 입력 대기
+//       ESC → 대기 취소 / Backspace → 키보드 할당 해제
 //
 // **Prefabs/UI/SettingsPanel.prefab 의 컨트롤 탭 줄에 붙어 있습니다.**
 public class SettingsKeybindRow : SettingsRowView {
     #region 인스펙터 변수
 
     [Header("역할")]
-    public int actionIndex; // SettingsData.keyboardBindings / padBindings 의 순번.
+    public int actionIndex; // InputBindings.Entries 의 순번.
 
     [Header("연결")]
     public Image keyChip; // 키보드 칸 테두리.
@@ -24,10 +26,11 @@ public class SettingsKeybindRow : SettingsRowView {
 
     [Header("색상")]
     public Color chipColor = UiTheme.PanelRaised;
-    public Color chipWaitingColor = UiTheme.Panel; // 입력 대기 중인 칸은 배경을 한 단계 어둡게 하고 테두리를 포인트 컬러로 바꾼다.
+    public Color chipWaitingColor = UiTheme.Panel; // 입력 대기 중인 칸은 배경을 한 단계 어둡게 하고 글자를 포인트 컬러로 바꾼다.
     public Color textColor = UiTheme.TextBody;
     public Color focusedTextColor = UiTheme.TextHigh;
     public Color waitingColor = UiTheme.AccentBright;
+    public Color lockedTextColor = UiTheme.TextMuted; // 바꿀 수 없는 칸(일시정지의 ESC · 입력 에셋에 바인딩이 없는 칸).
 
     [Header("문구")]
     public string waitingText = "..."; // 입력 대기 중 키 칸에 보여줄 문구.
@@ -37,8 +40,17 @@ public class SettingsKeybindRow : SettingsRowView {
     #region 상태
 
     public bool IsWaiting { get; private set; }
+    BindingDevice waitingDevice; // 어느 칸이 기다리는 중인지.
 
     public override bool HoldsFocus => IsWaiting;
+
+    #endregion
+    #region 유니티 라이프 사이클
+
+    // 탭을 넘기거나 창을 닫으면 대기를 남기지 않는다. 남기면 보이지 않는 줄이 다음 키를 가져간다.
+    void OnDisable() {
+        CancelRebind();
+    }
 
     #endregion
     #region 표시
@@ -46,32 +58,35 @@ public class SettingsKeybindRow : SettingsRowView {
     public override void SetFocused(bool on) {
         base.SetFocused(on);
 
-        if (!IsWaiting) {
-            if (keyLabel != null) keyLabel.color = on ? focusedTextColor : textColor;
-            if (padLabel != null) padLabel.color = on ? focusedTextColor : textColor;
-        }
-
         if (!on) CancelRebind(); // 포커스를 잃으면 대기 상태로 남겨두지 않는다.
+        Refresh(); // 키 이름 글자색이 포커스를 따라간다.
     }
 
     public override void Refresh() {
-        if (keyLabel != null && !IsWaiting) keyLabel.text = Read(GameSettings.Draft.keyboardBindings, emptyText);
-        if (padLabel != null) padLabel.text = Read(GameSettings.Draft.padBindings, emptyText);
+        if (GameSettings.Draft == null) return;
 
-        if (keyChip != null) keyChip.color = IsWaiting ? chipWaitingColor : chipColor;
-        if (padChip != null) padChip.color = chipColor;
-
-        if (IsWaiting) {
-            if (keyLabel != null) {
-                keyLabel.text = waitingText;
-                keyLabel.color = waitingColor;
-            }
-        }
+        string overrides = GameSettings.Draft.bindingOverrides;
+        DrawChip(BindingDevice.Keyboard, keyChip, keyLabel, overrides);
+        DrawChip(BindingDevice.Gamepad, padChip, padLabel, overrides);
     }
 
-    string Read(string[] list, string fallback) {
-        if (list == null || actionIndex < 0 || actionIndex >= list.Length) return fallback;
-        return string.IsNullOrEmpty(list[actionIndex]) ? fallback : list[actionIndex];
+    void DrawChip(BindingDevice device, Image chip, TMP_Text text, string overrides) {
+        bool waiting = IsWaiting && waitingDevice == device;
+
+        if (chip != null) chip.color = waiting ? chipWaitingColor : chipColor;
+        if (text == null) return;
+
+        if (waiting) {
+            text.text = waitingText;
+            text.color = waitingColor;
+            return;
+        }
+
+        string name = InputBindings.DisplayName(actionIndex, device, overrides);
+        text.text = string.IsNullOrEmpty(name) ? emptyText : name;
+
+        bool editable = InputBindings.CanRebind(actionIndex, device, overrides);
+        text.color = !editable ? lockedTextColor : IsFocused ? focusedTextColor : textColor;
     }
 
     #endregion
@@ -88,35 +103,78 @@ public class SettingsKeybindRow : SettingsRowView {
             return true;
         }
 
-        BeginRebind();
+        return BeginRebind(BindingDevice.Keyboard);
+    }
+
+    // Backspace. 키보드 칸만 비운다 — 패드 칸은 키보드로 줄을 고른 사람이 실수로 지울 일이 더 많다.
+    public override bool Clear() {
+        if (IsWaiting || GameSettings.Draft == null) return false;
+
+        string overrides = GameSettings.Draft.bindingOverrides;
+        if (!InputBindings.CanRebind(actionIndex, BindingDevice.Keyboard, overrides)) return false;
+
+        GameSettings.Draft.bindingOverrides = InputBindings.ClearBinding(actionIndex, BindingDevice.Keyboard, overrides);
+        Refresh();
         return true;
     }
 
-    // 키보드 칸을 눌렀을 때만 Enter 와 같게 동작한다. 동작 이름 쪽을 누른 것은 줄을 고른 것일 뿐이다.
-    // 패드 칸은 아직 대기 상태가 키보드 칸에만 있어 받지 않는다.
+    // 칸을 눌렀을 때만 대기에 들어간다. 동작 이름 쪽을 누른 것은 줄을 고른 것일 뿐이다.
     protected override void PointerClicked(PointerEventData eventData) {
-        if (keyChip == null) return;
-        if (!RectTransformUtility.RectangleContainsScreenPoint(keyChip.rectTransform, eventData.position, eventData.pressEventCamera)) return;
-
-        Submit();
+        if (IsInside(keyChip, eventData)) BeginRebind(BindingDevice.Keyboard);
+        else if (IsInside(padChip, eventData)) BeginRebind(BindingDevice.Gamepad);
     }
 
-    void BeginRebind() {
-        IsWaiting = true;
-        Refresh();
+    static bool IsInside(Image chip, PointerEventData eventData) {
+        return chip != null
+            && RectTransformUtility.RectangleContainsScreenPoint(chip.rectTransform, eventData.position, eventData.pressEventCamera);
+    }
 
-        // **여기서 Input System 의 PerformInteractiveRebinding 을 시작하면 됩니다.**
-        // 끝나면 GameSettings.Draft.keyboardBindings[actionIndex] 에 키 이름을 넣고 CancelRebind() 를 부르면
-        // 나머지 표시는 알아서 맞춰집니다.
+    bool BeginRebind(BindingDevice device) {
+        if (GameSettings.Draft == null) return false;
+
+        string overrides = GameSettings.Draft.bindingOverrides;
+        if (!InputBindings.CanRebind(actionIndex, device, overrides)) return false;
+
+        // 이 줄이 다른 칸을 기다리던 중이면 먼저 정리한다. 상태를 비운 뒤에 취소해야 취소 콜백이 되돌아와도 아무 일이 없다.
+        CancelRebind();
+
+        IsWaiting = true;
+        waitingDevice = device;
+
+        if (!InputBindings.StartRebind(actionIndex, device, overrides, HandleRebound, HandleRebindCanceled)) {
+            IsWaiting = false;
+        }
+
+        Refresh();
+        return IsWaiting;
+    }
+
+    void HandleRebound(string overrides) {
+        IsWaiting = false;
+        GameSettings.Draft.bindingOverrides = overrides;
+
+        // 겹친 키를 맞바꿨으면 다른 줄의 키도 바뀌었다. 컨트롤 탭 전체를 다시 그린다.
+        SettingsPanelView panel = GetComponentInParent<SettingsPanelView>();
+        if (panel != null) panel.RefreshAllRows();
+        else Refresh();
+    }
+
+    // ESC 로 빠져나왔거나, 다른 줄이 대기를 시작해 이 줄의 대기가 밀려난 경우.
+    void HandleRebindCanceled() {
+        if (!IsWaiting) return;
+
+        IsWaiting = false;
+        Refresh();
     }
 
     public void CancelRebind() {
         if (!IsWaiting) return;
 
-        IsWaiting = false;
-        Refresh();
+        IsWaiting = false; // 먼저 비운다. 아래 취소가 HandleRebindCanceled 를 곧바로 부른다.
+        InputBindings.CancelRebind();
 
-        if (keyLabel != null) keyLabel.color = IsFocused ? focusedTextColor : textColor;
+        // 꺼지는 중(OnDisable)에는 다시 그리지 않는다. 그리면 창이 닫히는 순간 편집용 사본을 새로 만들어 남긴다.
+        if (isActiveAndEnabled) Refresh();
     }
 
     #endregion

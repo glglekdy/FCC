@@ -27,7 +27,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **기억 조각** = 핵심 수집 재화입니다. 회복 아이템 겸 스킬 강화 재료로 사용됩니다. 챕터1 10개 / 챕터2 20개 / 챕터4 큰 조각 1개입니다. 코드상으로는 `Player_MemoryShardInventory` 이며 **소비(스킬 강화·되돌리기)는 구현되어 있습니다.** 획득 경로는 던전 보상(`DungeonBonusPickup` · `DungeonGate`)뿐이고 **본편 맵에 놓는 수집 오브젝트는 아직 없습니다** (개발 중에는 F6 키로 10개씩 넣을 수 있으며, 디버그 빌드에서만 동작합니다).
 - **거울** = 세이브포인트 겸 스킬 "정비하기" 지점입니다. 코드상으로는 `SaveMirror` 입니다 (저장 + 자아 게이지 전량 회복 + 정비 화면 열기까지 구현되어 있습니다. 아래 「스킬」 항목 참고).
 - **오염도 게이지** (챕터2~) = 최대 100이며 시간당 누적되고, "팥" 섭취 시 0으로 초기화됩니다. 게이지가 다 차면 사망합니다. **아직 미구현 상태입니다.** 추가 시 `SaveData` 에 필드를 추가하는 방식으로 구현합니다 (구버전 세이브 호환은 아래 세이브 항목을 참고해 주시기 바랍니다).
-- **스킬 6종** — Pure Dream(주인공, 정화) / Broken Phantasm(칼잡이, 투사체) / Cycle of Fate(저글러, 스택 폭발) / Invisible Reality(마임, 투명 벽) / Bent Spirit(컨토셔니스트, 회피+은신) / Close Call(곡예사, 이동기 🟡미확정). 최대 3개 장착 가능하며, 기억 조각으로 업그레이드합니다. **앞의 4종은 에셋(`Assets/Skill/Skill_*.asset`)으로 구현되어 있고 발동 · 장착 · 강화 · 해금이 동작합니다** (Bent Spirit · Close Call 은 아직 없습니다). 아래 「스킬」 항목 참고.
+- **스킬 6종** — Pure Dream(주인공, 정화) / Broken Phantasm(칼잡이, 투사체) / Cycle of Fate(저글러, 스택 폭발) / Invisible Reality(마임, 투명 벽) / Bent Spirit(컨토셔니스트, 회피+은신) / Close Call(곡예사, 줄 던지기 → 구속 · 처형). 최대 3개 장착 가능하며, 기억 조각으로 업그레이드합니다. **Bent Spirit 을 뺀 5종은 에셋(`Assets/Skill/Skill_*.asset`)으로 구현되어 있고 발동 · 장착 · 강화 · 해금이 동작합니다.**
+- **곡예사 이동 패시브** — 2단 점프 · 대시 2종입니다. 스킬 슬롯을 차지하지 않고 배우면 계속 켜져 있습니다. 코드상으로는 `Player_move.doubleJumpEnabled` · `dashEnabled` 이며 **둘 다 기본값이 꺼짐**입니다(테스트할 때는 플레이어 인스펙터에서 켭니다). 해금 진입점은 `Player_AbilityUnlocker.Unlock(Player_Ability)` 한 곳이고, `DialogueTriggerZone.unlockAbility` · `NpcDialogueSet.unlockAbility` · `SkillUnlockZone.ability` · `SkillUnlockStep.ability` 로 붙입니다. 세이브에는 `SaveData.abilitiesSaved` · `hasDoubleJump` · `hasDash` 로 기록합니다. 아래 「스킬」 항목 참고.
 - **챕터 구조** — 1 서커스 극장 → 2 저승 도시 → 3 지하감옥 → 4 무대(보스전) → 엔딩 2분기로 구성되어 있습니다.
 
 문서에서 🟡 표시는 미확정 항목입니다. **장르 구조는 메트로배니아로 최종 확정**되었으므로, 맵 구조 및 레벨 디자인 설계 시 메트로배니아 방식의 동선과 탐험 요소(능력 해금 기반 지형 통과 등)를 기본으로 적용해 주시기 바랍니다.
@@ -105,7 +106,10 @@ Player_Combat.DealDamage()          // OverlapCircleAll + HashSet 중복 방지
 
 `com.unity.localization` 을 사용합니다. **원문 언어는 한국어(`ko`)이고 번역 대상은 영어(`en`)** 입니다. 에셋은 전부 `Assets/_Project/Assets/Localization/` 에 있습니다 (`LocalizationSettings.asset` · `Locales/` · `Tables/`).
 
-String Table은 2종입니다 — `**Dialogue**`(대사·화자명), `**Objective**`(목표·미션 문구). 대사와 UI 단문은 번역 검수 기준이 달라 시트를 나눴습니다.
+String Table은 3종입니다 — `**Dialogue**`(대사·화자명, `Story/Dialogue/`), `**Objective**`(목표·미션 문구), `**Ui**`(메뉴·HUD·설정·정비 화면·기억 선택·상호작용 프롬프트·스킬 이름/설명, `Localization/Tables/Ui/`). 대사와 UI 단문은 번역 검수 기준이 달라 시트를 나눴습니다.
+
+- `Ui` 테이블의 키는 `{화면}.{항목}` 형식입니다(`lobby.continue` · `saveslot.summary_format` · `skill.close_call.desc`). 여러 화면이 같이 쓰는 문구는 `common.*`, `string.Format` 자리표시자가 들어간 키는 이름 끝을 `_format` 으로 맞췄습니다. 키마다 공유 메타데이터 `Comment` 에 **어느 프리팹·필드에 쓰이는지** 적어 두었으니 연결할 때 참고합니다.
+- **`Ui` 테이블은 만들어만 두었고 아직 화면에 연결되지 않았습니다.** 프리팹 TMP 와 뷰 스크립트의 `string` 필드는 여전히 한국어를 직접 들고 있어, 언어를 바꿔도 UI 는 그대로입니다.
 
 - 플레이어에게 보이는 문구는 `string` 이 아니라 `**LocalizedString**` 필드로 둡니다. 현재 전환된 곳은 `DialogueEntry.Speaker`·`Text`, `ObjectiveDefinition.description`, `Mission.missionName`·`description` 입니다. (스킬 이름·설명과 메뉴 UI 문구는 **아직 미전환**입니다.)
 - 조회는 `**LocalizationText**`(`Scripts/System/`) 한 곳을 거칩니다. 코루틴에서는 `ResolveAsync(source, onDone)`, 즉시 값이 필요하면 `Resolve(source, fallback)` 을 씁니다. 화면을 처음 그리기 전에는 `WaitForInitialization()` 으로 한 번 기다려야 첫 조회에서 프레임이 끊기지 않습니다.
@@ -117,12 +121,12 @@ String Table은 2종입니다 — `**Dialogue**`(대사·화자명), `**Objectiv
 - 번역 편집·진행 상황 확인은 `Window ▸ Asset Management ▸ Localization Tables` 에서 하고, 외부 번역은 같은 창의 CSV / Google Sheets 내보내기를 씁니다.
 - **영어 외 언어를 추가할 때는 폰트를 함께 확인해야 합니다.** 한글 SDF 아틀라스에는 가나·한자가 없어 일본어·중국어를 넣으면 두부(tofu)로 렌더됩니다.
 
-### 상호작용 (E키)
+### 상호작용 (F키)
 
 `Scripts/Interaction/` 내 3종 클래스로 구성됩니다.
 
 - `IInteractable` — `InteractLabel` / `CanInteract` / `PromptAnchor` / `Interact(interactor)`. **거울·NPC·조사 오브젝트를 새로 만들 땐 이것만 구현하면** 탐지·프롬프트·입력 전달이 자동으로 처리됩니다.
-- `PlayerInteractor` (플레이어에 부착) — 매 프레임 `OverlapCircle` 로 주변을 훑어 가장 가까운 대상을 탐지하고, `[E] 문구` 프롬프트(`TextMeshPro` 를 코드로 생성)를 띄웁니다. 거리는 콜라이더가 아닌 `PromptAnchor` 기준으로 측정합니다.
+- `PlayerInteractor` (플레이어에 부착) — 매 프레임 `OverlapCircle` 로 주변을 훑어 가장 가까운 대상을 탐지하고, `[F] 문구` 프롬프트(`TextMeshPro` 를 코드로 생성)를 띄웁니다. 거리는 콜라이더가 아닌 `PromptAnchor` 기준으로 측정합니다.
 - `SaveMirror` — 세이브포인트 구현체입니다.
 
 주의할 점:
@@ -153,6 +157,7 @@ SaveMirror.Interact() → Health.RestoreFull() → SaveManager.SaveGame(...)
 - 해금은 **스토리에서만** 일어납니다. 진입점은 `SkillUnlocker.Unlock(skill)` 한 곳이고, 붙이는 방법이 3가지입니다 —
   `SkillUnlockZone`(영역에 들어가면), `SkillUnlockStep`(컷씬 단계), `DialogueTriggerZone.unlockSkill`(대사가 끝나면).
   **어느 장면에서 무엇이 열리는지는 아직 배치하지 않았습니다.**
+- **Close Call 의 구속은 `IRestrainable` 을 구현한 몬스터에만 걸립니다**(`GroundMoveSystem` · `FlyMoveSystem` · `Monster_Wraith`). 새 몬스터 AI를 만들면 이것을 구현하고, 같은 오브젝트의 공격 컴포넌트는 이동 컴포넌트의 `IsRestrained` 를 읽어 멈춥니다(`Attack` · `Monster_Bomber`). 처형(체력 비율 즉사)은 `Health.executionImmune` 을 켠 대상에게는 들어가지 않으므로 **보스 · 정예 몬스터는 반드시 켜야 합니다.** 줄을 타고 날아가는 동안은 `Player_move.isExternallyDriven` 이 켜져 이동 · 점프 · 대시 · 스킬 입력이 막힙니다.
 - 해금되면 `SkillManager.UnlockFromStory` 가 빈 슬롯에 자동 장착하고 `AreaTitleView` 로 이름을 띄웁니다
   (`autoEquipOnUnlock` · `announceUnlock` 으로 끕니다).
 - 아직 되찾지 못한 스킬도 정비 화면 목록에 **이름을 가린 줄**(`? ? ?`)로 보여 줍니다. 앞으로 무엇이 더 있는지는
@@ -161,7 +166,8 @@ SaveMirror.Interact() → Health.RestoreFull() → SaveManager.SaveGame(...)
   거울이 저장만 하고 정비 화면을 열지 못합니다(평소에는 스크립트가 창 `windowRoot` 만 숨깁니다).
 - 정비 화면 조작: `↑↓`(`W`/`S`) 스킬 고르기 · `1` `2` `3` 슬롯 고르기 · `Enter`/`Space` 장착과 해제 · `Delete` 해제 ·
   `E` 강화 · `R` 되돌리기 · `ESC`/`Tab` 닫기. 마우스로도 줄과 슬롯을 고를 수 있습니다.
-  **`E` 는 거울을 여는 키와 같아서**, 연 프레임의 입력을 무시하는 `openedFrame` 검사가 들어 있습니다.
+  거울을 연 입력(`F`)과 같은 프레임의 키가 정비 조작으로 먹히지 않도록, 연 프레임의 입력을 무시하는 `openedFrame` 검사가 들어 있습니다.
+  정비 화면 안의 슬롯 고르기는 HUD의 발동 키(`Q` `W` `E`)가 아니라 `1` `2` `3` 입니다 — `W` · `E` 가 줄 이동 · 강화와 겹치기 때문입니다.
 - HUD 스킬 칸은 아이콘이 없으면 이름의 머리글자(Broken Phantasm → `BP`)를 적고, 쿨타임 동안에는 칸을 어둡게 덮고
   남은 초만 보여 줍니다(머리글자와 숫자가 같은 자리를 써서 겹치기 때문입니다).
 - 프리팹은 `Tools ▸ FCC ▸ Build Skill Loadout Prefab` 으로 다시 찍을 수 있습니다. **다시 찍으면 안쪽 오브젝트의
@@ -207,7 +213,7 @@ GameSettings        Draft / Current · PlayerPrefs 저장 · 시스템 반영  (
 - **`SettingsField` 는 프리팹에 정수로 저장됩니다.** 중간 항목을 지우면 뒤 항목의 번호가 밀려 줄마다 엉뚱한 값을 만지게 되므로, 항목을 뺄 때는 프리팹 각 줄의 `field` 값도 함께 당겨야 합니다 (「대사 속도」를 뺄 때 이렇게 처리했습니다). 새 항목은 가능하면 `Keybind` 앞이 아니라 맨 뒤에 추가합니다.
 - 키보드와 마우스를 함께 받습니다. 줄 위의 마우스는 각 `SettingsRowView` 가(커서가 올라온 줄 = 포커스, 슬라이더는 누르기·끌기, 선택형은 값 칸 왼쪽/오른쪽 절반 클릭, 토글은 줄 클릭, 키 설정은 키보드 칸 클릭), 탭 클릭은 `SettingsPanelView` 가 받습니다. **줄 배경 Image 는 투명해도 `raycastTarget` 이 켜져 있어야 합니다.** 버튼을 클릭하면 EventSystem 이 선택을 붙잡아 Enter 에 한 번 더 눌리므로, 설정창은 선택을 늘 비워 둡니다(`ClearUiSelection`).
 - 감각을 건드리는 항목은 원본 수치를 덮어쓰지 않고 **배율**로 곱합니다 — `HitFeedback.ShakeScale`. 인스펙터에서 맞춰둔 값을 설정이 지워버리면 되돌릴 수 없기 때문입니다.
-- **아직 값만 보관하는 항목**: 배경음·효과음 볼륨(`AudioMixer` 미존재 — 마스터만 `AudioListener.volume` 로 동작), 데미지 수치 표시(`DamagePopup` 미존재), 키 리바인딩(Input System 인터랙티브 리바인딩 미구현). 각각 붙일 자리에 `**` 주석으로 표시해 두었습니다.
+- **아직 값만 보관하는 항목**: 배경음·효과음 볼륨(`AudioMixer` 미존재 — 마스터만 `AudioListener.volume` 로 동작), 데미지 수치 표시(`DamagePopup` 미존재). 각각 붙일 자리에 `**` 주석으로 표시해 두었습니다.
 
 ### 일시정지 메뉴
 
@@ -227,14 +233,34 @@ Figma 「FCC_UI」의 `일시중단 메뉴` · `메인메뉴로 나가기` 두 �
 
 `Assets/_Project/Assets/Input/Client.inputactions` 를 사용합니다 (루트의 `InputSystem_Actions.inputactions` 는 Unity 기본 템플릿으로 미사용됩니다).
 
-- `Client ▸ Player` — Move / Jump / Attack / Interact (`E` · 패드 남쪽 버튼) / Skill1 · Skill2 · Skill3 (`1` `2` `3` · 패드 LB · RB · RT)
+- `Client ▸ Player` — Move / Jump / Attack / Interact (`F` · 패드 남쪽 버튼) / Skill1 · Skill2 · Skill3 (`Q` `W` `E` · 패드 LB · RB · RT)
 - `Client ▸ Ui` — NextDialogue (대사 다음/스킵)
 
 `Player_Combat`(`OnAttack`)과 `PlayerInteractor`(`OnInteract`)는 `PlayerInput` 의 SendMessage 방식(`void OnXxx(InputValue)`)을 사용하며, 대사 쪽은 `InputActionReference` 를 인스펙터로 주입받습니다.
 
 `SkillManager` 는 슬롯 번호로 액션을 찾습니다 — `slotActionNames`(기본 `Skill1`·`Skill2`·`Skill3`)에 적힌 이름을 `PlayerInput.actions` 에서 꺼내 쓰므로, 액션 이름을 바꾸면 이 배열도 함께 고쳐야 합니다.
 
-키 바인딩을 변경하면 `PlayerInteractor.keyLabel`(프롬프트에 표시되는 `[E]`)과 HUD 스킬 칸의 `Key` 라벨(프리팹에 적힌 `1`·`2`·`3`)도 함께 수정해야 합니다. 자동 연동되지 않습니다.
+#### 키 재지정 (`Scripts/System/InputBindings.cs`)
+
+설정창 컨트롤 탭에서 키를 바꾸면 Input System 의 **바인딩 덮어쓰기(binding override)** 로 `Client.inputactions` 에 반영됩니다. 원본 에셋 파일은 바뀌지 않습니다.
+
+```
+SettingsKeybindRow (Enter · 칸 클릭)
+  → InputBindings.StartRebind   편집용 사본에 PerformInteractiveRebinding → 겹친 키는 맞바꾸기
+  → GameSettings.Draft.bindingOverrides   (SaveBindingOverridesAsJson 문자열)
+「적용」 → GameSettings.Apply → InputBindings.ApplyOverrides → 게임이 쓰는 에셋에 LoadBindingOverridesFromJson → OnApplied
+```
+
+- **설정창은 게임이 쓰는 에셋이 아니라 편집용 사본을 만집니다.** 「적용」 전에는 키가 바뀌면 안 되고, `PerformInteractiveRebinding` 은 켜져 있는 액션에 걸 수 없기 때문입니다.
+- 동작 목록은 `InputBindings.Entries` 한 곳입니다. **순서가 곧 `SettingsKeybindRow.actionIndex`** 라 중간에 끼우면 프리팹 줄 번호도 당겨야 합니다. 바인딩은 id 가 아니라 "액션 + 합성 조각 이름 + 기기(키보드·마우스 / 패드)" 의 첫 바인딩으로 찾습니다(이동의 방향키 조합 같은 두 번째 바인딩은 보조로 남습니다).
+- 같은 액션 맵 안에서 키가 겹치면 **서로 맞바꿉니다.** 맵이 다르면(점프 `Player` · 대사 넘김 `Ui` 가 둘 다 Space) 겹쳐도 둡니다.
+- `ESC` 는 대기 취소 키라 어느 동작에도 줄 수 없고, 「일시정지」 줄은 고정(변경 불가)입니다(`PauseMenuView` 가 직접 읽습니다). 이동 · 대사 넘김은 입력 에셋에 패드 바인딩이 없어 패드 칸이 잠겨 있습니다.
+- 게임이 쓰는 에셋은 씬이 열릴 때 `PlayerInput.all` · `SettingsPanelView.inputActions` · `SkillManager` 가 `Register` 로 알립니다. **`SettingsPanel.prefab` 의 `inputActions` 에 `Client.inputactions` 가 연결되어 있어야** 메인 메뉴에서도 컨트롤 탭이 키를 읽습니다.
+- 화면에 키 이름을 적는 곳(HUD 스킬 칸 `HudSkillSlotView.keyLabel` · 상호작용 안내 `PlayerInteractor`)은 `InputBindings.OnApplied` 를 구독해 자동으로 따라갑니다. 새로 키 이름을 적는 화면을 만들면 `InputBindings.ActionKeyName(action)` 을 쓰고 이 이벤트를 구독하세요(**static 이벤트라 `OnDestroy` 에서 해제 필수**).
+- 이 프로젝트는 플레이 진입 시 도메인 리로드가 꺼져 있어, `InputBindings` 의 static 상태는 `SubsystemRegistration` 에서 매번 비웁니다.
+- `Client.inputactions` 의 기본 키를 바꾸면 HUD · 안내 문구 · 설정창은 실행 중에 알아서 맞춰지지만, 편집 화면에서 보이는 `SettingsPanel.prefab` 칸 문구는 그대로이므로 필요하면 함께 고칩니다.
+
+스킬 입력은 `Time.timeScale == 0`(일시정지 · 정비 화면) 동안 막힙니다. 설정창이 `Q`/`E` 로 탭을 넘기고 `W` 로 줄을 올리기 때문입니다. 설정창은 키 입력을 기다리는 동안(`InputBindings.IsRebinding`) 탭 전환 · 줄 이동을 전부 쉽니다.
 
 ### 씬
 
@@ -353,7 +379,7 @@ Scripts/
   Objective/    목표(퀘스트)
   Story/        대사 · 컷씬 (Dialogue/ · CutScene/Steps/)
   Ui/           메뉴 · 설정 UI
-  System/       게임 전역 (GameSpeedController · GameDebugLog · LocalizationText · ScreenFader · ScreenWakeUp)
+  System/       게임 전역 (GameSettings · InputBindings · GameSpeedController · GameDebugLog · LocalizationText · ScreenFader · ScreenWakeUp)
   _Data/        세이브 데이터
 ```
 

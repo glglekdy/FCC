@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-// 화면 왼쪽 위 HUD 의 스킬 한 칸. PlayerHudView 가 슬롯 번호 순서대로 3칸을 들고 매 프레임 갱신한다.
+// 화면 오른쪽 아래 HUD 의 스킬 한 칸. PlayerHudView 가 슬롯 번호 순서대로 3칸을 들고 매 프레임 갱신한다.
 //
 // 스킬 아이콘 아트가 아직 없어서 이름의 머리글자(Broken Phantasm → BP)를 크게 적는다.
 // 스킬 에셋에 icon 을 넣으면 그 칸은 아이콘이 대신 보인다.
@@ -19,6 +19,7 @@ public class HudSkillSlotView : MonoBehaviour {
     public Image cooldownFill; // Filled · Vertical · 위쪽 기준. 남은 쿨타임 비율만큼 칸을 덮는다.
     public TMP_Text cooldownLabel; // 남은 초. 준비되면 꺼진다.
     public Image iconImage; // 스킬 아이콘. 비워도 된다.
+    public TMP_Text keyLabel; // 발동 키. 설정에서 키를 다시 지정하면 PlayerHudView 가 다시 적어 준다.
 
     [Header("색상")]
     public Color monogramColor = UiTheme.TextHigh;
@@ -58,6 +59,12 @@ public class HudSkillSlotView : MonoBehaviour {
         }
 
         if (skill == null) ShowCooldown(0f, 0f);
+    }
+
+    // 키 이름은 키를 다시 지정했을 때만 바뀐다. 매 프레임 적으면 문자열을 계속 만들게 되므로 바뀐 순간에만 부른다.
+    public void SetKey(string keyName) {
+        if (keyLabel == null) return;
+        keyLabel.text = string.IsNullOrEmpty(keyName) ? emptyText : keyName;
     }
 
     public void Tick() {

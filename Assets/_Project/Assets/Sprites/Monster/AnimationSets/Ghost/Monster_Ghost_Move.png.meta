@@ -63,7 +63,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 520
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -112,15 +112,15 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Monster_Wraith_Move_1
+      name: Monster_Ghost_Move_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 678
-        width: 620
-        height: 496
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 33
+        y: 685
+        width: 583
+        height: 484
+      alignment: 9
+      pivot: {x: 0.4811321, y: 0.5278926}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -134,15 +134,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Monster_Wraith_Move_2
+      name: Monster_Ghost_Move_1
       rect:
         serializedVersion: 2
-        x: 637
-        y: 650
-        width: 586
-        height: 491
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 640
+        y: 657
+        width: 581
+        height: 481
+      alignment: 9
+      pivot: {x: 0.5172117, y: 0.5893971}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -156,15 +156,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Monster_Wraith_Move_3
+      name: Monster_Ghost_Move_2
       rect:
         serializedVersion: 2
-        x: 27
-        y: 79
-        width: 599
-        height: 518
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 28
+        y: 83
+        width: 584
+        height: 471
+      alignment: 9
+      pivot: {x: 0.48886988, y: 0.4893843}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -178,15 +178,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Monster_Wraith_Move_4
+      name: Monster_Ghost_Move_3
       rect:
         serializedVersion: 2
-        x: 638
-        y: 23
-        width: 586
-        height: 559
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 639
+        y: 119
+        width: 582
+        height: 462
+      alignment: 9
+      pivot: {x: 0.51804125, y: 0.42099568}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -213,11 +213,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Monster_Wraith_Move_0: -1912171317910303501
-      Monster_Wraith_Move_1: -3547429449849614706
-      Monster_Wraith_Move_2: 185543238514282550
-      Monster_Wraith_Move_3: 2375365934429280767
-      Monster_Wraith_Move_4: 2805296176972192773
+      Monster_Ghost_Move_0: -3547429449849614706
+      Monster_Ghost_Move_1: 185543238514282550
+      Monster_Ghost_Move_2: 2375365934429280767
+      Monster_Ghost_Move_3: 2805296176972192773
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

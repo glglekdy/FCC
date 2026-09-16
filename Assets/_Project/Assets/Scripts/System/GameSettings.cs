@@ -22,15 +22,12 @@ public class SettingsData {
     public int frameLimitIndex = 2; // 0:60 · 1:120 · 2:144 · 3:무제한.
     public bool vSync = true;
 
-    // 키 이름을 그대로 담는다. Input System 리바인딩이 붙기 전까지는 화면 표시용이다.
-    public string[] keyboardBindings;
-    public string[] padBindings;
+    // 키 재지정 결과. Input System 의 SaveBindingOverridesAsJson 이 만든 문자열을 그대로 담는다(InputBindings 참고).
+    // 기본 키를 담지 않고 "바꾼 것만" 담으므로, 비어 있으면 Client.inputactions 의 키를 그대로 쓴다.
+    public string bindingOverrides = "";
 
     public SettingsData Clone() {
-        SettingsData copy = (SettingsData)MemberwiseClone();
-        copy.keyboardBindings = keyboardBindings == null ? null : (string[])keyboardBindings.Clone();
-        copy.padBindings = padBindings == null ? null : (string[])padBindings.Clone();
-        return copy;
+        return (SettingsData)MemberwiseClone(); // 필드가 전부 값 · 문자열이라 얕은 복사로 충분하다.
     }
 }
 
@@ -43,8 +40,8 @@ public class SettingsData {
 //   취소     → Current 를 Draft 로 되돌림
 //   기본값   → 새 SettingsData 를 Draft 로
 //
-// 붙일 시스템이 아직 없는 항목(BGM·효과음 볼륨, 키 리바인딩)은 값만 보관한다. 나중에 AudioMixer 나
-// 리바인딩이 생기면 ApplyToSystems() 안의 표시해둔 자리에 연결하면 된다.
+// 붙일 시스템이 아직 없는 항목(BGM·효과음 볼륨)은 값만 보관한다. 나중에 AudioMixer 가 생기면
+// ApplyToSystems() 안의 표시해둔 자리에 연결하면 된다.
 public static class GameSettings {
     #region 상수
 
@@ -60,19 +57,6 @@ public static class GameSettings {
 
     public static readonly string[] FrameLimitLabels = { "60", "120", "144", "무제한" };
     static readonly int[] FrameLimits = { 60, 120, 144, -1 };
-
-    // 컨트롤 탭의 10줄. 화면에 보이는 이름과 초기 키가 여기 한 곳에 있어야, 프리팹 빌더와 실행 중 표시가 어긋나지 않는다.
-    // **지금은 표시용 문구입니다** — Client.inputactions 의 실제 바인딩과 맞춰 적어두었고,
-    // Input System 리바인딩이 붙으면 이 표가 초기값 역할을 하게 된다.
-    public static readonly string[] ActionNames = {
-        "왼쪽 이동", "오른쪽 이동", "점프", "공격", "상호작용", "스킬 1", "스킬 2", "스킬 3", "대사 넘김", "일시정지",
-    };
-    public static readonly string[] DefaultKeyboard = {
-        "A", "D", "Space", "마우스 좌클릭", "E", "1", "2", "3", "Space", "ESC",
-    };
-    public static readonly string[] DefaultPad = {
-        "L스틱 왼쪽", "L스틱 오른쪽", "A 버튼", "X 버튼", "Y 버튼", "LB", "RB", "RT", "A 버튼", "Start",
-    };
 
     #endregion
     #region 상태
@@ -142,7 +126,7 @@ public static class GameSettings {
 
         if (Current.resolutionIndex < 0) Current.resolutionIndex = CurrentResolutionIndex();
         if (Current.languageIndex < 0) Current.languageIndex = SourceLanguageIndex();
-        Normalize(Current);
+        if (Current.bindingOverrides == null) Current.bindingOverrides = string.Empty;
 
         Draft = Current.Clone();
     }
@@ -157,24 +141,6 @@ public static class GameSettings {
             if (locales.Locales[i].Identifier.Code == "ko") return i;
         }
         return 0;
-    }
-
-    // 키 목록이 비어 있거나(처음 실행) 길이가 안 맞을 때(동작을 새로 추가했을 때) 기본값으로 메운다.
-    // 이걸 안 하면 컨트롤 탭의 칸이 통째로 빈 채로 나온다.
-    static void Normalize(SettingsData data) {
-        data.keyboardBindings = Fill(data.keyboardBindings, DefaultKeyboard);
-        data.padBindings = Fill(data.padBindings, DefaultPad);
-    }
-
-    static string[] Fill(string[] saved, string[] defaults) {
-        string[] result = new string[defaults.Length];
-
-        for (int i = 0; i < defaults.Length; i++) {
-            bool hasSaved = saved != null && i < saved.Length && !string.IsNullOrEmpty(saved[i]);
-            result[i] = hasSaved ? saved[i] : defaults[i];
-        }
-
-        return result;
     }
 
     static void Save() {
@@ -204,7 +170,6 @@ public static class GameSettings {
         Draft = new SettingsData();
         Draft.resolutionIndex = CurrentResolutionIndex(); // 해상도 기본값은 "지금 쓰는 것" 이 맞다.
         Draft.languageIndex = SourceLanguageIndex();
-        Normalize(Draft);
     }
 
     // 게임이 켜질 때 저장된 설정을 자동으로 반영한다.
@@ -225,6 +190,7 @@ public static class GameSettings {
         ApplyAudio();
         ApplyPresentation();
         ApplyGraphics();
+        ApplyKeyBindings();
     }
 
     static void ApplyLanguage() {
@@ -248,6 +214,12 @@ public static class GameSettings {
 
         // 데미지 수치 표시는 붙일 곳(DamagePopup)이 아직 없어 값만 보관한다.
         // **DamagePopup 이 생기면 여기서 표시 여부를 넘기면 됩니다.**
+    }
+
+    // 입력 에셋에 덮어쓰기를 건다. 이 시점에 게임이 쓰는 에셋이 아직 없어도(메인 메뉴) 값을 기억해 두었다가
+    // 플레이어가 있는 씬이 열리면 InputBindings 가 알아서 건다.
+    static void ApplyKeyBindings() {
+        InputBindings.ApplyOverrides(Current.bindingOverrides);
     }
 
     static void ApplyGraphics() {

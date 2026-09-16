@@ -592,6 +592,7 @@ public static class DungeonRoomPrefabBuilder {
         Transform respawn = Anchor(root, "RespawnPoint", new Vector3(-w / 2f + 2f, a, 0f));
 
         WireRoom(root, DungeonRoom.RoomRole.SecretBranch, entry, null, null, respawn, trigger, null, null);
+        EnsureBranchDoors(root);
         Save(root, "Room_Secret_A");
     }
 
@@ -611,7 +612,80 @@ public static class DungeonRoomPrefabBuilder {
         Transform respawn = Anchor(root, "RespawnPoint", new Vector3(-w / 2f + 2f, a, 0f));
 
         WireRoom(root, DungeonRoom.RoomRole.SecretBranch, entry, null, null, respawn, trigger, null, null);
+        EnsureBranchDoors(root);
         Save(root, "Room_Secret_B");
+    }
+
+    // 이미 만들어진 곁가지 방 프리팹에 드나드는 문 한 쌍만 채워 넣는다.
+    //
+    // Build All Rooms 를 다시 돌리지 않고 따로 두는 이유: 방 지형은 그 뒤 타일맵으로 전환하고 손으로 칠해
+    // 두었기 때문에, 통째로 다시 찍으면 그 작업이 전부 날아간다. 여기서는 프리팹을 열어 없는 것만 채운다.
+    [MenuItem("Tools/FCC/Dungeon/Patch Secret Branch Doors")]
+    public static void PatchSecretBranchDoors() {
+        if (PrefabStageUtility.GetCurrentPrefabStage() != null) {
+            Debug.LogError("[Dungeon] 프리팹 편집 모드를 닫고 다시 실행하세요.");
+            return;
+        }
+
+        int patched = 0;
+        foreach (string guid in AssetDatabase.FindAssets("t:Prefab", new[] { PrefabDir })) {
+            string path = AssetDatabase.GUIDToAssetPath(guid);
+            GameObject asset = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+            if (asset == null || !asset.TryGetComponent(out DungeonRoom assetRoom)) continue;
+            if (assetRoom.role != DungeonRoom.RoomRole.SecretBranch) continue;
+
+            GameObject root = PrefabUtility.LoadPrefabContents(path);
+            EnsureBranchDoors(root);
+            PrefabUtility.SaveAsPrefabAsset(root, path);
+            PrefabUtility.UnloadPrefabContents(root);
+            patched++;
+        }
+
+        AssetDatabase.SaveAssets();
+        Debug.Log($"[Dungeon] 곁가지 방 {patched}개에 드나드는 문(EntranceDoor · ReturnDoor)을 채웠습니다.");
+    }
+
+    const float DoorW = 1.6f, DoorH = 2.6f;
+
+    // 곁가지 방 안에 문 두 짝을 두고 DungeonRoom 에 연결한다. 이미 있으면 위치는 손댄 그대로 두고 연결만 맞춘다.
+    //  - ReturnDoor   : 입장 지점 바로 뒤. 들어온 자리에서 곧장 돌아 나갈 수 있게 한다.
+    //  - EntranceDoor : 런타임에 생성기가 부모 방의 branchAnchor 로 옮긴다. 프리팹에서는 방 왼쪽 바깥에 세워 두어
+    //                   방 안의 문과 헷갈리지 않게 한다.
+    static void EnsureBranchDoors(GameObject root) {
+        DungeonRoom room = root.GetComponent<DungeonRoom>();
+        BoxCollider2D area = room.roomTrigger as BoxCollider2D;
+        float w = area != null ? area.size.x : 16f;
+        float h = area != null ? area.size.y : 12f;
+        float g = GroundY(h);
+        float entryX = room.entryAnchor != null ? room.entryAnchor.localPosition.x : -w / 2f + 2f;
+
+        Material mat = EnsureMaterial("BranchDoor", new Color(0.24f, 0.17f, 0.14f));
+
+        room.returnDoor = EnsureDoor(root, "ReturnDoor", new Vector3(entryX, g, 0f), "돌아가기", mat);
+        room.entranceDoor = EnsureDoor(root, "EntranceDoor", new Vector3(-w / 2f - 2f, g, 0f), "들어가기", mat);
+        EditorUtility.SetDirty(room);
+    }
+
+    // 문 피벗은 발밑이다. 생성기가 부모 방 바닥을 찾아 그 높이에 그대로 세우기 때문이다.
+    static DungeonBranchDoor EnsureDoor(GameObject root, string name, Vector3 local, string label, Material mat) {
+        Transform found = root.transform.Find(name);
+        if (found != null && found.TryGetComponent(out DungeonBranchDoor existing)) return existing;
+
+        GameObject door = new(name);
+        door.transform.SetParent(root.transform, false);
+        door.transform.localPosition = local;
+
+        BoxCollider2D col = door.AddComponent<BoxCollider2D>();
+        col.isTrigger = true; // PlayerInteractor 는 트리거만 탐지한다. 막히는 문이 아니라 지나쳐 서는 문이다.
+        col.size = new Vector2(DoorW, DoorH);
+        col.offset = new Vector2(0f, DoorH / 2f);
+
+        DungeonBranchDoor branchDoor = door.AddComponent<DungeonBranchDoor>();
+        branchDoor.label = label;
+
+        // 그레이박스 문짝. z 를 살짝 뒤로 빼 플레이어가 문 앞에 선 것처럼 보이게 한다.
+        MirrorQuad(door, "Visual", new Vector3(0f, DoorH / 2f, 0.1f), new Vector2(DoorW, DoorH), 0f, mat);
+        return branchDoor;
     }
 
     #endregion
@@ -849,6 +923,12 @@ public static class DungeonRoomPrefabBuilder {
             bool needsExit = room.role != DungeonRoom.RoomRole.SecretBranch;
             if (room.entryAnchor == null || (needsExit && room.exitAnchor == null)) {
                 Debug.LogWarning($"[Dungeon] '{prefab.name}' 은 소켓(entryAnchor/exitAnchor)이 비어 있어 풀에서 제외했습니다.", prefab);
+                continue;
+            }
+
+            // 곁가지는 본 동선과 떨어진 곳에 만들어지므로 문이 없으면 들어갈 길이 없다.
+            if (!needsExit && (room.entranceDoor == null || room.returnDoor == null)) {
+                Debug.LogWarning($"[Dungeon] '{prefab.name}' 은 곁가지 문(entranceDoor/returnDoor)이 비어 있어 풀에서 제외했습니다. Tools ▸ FCC ▸ Dungeon ▸ Patch Secret Branch Doors 를 실행하세요.", prefab);
                 continue;
             }
 

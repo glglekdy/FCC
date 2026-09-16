@@ -1,0 +1,335 @@
+fileFormatVersion: 2
+guid: 1b090f9bc309f40459edaebc2fbf85b8
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 5215154121120592282
+    second: Monster_Ghost_Death_0
+  - first:
+      213: 745550957186783191
+    second: Monster_Ghost_Death_1
+  - first:
+      213: 3913729304859660282
+    second: Monster_Ghost_Death_2
+  - first:
+      213: -6701551003801830188
+    second: Monster_Ghost_Death_3
+  - first:
+      213: 7376691637555685370
+    second: Monster_Ghost_Death_4
+  - first:
+      213: -3721711564019568908
+    second: Monster_Ghost_Death_5
+  - first:
+      213: 1407313776859697799
+    second: Monster_Ghost_Death_6
+  - first:
+      213: 8593843984359417544
+    second: Monster_Ghost_Death_7
+  - first:
+      213: -5595147788286442094
+    second: Monster_Ghost_Death_8
+  - first:
+      213: 2420714651470689049
+    second: Monster_Ghost_Death_9
+  - first:
+      213: 2120209995074859843
+    second: Monster_Ghost_Death_10
+  - first:
+      213: -1460157207769201635
+    second: Monster_Ghost_Death_11
+  - first:
+      213: -1190332946002415833
+    second: Monster_Ghost_Death_12
+  - first:
+      213: 7917163891876929744
+    second: Monster_Ghost_Death_13
+  - first:
+      213: -5904862932343950519
+    second: Monster_Ghost_Death_14
+  - first:
+      213: 5244801929165357493
+    second: Monster_Ghost_Death_15
+  - first:
+      213: -2253839097976593511
+    second: Monster_Ghost_Death_16
+  - first:
+      213: 4684277513279614128
+    second: Monster_Ghost_Death_17
+  - first:
+      213: 4773789838278127727
+    second: Monster_Ghost_Death_18
+  - first:
+      213: 5921457365379290889
+    second: Monster_Ghost_Death_19
+  - first:
+      213: 3060799143661956949
+    second: Monster_Ghost_Death_20
+  - first:
+      213: 3029143159131166462
+    second: Monster_Ghost_Death_21
+  - first:
+      213: 3350961525475500370
+    second: Monster_Ghost_Death_22
+  - first:
+      213: 2949867412566991394
+    second: Monster_Ghost_Death_23
+  - first:
+      213: 3589532438102577774
+    second: Monster_Ghost_Death_24
+  - first:
+      213: -3691545430150065886
+    second: Monster_Ghost_Death_25
+  - first:
+      213: -2942145485951026994
+    second: Monster_Ghost_Death_26
+  - first:
+      213: -7787451806764888782
+    second: Monster_Ghost_Death_27
+  - first:
+      213: 2388853294412962034
+    second: Monster_Ghost_Death_28
+  - first:
+      213: -4916453517885361531
+    second: Monster_Ghost_Death_29
+  - first:
+      213: 5125991001870356763
+    second: Monster_Ghost_Death_30
+  - first:
+      213: 8624012307391194219
+    second: Monster_Ghost_Death_31
+  - first:
+      213: 4007342297128165729
+    second: Monster_Ghost_Death_32
+  - first:
+      213: 704050606620700368
+    second: Monster_Ghost_Death_33
+  - first:
+      213: -5581498334034511301
+    second: Monster_Ghost_Death_34
+  - first:
+      213: -1235560871052268743
+    second: Monster_Ghost_Death_35
+  - first:
+      213: 1315397727746929318
+    second: Monster_Ghost_Death_36
+  - first:
+      213: 3632736801770392730
+    second: Monster_Ghost_Death_37
+  - first:
+      213: 8211687795623103770
+    second: Monster_Ghost_Death_38
+  - first:
+      213: 8552400247445244689
+    second: Monster_Ghost_Death_39
+  - first:
+      213: 1887021228260824127
+    second: Monster_Ghost_Death_40
+  - first:
+      213: 8529123692992890188
+    second: Monster_Ghost_Death_41
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 520
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Monster_Ghost_Death_0
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 622
+        width: 499
+        height: 471
+      alignment: 9
+      pivot: {x: 0.45791584, y: 0.67622083}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a91be46ca03ff5840800000000000000
+      internalID: 5215154121120592282
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster_Ghost_Death_1
+      rect:
+        serializedVersion: 2
+        x: 696
+        y: 598
+        width: 489
+        height: 364
+      alignment: 9
+      pivot: {x: 0.5, y: 0.94093406}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d7121d35aab85a00800000000000000
+      internalID: 745550957186783191
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster_Ghost_Death_2
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 92
+        width: 515
+        height: 255
+      alignment: 9
+      pivot: {x: 0.44368932, y: 0.8686274}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aff4233211c505630800000000000000
+      internalID: 3913729304859660282
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster_Ghost_Death_3
+      rect:
+        serializedVersion: 2
+        x: 721
+        y: 73
+        width: 469
+        height: 351
+      alignment: 9
+      pivot: {x: 0.46801707, y: 0.6851852}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4dcba3e4ede4ff2a0800000000000000
+      internalID: -6701551003801830188
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: dd401545a407ac1459a2671cd86f8110
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Monster_Ghost_Death_0: 5215154121120592282
+      Monster_Ghost_Death_1: 745550957186783191
+      Monster_Ghost_Death_2: 3913729304859660282
+      Monster_Ghost_Death_3: -6701551003801830188
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

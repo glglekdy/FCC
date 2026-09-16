@@ -2906,6 +2906,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveManager
   fileName: save.json
+  slotCount: 3
   playerTag: Player
 --- !u!4 &1370555729 stripped
 Transform:
@@ -3765,6 +3766,8 @@ MonoBehaviour:
   playerTag: Player
   lockPlayerMovement: 1
   objectiveId: finish_sample_dialogue
+  unlockSkill: {fileID: 0}
+  unlockAbility: 0
   blackoutOnFinish: 1
   blackoutDuration: 1.5
   references:
@@ -5505,6 +5508,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2453363430597010024, guid: 434a4be9b1f80e345919356d6ca126b3, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2453363430597010024, guid: 434a4be9b1f80e345919356d6ca126b3, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
@@ -5514,6 +5521,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2782432330917736201, guid: 434a4be9b1f80e345919356d6ca126b3, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2782432330917736201, guid: 434a4be9b1f80e345919356d6ca126b3, type: 3}
+      propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2782432330917736201, guid: 434a4be9b1f80e345919356d6ca126b3, type: 3}

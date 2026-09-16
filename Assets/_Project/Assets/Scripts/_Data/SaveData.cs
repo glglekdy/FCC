@@ -34,6 +34,13 @@ public class SaveData {
 
     // 슬롯 0·1·2에 장착된 스킬 id. 빈 슬롯은 빈 문자열로 자리를 채워 슬롯 번호가 밀리지 않게 한다.
     public List<string> equippedSkillIds = new List<string>();
+
+    // 곡예사에게 배운 이동 패시브. 아래 두 칸만으로는 "안 배웠다"와 "기록이 없던 구버전 세이브"를 구분할 수 없어
+    // (둘 다 false) abilitiesSaved 를 함께 적는다. 이게 false 면 불러올 때 기술 상태를 건드리지 않는다
+    // — 대시가 해금제로 바뀌기 전의 세이브를 불러왔다가 대시를 잃는 일이 없게 하기 위함이다(maxHealth == 0 규칙과 같은 방식).
+    public bool abilitiesSaved;
+    public bool hasDoubleJump;
+    public bool hasDash;
 }
 
 // 스킬 하나의 강화 상태. 스킬 에셋 자체를 직렬화하면 수치 테이블 같은 기획 데이터까지 세이브에

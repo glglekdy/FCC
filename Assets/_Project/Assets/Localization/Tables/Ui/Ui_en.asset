@@ -1,0 +1,710 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Ui_en
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: faad6b85577d36644b8354cedbc7df40, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 2940207104
+    m_Localized: Cancel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2977955840
+    m_Localized: Settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2994733056
+    m_Localized: Back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3019898880
+    m_Localized: Memory Shards
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3036676096
+    m_Localized: Ego
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3057647616
+    m_Localized: On
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3074424832
+    m_Localized: Off
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3095396352
+    m_Localized: Empty
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3124756480
+    m_Localized: Equipped
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3141533696
+    m_Localized: Circus of the Forgotten
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3162505216
+    m_Localized: Continue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3179282432
+    m_Localized: New Game
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3200253952
+    m_Localized: Room of Memories
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3221225472
+    m_Localized: Quit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3242196992
+    m_Localized: "\u2191\u2193 Select \xB7 Enter Confirm"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3263168512
+    m_Localized: No Saved Memories
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3279945728
+    m_Localized: Paused
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3305111552
+    m_Localized: Sometimes, taking a break matters too.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3330277376
+    m_Localized: Resume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3347054592
+    m_Localized: Return to Menu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3372220416
+    m_Localized: "\u2191\u2193 Move     Enter Select     Esc Close"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3393191936
+    m_Localized: Save and return to the main menu?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3409969152
+    m_Localized: Your progress will be saved to Memory {0:00}.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3430940672
+    m_Localized: Return to the main menu?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3451912192
+    m_Localized: Progress cannot be saved here.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3472883712
+    m_Localized: Leave
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3489660928
+    m_Localized: Choose a Memory
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3519021056
+    m_Localized: Choose a slot to start fresh. Choosing a slot that holds a memory
+      will overwrite it.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3535798272
+    m_Localized: Load a Memory
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3556769792
+    m_Localized: Choose a memory to continue.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3577741312
+    m_Localized: "\u2191\u2193 Move     Enter Select     Delete Erase Memory"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3598712832
+    m_Localized: Unknown Place
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3619684352
+    m_Localized: Saved at {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3640655872
+    m_Localized: Mirror
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3661627392
+    m_Localized: Quick Save
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3682598912
+    m_Localized: Overwrite Memory {0:00}?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3703570432
+    m_Localized: Erase Memory {0:00}?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3724541952
+    m_Localized: All progress so far will be lost. This cannot be undone.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3745513472
+    m_Localized: Overwrite
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3766484992
+    m_Localized: Erase
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3787456512
+    m_Localized: '{0}   |   Ego {1} / {2}   |   Memory Shards {3}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3812622336
+    m_Localized: Empty Slot
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3833593856
+    m_Localized: Create New Memory
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3858759680
+    m_Localized: Create a new memory here and begin from the prologue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3875536896
+    m_Localized: No memory in this slot yet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3896508416
+    m_Localized: Equipped Skills
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3917479936
+    m_Localized: Prologue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3938451456
+    m_Localized: Circus Theater
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3963617280
+    m_Localized: The Underside
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3980394496
+    m_Localized: Prepare
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4005560320
+    m_Localized: Talk
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4026531840
+    m_Localized: Enter
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4047503360
+    m_Localized: Go Back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4068474880
+    m_Localized: Memory Regained
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4089446400
+    m_Localized: A Technique Learned from the Acrobat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4102029312
+    m_Localized: Double Jump
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4123000832
+    m_Localized: Dash
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4139778048
+    m_Localized: Preparation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4156555264
+    m_Localized: Skills
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4177526784
+    m_Localized: Equipped Slots
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4198498304
+    m_Localized: Slot 1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4215275520
+    m_Localized: Slot 2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4236247040
+    m_Localized: Slot 3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4253024256
+    m_Localized: Stat<pos=46%>Current<pos=76%>Next
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4269801472
+    m_Localized: "\u2191\u2193 Skill     1 2 3 Slot     Enter Equip \xB7 Unequip    
+      E Upgrade     R Revert     ESC Close"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4290772992
+    m_Localized: "Lv {0} \xB7 Max"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4311744512
+    m_Localized: Upgrade to Lv {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4328521728
+    m_Localized: Need {0} More Shards
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4349493248
+    m_Localized: Already at max level
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4370464768
+    m_Localized: "Revert \xB7 Refund {0} Shards"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4387241984
+    m_Localized: Cost {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4408213504
+    m_Localized: "{0} \xB7 Owned {1}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4429185024
+    m_Localized: Min {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4445962240
+    m_Localized: '{0}% of Owned'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4475322368
+    m_Localized: Equipped in Slot {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4500488192
+    m_Localized: "Not equipped \xB7 Press Enter to equip in the selected slot"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4521459712
+    m_Localized: A memory not yet recalled
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4534042624
+    m_Localized: No Upgrades
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4559208448
+    m_Localized: Unnamed Skill
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4584374272
+    m_Localized: Pure Dream
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4605345792
+    m_Localized: "Protagonist \xB7 Purify"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4630511616
+    m_Localized: Unleashes a purifying wave ahead that pushes back everything nearby,
+      regaining a little Ego from the recoil.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4651483136
+    m_Localized: Broken Phantasm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4676648960
+    m_Localized: "Knife Thrower \xB7 Projectile"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4701814784
+    m_Localized: The Knife Thrower's projectile skill. Hurls knives ahead in a fan,
+      damaging every target they hit.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4726980608
+    m_Localized: Cycle of Fate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4747952128
+    m_Localized: "Juggler \xB7 Stack Burst"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4773117952
+    m_Localized: The Juggler's basic ball skill. Throws a ball ahead. Each throw
+      builds an {Exploding Ball} stack, and throwing again with a full stack makes
+      that ball explode on hit.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4798283776
+    m_Localized: Invisible Reality
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4823449600
+    m_Localized: "Mime \xB7 Invisible Wall"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4848615424
+    m_Localized: Places an invisible wall that lasts for a while, blocking monsters,
+      projectiles, and movement.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4873781248
+    m_Localized: Close Call
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4890558464
+    m_Localized: "Acrobat \xB7 Restrain \xB7 Execute"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4911529984
+    m_Localized: Throws a rope that binds the enemy it hits. If that enemy is low
+      on health, you swing along the rope and slam into it to finish it off. You
+      are invincible while flying.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4928307200
+    m_Localized: Damage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4953473024
+    m_Localized: Range
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4974444544
+    m_Localized: Area
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4995416064
+    m_Localized: Pierce
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5016387584
+    m_Localized: '{0} Targets'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5033164800
+    m_Localized: Execute Threshold
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5058330624
+    m_Localized: HP {0}% or Less
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5083496448
+    m_Localized: Restrain
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5104467968
+    m_Localized: Duration
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5125439488
+    m_Localized: '{0:0.#}s'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5150605312
+    m_Localized: Max Count
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5171576832
+    m_Localized: Ball Count
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5192548352
+    m_Localized: Ball Size
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5209325568
+    m_Localized: Stacks per Throw
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5234491392
+    m_Localized: Explosion Damage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5251268608
+    m_Localized: Self Heal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5276434432
+    m_Localized: General
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5297405952
+    m_Localized: Controls
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5318377472
+    m_Localized: Graphics
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5335154688
+    m_Localized: '[ESC] Close'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5364514816
+    m_Localized: Apply
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5385486336
+    m_Localized: Restore Defaults
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5406457856
+    m_Localized: Sound
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5423235072
+    m_Localized: Display
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5448400896
+    m_Localized: Dialogue & Effects
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5473566720
+    m_Localized: Actions
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5498732544
+    m_Localized: Keyboard
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5519704064
+    m_Localized: Gamepad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5540675584
+    m_Localized: Screen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5561647104
+    m_Localized: Master Volume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5586812928
+    m_Localized: Music Volume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5607784448
+    m_Localized: SFX Volume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5628755968
+    m_Localized: Language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5653921792
+    m_Localized: Show Damage Numbers
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5670699008
+    m_Localized: Screen Shake
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5695864832
+    m_Localized: Resolution
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5716836352
+    m_Localized: Display Mode
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5737807872
+    m_Localized: V-Sync
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5767168000
+    m_Localized: Frame Limit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5783945216
+    m_Localized: Fullscreen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5809111040
+    m_Localized: Borderless Window
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5825888256
+    m_Localized: Windowed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5846859776
+    m_Localized: Unlimited
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5872025600
+    m_Localized: 'Up/Down: Select Item / Left/Right: Change Value / Enter: Confirm'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5892997120
+    m_Localized: Enter or click a slot to rebind / Press a new key to assign / ESC
+      to cancel / Backspace to clear
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5909774336
+    m_Localized: Resolution and display mode take effect after Apply / Reverts if
+      not confirmed within 15 seconds
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5930745856
+    m_Localized: Move Left
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5951717376
+    m_Localized: Move Right
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5976883200
+    m_Localized: Jump
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5997854720
+    m_Localized: Attack
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6014631936
+    m_Localized: Interact
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6039797760
+    m_Localized: Skill 1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6060769280
+    m_Localized: Skill 2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6081740800
+    m_Localized: Skill 3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6098518016
+    m_Localized: Advance Dialogue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6127878144
+    m_Localized: Pause
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6144655360
+    m_Localized: Left Click
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6169821184
+    m_Localized: Right Click
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6190792704
+    m_Localized: Middle Click
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6207569920
+    m_Localized: Mouse Forward
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6232735744
+    m_Localized: Mouse Back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6245318656
+    m_Localized: A Button
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6270484480
+    m_Localized: B Button
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6291456000
+    m_Localized: X Button
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6316621824
+    m_Localized: Y Button
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6337593344
+    m_Localized: L Stick Press
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6354370560
+    m_Localized: R Stick Press
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6379536384
+    m_Localized: D-Pad Up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6400507904
+    m_Localized: D-Pad Down
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6421479424
+    m_Localized: D-Pad Left
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6442450944
+    m_Localized: D-Pad Right
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6459228160
+    m_Localized: L Stick Up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6480199680
+    m_Localized: L Stick Down
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6496976896
+    m_Localized: L Stick Left
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6522142720
+    m_Localized: L Stick Right
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 401768329208796426}
   - component: {fileID: 1697511907542419949}
-  - component: {fileID: 1482997525919476683}
+  - component: {fileID: 4936939480621424424}
   m_Layer: 8
   m_Name: Renderer
   m_TagString: Untagged
@@ -82,7 +82,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_Sprite: {fileID: -3547429449849614706, guid: d28db1848d262544b915938fc35ad91d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -92,25 +92,28 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!114 &1482997525919476683
-MonoBehaviour:
+--- !u!95 &4936939480621424424
+Animator:
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2235784333600051210}
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32997f29ca0172e4badb2f50605a686f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SpriteStateAnimator
-  states:
-  - name: Idle
-    sprite: {fileID: -5007752093742055701, guid: 6b4923730e8a20146973128c49f8b9eb, type: 3}
-  - name: Aim
-    sprite: {fileID: 2386480773548243907, guid: 40a88e1fab255804593d55f887f0d561, type: 3}
-  - name: Charge
-    sprite: {fileID: -5962540374829409106, guid: 5399f8aab04a4234ea96a47d4a273731, type: 3}
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 43efcbe8d11e01c419344b9e716b0134, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2695069686099586516
 GameObject:
   m_ObjectHideFlags: 0
@@ -232,7 +235,7 @@ GameObject:
   - component: {fileID: 5212998114547413585}
   - component: {fileID: 8867884047314197377}
   m_Layer: 8
-  m_Name: Monster_Fly
+  m_Name: Monster_Ghost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -332,6 +335,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Health
   maxHealth: 60
   invincibleTime: 0
+  executionImmune: 0
   currentHealth: 60
 --- !u!114 &8301738900512170000
 MonoBehaviour:
@@ -346,6 +350,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HitReactor
   knockbackForce: 6
+  knockbackLockDuration: 0.15
+  deathCorpsePrefab: {fileID: 6831543836841500882, guid: cac2803b399f19249b54acd72c9a404a, type: 3}
   hitPointOffset: {x: 0, y: 0}
   hitPointPullIn: 0.35
 --- !u!114 &5182376581333453471
@@ -434,7 +440,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FlyMoveSystem
   visual: {fileID: 401768329208796426}
-  spriteAnimator: {fileID: 1482997525919476683}
+  animator: {fileID: 4936939480621424424}
+  spriteAnimator: {fileID: 0}
   playerLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -459,6 +466,7 @@ MonoBehaviour:
   aimLiftAccel: 6
   aimIndicatorColor: {r: 1, g: 0.35, b: 0.1, a: 0.9}
   aimIndicatorStartScale: 2.5
+  aimIndicatorVisualScale: 0.6
   chargeSpeed: 14
   chargeAccel: 8
   chargeMinDistance: 2
@@ -485,4 +493,3 @@ MonoBehaviour:
   wallDamageMinSpeed: 3
   wallDamageMax: 0
   wallHitCooldown: 0.4
-  visualTurnGain: 12

@@ -34,7 +34,10 @@ public class DungeonGate : MonoBehaviour, IInteractable {
     public string objectiveId;
 
     [Header("보상 · 사망 처리")]
-    public int memoryShardReward = 1;
+    // 클리어 보상 기억 조각. 최소~최대 사이에서 클리어할 때마다 새로 뽑는다(양 끝 포함).
+    // 고정값이면 던전을 돌 때마다 결과가 똑같아 다시 들어갈 기대감이 없어서 범위로 둔다.
+    [Min(0)] public int memoryShardRewardMin = 1;
+    [Min(0)] public int memoryShardRewardMax = 5;
 
     [Tooltip("던전 안에서 죽으면 자아 게이지를 최대치의 이 비율로 되돌린다. 1이면 전량 회복.")]
     [Range(0f, 1f)] public float deathHealthRestoreRatio = 1f;
@@ -216,7 +219,10 @@ public class DungeonGate : MonoBehaviour, IInteractable {
         if (DungeonManager.Instance != null) DungeonManager.Instance.MarkCleared(dungeonId);
 
         if (cachedPlayer != null && cachedPlayer.TryGetComponent(out Player_MemoryShardInventory shards)) {
-            shards.Add(memoryShardReward);
+            // 인스펙터에서 최소·최대를 거꾸로 적어도 범위가 뒤집히지 않도록 작은 쪽을 최소로 삼는다.
+            int lo = Mathf.Min(memoryShardRewardMin, memoryShardRewardMax);
+            int hi = Mathf.Max(memoryShardRewardMin, memoryShardRewardMax);
+            shards.Add(Random.Range(lo, hi + 1)); // int 버전 Random.Range 는 최댓값을 포함하지 않는다.
         }
 
         if (!string.IsNullOrEmpty(objectiveId) && ObjectiveManager.Instance != null) {

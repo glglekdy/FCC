@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef943fcf6a3e17c4fb5ae2b13be714a2, type: 3}
+  m_Name: Skill_CloseCall
+  m_EditorClassIdentifier: Assembly-CSharp::Skill_CloseCall
+  skillID: close_call
+  skillName: Close Call
+  roleLabel: "\uace1\uc608\uc0ac \u00b7 \uad6c\uc18d \u00b7 \ucc98\ud615"
+  description: "\uc904\uc744 \ub358\uc838 \ub9de\uc740 \uc801\uc744 \ubb36\ub294\ub2e4. \uccb4\ub825\uc774 \uc5bc\ub9c8 \ub0a8\uc9c0 \uc54a\uc740 \uc801\uc774\uba74 \uc904\uc744 \ud0c0\uace0 \ub0a0\uc544\uac00 \ub4e4\uc774\ubc1b\uc544 \ub05d\ub0b8\ub2e4. \ub0a0\uc544\uac00\ub294 \ub3d9\uc548\uc5d0\ub294 \ubb34\uc801\uc774\ub2e4."
+  icon: {fileID: 0}
+  cooldown: 6
+  startingLevel: 0
+  lastUsedTime: -9999
+  runtimeLevel: 0
+  levels:
+  - damage: 10
+    range: 7
+    restrainDuration: 1.2
+    executeThreshold: 0.1
+  - damage: 14
+    range: 8.5
+    restrainDuration: 1.6
+    executeThreshold: 0.2
+  - damage: 18
+    range: 10
+    restrainDuration: 2
+    executeThreshold: 0.3
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 2147483648
+  ropeSpeed: 45
+  retractSpeed: 60
+  ropeRadius: 0.25
+  heightOffset: 0.5
+  ropeColor: {r: 0.76, g: 0.7, b: 0.64, a: 1}
+  ropeWidth: 0.05
+  flySpeed: 28
+  maxFlyTime: 0.6
+  arriveDistance: 0.6
+  bounceUpSpeed: 7
+  postExecuteInvincible: 0.25
+  aimLineColor: {r: 1, g: 1, b: 1, a: 0.5}
+  aimLineWidth: 0.05

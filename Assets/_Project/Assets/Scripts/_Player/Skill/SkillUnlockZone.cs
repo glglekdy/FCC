@@ -1,6 +1,6 @@
 using UnityEngine;
 
-// 플레이어가 들어오면 스킬을 되찾게 하는 영역. 대사나 컷씬 없이 "이 자리에 닿으면 해금" 을 걸 때 쓴다.
+// 플레이어가 들어오면 스킬(또는 이동 패시브)을 되찾게 하는 영역. 대사나 컷씬 없이 "이 자리에 닿으면 해금" 을 걸 때 쓴다.
 // 대사 끝에 붙이려면 DialogueTriggerZone.unlockSkill, 컷씬 중간이면 SkillUnlockStep 을 쓴다.
 //
 // **Is Trigger 콜라이더(2D)를 같은 오브젝트에 붙이세요.**
@@ -9,7 +9,8 @@ public class SkillUnlockZone : MonoBehaviour {
     #region 인스펙터 변수
 
     [Header("해금")]
-    public SkillBase skill; // **되찾게 할 스킬 에셋을 넣으세요.** (Assets/_Project/Assets/Skill)
+    public SkillBase skill; // 되찾게 할 스킬 에셋. (Assets/_Project/Assets/Skill)
+    public Player_Ability ability; // 함께 배우게 할 이동 패시브. **skill · ability 중 하나 이상은 채우세요.**
     public string playerTag = "Player";
     public bool disableAfterUnlock = true; // 해금한 뒤 이 영역을 끈다. 같은 판에서 다시 밟을 일이 없게.
 
@@ -17,9 +18,10 @@ public class SkillUnlockZone : MonoBehaviour {
     #region 유니티 라이프 사이클
 
     void OnTriggerEnter2D(Collider2D other) {
-        if (skill == null || !other.CompareTag(playerTag)) return;
+        if ((skill == null && ability == Player_Ability.None) || !other.CompareTag(playerTag)) return;
 
-        SkillUnlocker.Unlock(skill);
+        if (skill != null) SkillUnlocker.Unlock(skill);
+        if (ability != Player_Ability.None) Player_AbilityUnlocker.Unlock(ability);
         if (disableAfterUnlock) gameObject.SetActive(false);
     }
 

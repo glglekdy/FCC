@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class GroundMoveSystem : MonoBehaviour {
+public class GroundMoveSystem : MonoBehaviour, IRestrainable {
     #region 인스펙터 변수
 
     [Header("무브먼트 설정")]
@@ -44,11 +44,16 @@ public class GroundMoveSystem : MonoBehaviour {
     [HideInInspector]
     public bool isMovementLocked; // Attack 등 외부 시스템이 공격 중 이동을 멈출 때 사용.
 
+    // 같은 오브젝트의 공격 컴포넌트(Attack · Monster_Bomber)가 읽는다. 구속을 각자 따로 받게 하면
+    // 이동과 공격이 서로 다른 시간만큼 묶여 "움직이진 못하는데 때리긴 한다"는 식으로 어긋난다.
+    public bool IsRestrained => restrainTimer > 0f;
+
     #endregion
     #region 컴포넌트 변수
 
     Rigidbody2D rigid;
     float knockbackTimer; // 0보다 크면 넉백 중 - 일반 이동 로직을 건너뛰어 물리 힘이 그대로 유지되게 한다.
+    float restrainTimer; // 0보다 크면 구속 중(Close Call) - 넉백보다 우선해 제자리에 붙잡아 둔다.
     MoveState state;
     int facingDirection = 1; // 1: 오른쪽, -1: 왼쪽
 
@@ -98,6 +103,13 @@ public class GroundMoveSystem : MonoBehaviour {
         CheckWall();
         CheckLedge();
         CheckAlly();
+
+        // 묶인 동안은 돌아서지도 않는다. 플레이어를 따라 몸을 돌리면 줄에 묶였다는 그림이 깨진다.
+        if (IsRestrained) {
+            UpdateAnimator();
+            return;
+        }
+
         DetectPlayer();
 
         // 앞을 막은 동족도 벽·낭떠러지와 같은 방향 전환 사유로 본다.
@@ -118,6 +130,14 @@ public class GroundMoveSystem : MonoBehaviour {
     #region 몬스터 움직임 관련 함수
 
     void Move() {
+        // 넉백보다 먼저 본다. 줄에 맞는 순간의 피해가 넉백을 걸어도 밀려나지 않고 그 자리에 묶여야 한다.
+        if (restrainTimer > 0f) {
+            restrainTimer -= Time.fixedDeltaTime;
+            knockbackTimer = 0f;
+            rigid.linearVelocity = new Vector2(0f, rigid.linearVelocityY); // 세로는 그대로 둔다. 공중에서 묶여도 바닥으로는 떨어져야 한다.
+            return;
+        }
+
         if (knockbackTimer > 0f) {
             knockbackTimer -= Time.fixedDeltaTime;
             return;
@@ -185,6 +205,13 @@ public class GroundMoveSystem : MonoBehaviour {
         knockbackTimer = duration;
         rigid.linearVelocity = Vector2.zero;
         rigid.AddForce(force, ForceMode2D.Impulse);
+    }
+
+    public void Restrain(float duration) {
+        if (duration <= 0f) return;
+
+        restrainTimer = Mathf.Max(restrainTimer, duration);
+        rigid.linearVelocity = new Vector2(0f, rigid.linearVelocityY);
     }
 
     void CheckGrounded() {

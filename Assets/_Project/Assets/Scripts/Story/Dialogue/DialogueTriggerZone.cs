@@ -40,6 +40,7 @@ public class DialogueTriggerZone : MonoBehaviour {
     public bool lockPlayerMovement = true; // 대사 중 이동 잠금 (Player_move.isMovementLocked 재사용).
     public string objectiveId; // 비어있지 않으면 대사가 끝날 때 해당 목표를 완료 처리.
     public SkillBase unlockSkill; // 비어있지 않으면 대사가 끝날 때 이 스킬을 되찾는다(해금 알림 · 빈 슬롯 자동 장착).
+    public Player_Ability unlockAbility; // None 이 아니면 대사가 끝날 때 이 이동 패시브를 배운다(곡예사의 가르침).
 
     [Header("끝난 뒤")]
     // 대사가 전부 끝나면 검은 막으로 화면을 덮는다. ScreenFader 와 같은 함정이라
@@ -149,6 +150,7 @@ public class DialogueTriggerZone : MonoBehaviour {
         }
 
         if (unlockSkill != null) SkillUnlocker.Unlock(unlockSkill);
+        if (unlockAbility != Player_Ability.None) Player_AbilityUnlocker.Unlock(unlockAbility);
     }
 
     #endregion

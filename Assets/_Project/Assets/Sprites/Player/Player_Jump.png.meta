@@ -148,12 +148,12 @@ TextureImporter:
       name: Player_Jump_0
       rect:
         serializedVersion: 2
-        x: 46
-        y: 672
-        width: 325
-        height: 391
-      alignment: 9
-      pivot: {x: 0.51076925, y: 0.55473155}
+        x: 431
+        y: 596
+        width: 386
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -170,12 +170,12 @@ TextureImporter:
       name: Player_Jump_1
       rect:
         serializedVersion: 2
-        x: 435
-        y: 669
-        width: 372
-        height: 383
-      alignment: 9
-      pivot: {x: 0.5241935, y: 0.5741515}
+        x: 24
+        y: 612
+        width: 386
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -192,12 +192,12 @@ TextureImporter:
       name: Player_Jump_2
       rect:
         serializedVersion: 2
-        x: 857
-        y: 701
-        width: 374
-        height: 459
-      alignment: 9
-      pivot: {x: 0.51069516, y: 0.40936825}
+        x: 853
+        y: 664
+        width: 386
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -214,12 +214,12 @@ TextureImporter:
       name: Player_Jump_3
       rect:
         serializedVersion: 2
-        x: 22
-        y: 144
-        width: 406
-        height: 441
-      alignment: 9
-      pivot: {x: 0.4679803, y: 0.35351473}
+        x: 451
+        y: 56
+        width: 386
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -236,12 +236,12 @@ TextureImporter:
       name: Player_Jump_4
       rect:
         serializedVersion: 2
-        x: 446
-        y: 97
-        width: 397
-        height: 453
-      alignment: 9
-      pivot: {x: 0.46347606, y: 0.44790286}
+        x: 854
+        y: 31
+        width: 386
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -258,12 +258,12 @@ TextureImporter:
       name: Player_Jump_5
       rect:
         serializedVersion: 2
-        x: 862
-        y: 82
-        width: 381
-        height: 346
-      alignment: 9
-      pivot: {x: 0.48818898, y: 0.6297688}
+        x: 29
+        y: 73
+        width: 386
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []

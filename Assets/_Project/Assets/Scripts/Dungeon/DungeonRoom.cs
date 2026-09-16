@@ -24,7 +24,7 @@ public class DungeonRoom : MonoBehaviour {
     [Header("소켓")]
     public Transform entryAnchor; // 이전 방의 exitAnchor 에 맞춰 이 방이 배치되는 기준점.
     public Transform exitAnchor;  // 다음 방이 이 지점에 맞춰 배치된다.
-    public Transform branchAnchor; // 곁가지 방이 갈라지는 지점. 비우면 이 방은 분기를 지원하지 않는다.
+    public Transform branchAnchor; // 곁가지 방으로 들어가는 문이 서는 지점(문은 이 아래 바닥에 세워진다). 비우면 이 방은 분기를 지원하지 않는다.
 
     [Header("진입 감지")]
     public Collider2D roomTrigger; // 비우면 이 오브젝트의 Collider2D 를 쓴다.
@@ -37,6 +37,11 @@ public class DungeonRoom : MonoBehaviour {
     [Header("전투 (역할이 전투방일 때만)")]
     public DungeonRoomSpawner spawner;
     public Collider2D lockBarrier; // 입장 시 켜져(통행 차단) 전멸하면 꺼진다.
+
+    [Header("곁가지 문 (역할이 곁가지 보너스일 때만)")]
+    // **곁가지 방 안에 둘 다 넣어 두세요.** 입구 문은 생성기가 부모 방의 branchAnchor 로 옮긴다.
+    public DungeonBranchDoor entranceDoor; // 부모 방에 놓여 이 방으로 들어오는 문.
+    public DungeonBranchDoor returnDoor;   // 이 방 안에서 부모 방으로 돌아가는 문.
 
     #endregion
     #region 조회

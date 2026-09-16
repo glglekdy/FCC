@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-// 화면 좌측 상단에 상시 노출되는 인게임 플레이어 HUD. 자아 게이지(체력) · 장착 스킬 3칸과 쿨타임 · 기억 조각 수를 그린다.
+// 인게임 화면에 상시 노출되는 플레이어 HUD. 자아 게이지(체력) · 기억 조각 수는 왼쪽 위에, 장착 스킬 3칸과 쿨타임은 오른쪽 아래에 그린다.
 //
 // 생김새는 전부 프리팹 Prefabs/UI/PlayerHud.prefab 에 있고 이 스크립트는 값 갱신만 한다.
 // 처음부터 다시 찍어내려면 에디터 메뉴 Tools ▸ FCC ▸ Build Player HUD Prefab.
@@ -20,7 +21,8 @@ public class PlayerHudView : MonoBehaviour {
     public TMP_Text valueLabel;    // "72 / 100" 표기. 비워도 된다.
 
     [Header("연결 — 스킬 · 기억 조각 (비워도 된다)")]
-    // 슬롯 0·1·2 순서. **배열 순서가 그대로 스킬 키 1 · 2 · 3 입니다.**
+    // 슬롯 0·1·2 순서. **배열 순서가 그대로 스킬 슬롯 1 · 2 · 3 입니다** (기본 키 Q · W · E).
+    // 칸에 적히는 키 이름은 설정의 키 재지정을 따라간다 (InputBindings).
     public HudSkillSlotView[] skillSlots;
     public TMP_Text shardValueLabel; // 보유한 기억 조각 수.
 
@@ -40,6 +42,7 @@ public class PlayerHudView : MonoBehaviour {
     SkillManager skills;   // 장착 스킬과 쿨타임을 읽는 대상. 플레이어와 함께 찾는다.
     Player_MemoryShardInventory shards;
     int shownShards = -1;  // 마지막으로 적은 조각 수. 같으면 문자열을 다시 만들지 않는다.
+    bool keyLabelsDirty = true; // 스킬 칸에 적는 키 이름을 다시 적어야 하는지. 키 재지정과 대상 변경 때만 선다.
     float delayedRatio = 1f;
     float drainTimer;
 
@@ -55,11 +58,19 @@ public class PlayerHudView : MonoBehaviour {
         }
         Acquire();
         SnapToCurrent();
+
+        // **static 이벤트라 OnDestroy 에서 반드시 해제해야 한다.** 씬을 옮길 때마다 HUD 가 새로 생기기 때문이다.
+        InputBindings.OnApplied += HandleBindingsApplied;
     }
 
     void OnDestroy() {
         // 파괴된 뒤에도 C# 참조가 남을 수 있어 ?. 대신 != null 로 Unity 의 == 오버로드를 탄다.
         if (health != null) health.OnDamaged -= HandleDamaged;
+        InputBindings.OnApplied -= HandleBindingsApplied;
+    }
+
+    void HandleBindingsApplied() {
+        keyLabelsDirty = true;
     }
 
     // 히트스톱 중에도 게이지가 멈추지 않아야 하므로 아래 연출은 전부 unscaledDeltaTime 기준.
@@ -96,6 +107,7 @@ public class PlayerHudView : MonoBehaviour {
         shards = health != null ? health.GetComponentInParent<Player_MemoryShardInventory>() : null;
         if (shards == null && health != null) shards = health.GetComponentInChildren<Player_MemoryShardInventory>();
         shownShards = -1;
+        keyLabelsDirty = true; // 대상이 바뀌면 슬롯 입력 액션도 다시 물어야 한다.
     }
 
     #endregion
@@ -153,6 +165,24 @@ public class PlayerHudView : MonoBehaviour {
             skillSlots[i].Set(skills.GetSkillInSlot(i));
             skillSlots[i].Tick();
         }
+
+        if (keyLabelsDirty) UpdateKeyLabels();
+    }
+
+    // 칸에 적는 발동 키. 설정에서 키를 다시 지정하면 InputBindings 가 알려 주고, 여기서 한 번만 다시 적는다.
+    void UpdateKeyLabels() {
+        bool ready = true;
+
+        for (int i = 0; i < skillSlots.Length; i++) {
+            if (skillSlots[i] == null) continue;
+
+            InputAction action = skills.GetSlotAction(i);
+            if (action == null) ready = false; // PlayerInput 이 아직 준비되지 않았다. 다음 프레임에 다시 시도한다.
+
+            skillSlots[i].SetKey(InputBindings.ActionKeyName(action, BindingDevice.Keyboard, true));
+        }
+
+        keyLabelsDirty = !ready;
     }
 
     void UpdateShards() {

@@ -5,7 +5,7 @@ using UnityEngine;
 // 위쪽 어딘가에 다시 나타나 투사체 한 발을 던지는 텔레포트형 원거리 몬스터.
 // 근접형(GroundMoveSystem/FlyMoveSystem)과 짝을 이루는 챕터1 원거리 잡몹.
 [RequireComponent(typeof(Health))]
-public class Monster_Wraith : MonoBehaviour {
+public class Monster_Wraith : MonoBehaviour, IRestrainable {
     #region 인스펙터 변수
 
     [Header("연결")]
@@ -86,6 +86,7 @@ public class Monster_Wraith : MonoBehaviour {
     Health targetHealth;
 
     bool attackInterrupted; // 조준 중(또는 재등장 직후) 플레이어에게 맞으면 켜진다. 이번 공격 턴을 취소하고 바로 사라지게 만든다.
+    float restrainTimer; // 0보다 크면 구속 중(Close Call) - 사라지지도, 조준하지도 못하고 그 자리에 붙잡힌다.
     string currentStateName; // 같은 상태를 다시 요청했을 때 재생 중인 모션을 처음으로 되감지 않기 위한 기록.
 
     #endregion
@@ -117,7 +118,9 @@ public class Monster_Wraith : MonoBehaviour {
     void Update() {
         if (health.IsDead) return;
 
-        if (state == WraithState.Patrol) {
+        if (restrainTimer > 0f) restrainTimer -= Time.deltaTime;
+
+        if (state == WraithState.Patrol && restrainTimer <= 0f) {
             DetectTarget();
             if (HasTarget()) EnterCombat();
             else TickPatrol(Time.deltaTime);
@@ -149,6 +152,16 @@ public class Monster_Wraith : MonoBehaviour {
 
     // 거리 제한 없이 플레이어를 찾아 바로 타깃으로 삼는다. 선공을 당했다는 것 자체가 플레이어가 어딘가에
     // 존재한다는 증거이므로, detectionRange/시야 조건을 굳이 다시 검사할 필요가 없다.
+    // 곡예사의 줄(Close Call)이 호출한다. 조준 중이었다면 이번 공격 턴을 취소한다.
+    // **스킬 쪽은 피해보다 구속을 먼저 걸어야 합니다** — 순찰 중에 피해부터 받으면 HandleDamaged 가 곧바로
+    // 전투 루프를 시작해 묶이기 전에 사라져 버린다.
+    public void Restrain(float duration) {
+        if (duration <= 0f) return;
+
+        restrainTimer = Mathf.Max(restrainTimer, duration);
+        attackInterrupted = true;
+    }
+
     void AcquireTargetUnconditionally() {
         Collider2D hit = Physics2D.OverlapCircle(transform.position, 10000f, playerLayer);
         if (hit == null) return;
@@ -242,6 +255,9 @@ public class Monster_Wraith : MonoBehaviour {
     // 사라짐 → 대기 → 텔레포트 → 재등장 → 조준 → 발사를 반복하다가, 플레이어를 놓치면 순찰로 복귀한다.
     IEnumerator CombatLoop() {
         while (true) {
+            // 묶여 있으면 사라지지 못한다. 사라지는 순간 Hurtbox 가 꺼져 줄로 묶어 둔 의미가 없어지기 때문이다.
+            while (restrainTimer > 0f) yield return null;
+
             if (!StillHasTarget()) break;
 
             attackInterrupted = false;

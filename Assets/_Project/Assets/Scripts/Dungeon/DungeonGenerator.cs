@@ -70,6 +70,16 @@ public class DungeonGenerator : MonoBehaviour {
     // 던전을 나갈 때 카메라를 되돌릴 오버월드 경계. **CoreScene 의 오버월드 Confiner 콜라이더를 연결하세요.**
     public Collider2D outsideBounds;
 
+    [Header("곁가지 배치")]
+    [Tooltip("곁가지 방을 던전 맨 위보다 이만큼 더 위에 따로 만든다. 본 동선의 방과 겹치지 않게 띄우는 간격이다.")]
+    public float branchRowGap = 12f;
+
+    [Tooltip("곁가지 방끼리 가로로 띄우는 간격.")]
+    public float branchSpacing = 4f;
+
+    [Tooltip("입구 문을 branchAnchor 아래 바닥에 세울 때 찾는 지형 레이어. 비우면 'ground' 레이어를 쓴다.")]
+    public LayerMask branchDoorGroundMask;
+
     [Header("낙사")]
     [Tooltip("플레이어가 이 월드 Y 아래로 떨어지면 현재 방 리스폰 지점으로 되돌린다. 방마다 바닥 높이가 달라도 하나로 처리하려고 던전 단위로 둔다.")]
     public float fallYThreshold = -50f;
@@ -114,6 +124,7 @@ public class DungeonGenerator : MonoBehaviour {
         generatedRoot.position = dungeonOrigin != null ? dungeonOrigin.position : Vector3.zero;
 
         var rooms = new List<DungeonRoom>();
+        var branchParents = new List<DungeonRoom>(); // 곁가지가 뽑힌 방. 본 동선이 다 놓인 뒤에 한꺼번에 배치한다.
 
         // 1. 입구 — 항상 맨 앞.
         DungeonRoom current = SpawnRoom(PickPrefab(entryRoomPrefabs), null);
@@ -133,13 +144,16 @@ public class DungeonGenerator : MonoBehaviour {
                 current = SpawnRoom(prefab, current);
                 if (current == null) continue;
                 rooms.Add(current);
-                TrySpawnSecretBranch(current, step.secretBranchChance);
+                if (RollSecretBranch(current, step.secretBranchChance)) branchParents.Add(current);
             }
         }
 
         // 3. 출구 — 항상 맨 뒤.
         current = SpawnRoom(PickPrefab(exitRoomPrefabs), current);
         if (current != null) rooms.Add(current);
+
+        // 4. 곁가지 — 본 동선의 높이가 전부 정해져야 그 위의 빈 줄을 잡을 수 있다(수직 갱도가 뒤에 오면 던전 꼭대기가 높아진다).
+        SpawnSecretBranches(rooms, branchParents);
 
         InjectRoomConfig();
 
@@ -236,22 +250,100 @@ public class DungeonGenerator : MonoBehaviour {
         return room;
     }
 
-    void TrySpawnSecretBranch(DungeonRoom parent, float chance) {
-        if (parent == null || parent.branchAnchor == null) return;
-        if (chance <= 0f || UnityEngine.Random.value >= chance) return;
+    bool RollSecretBranch(DungeonRoom parent, float chance) {
+        if (parent == null || parent.branchAnchor == null) return false;
+        return chance > 0f && UnityEngine.Random.value < chance;
+    }
 
-        GameObject prefab = PickPrefab(secretRoomPrefabs);
-        if (prefab == null) return;
+    // 곁가지 방을 본 동선 전체의 꼭대기보다 위, 한 줄에 왼쪽부터 늘어놓고 부모 방과 문으로 잇는다.
+    //
+    // 예전에는 곁가지 방의 entryAnchor 를 부모 방의 branchAnchor 에 바로 맞췄다. branchAnchor 는 부모 방 안쪽
+    // 발판 위라 곁가지 상자(16×12)가 부모 방 한가운데에 통째로 겹쳤고, 수직 갱도에서는 곁가지의 벽·바닥이
+    // 오르는 길을 막았다. 본 동선과 절대 겹치지 않는 줄에 따로 두면 방 조합이 어떻게 나와도 안전하다.
+    void SpawnSecretBranches(List<DungeonRoom> mainRooms, List<DungeonRoom> parents) {
+        if (parents.Count == 0) return;
 
-        GameObject instance = Instantiate(prefab, generatedRoot);
-        DungeonRoom room = instance.GetComponent<DungeonRoom>();
+        Physics2D.SyncTransforms(); // 방을 옮긴 직후라 콜라이더 경계가 아직 옮기기 전 자리를 가리킨다.
 
-        if (room != null && room.entryAnchor != null) {
-            instance.transform.position += parent.branchAnchor.position - room.entryAnchor.position;
+        float layoutTop = float.MinValue;
+        foreach (DungeonRoom r in mainRooms) {
+            if (TryGetRoomRect(r, out Rect rect)) layoutTop = Mathf.Max(layoutTop, rect.yMax);
         }
-        else {
-            Debug.LogWarning($"[DungeonGenerator] 곁가지 '{prefab.name}' 에 entryAnchor 가 없어 정렬하지 못했습니다.", this);
+        if (layoutTop == float.MinValue) layoutTop = generatedRoot.position.y;
+
+        float rowBottom = layoutTop + branchRowGap;
+        float cursorRight = float.MinValue; // 직전 곁가지 방의 오른쪽 끝. 곁가지끼리 겹치지 않게 민다.
+
+        foreach (DungeonRoom parent in parents) {
+            GameObject prefab = PickPrefab(secretRoomPrefabs);
+            if (prefab == null) return;
+
+            GameObject instance = Instantiate(prefab, generatedRoot);
+            DungeonRoom room = instance.GetComponent<DungeonRoom>();
+            if (room == null || room.entranceDoor == null || room.returnDoor == null) {
+                // 문이 없으면 들어갈 길이 없는 방이 허공에 뜰 뿐이라 만들지 않는다.
+                Debug.LogWarning($"[DungeonGenerator] 곁가지 '{prefab.name}' 에 DungeonRoom 의 entranceDoor/returnDoor 가 비어 있어 건너뜁니다.", this);
+                Destroy(instance);
+                continue;
+            }
+
+            Physics2D.SyncTransforms();
+            if (!TryGetRoomRect(room, out Rect secretRect)) {
+                secretRect = new Rect(instance.transform.position, Vector2.zero);
+            }
+
+            // 부모 방 바로 위쪽에 두려고 하되, 앞선 곁가지와 겹치면 오른쪽으로 민다.
+            float left = parent.branchAnchor.position.x - secretRect.width / 2f;
+            if (cursorRight != float.MinValue) left = Mathf.Max(left, cursorRight + branchSpacing);
+
+            instance.transform.position += new Vector3(left - secretRect.xMin, rowBottom - secretRect.yMin, 0f);
+            cursorRight = left + secretRect.width;
+
+            // 입구 문은 방을 옮긴 뒤에 꺼내야 한다. 먼저 꺼내면 방을 옮길 때 함께 딸려 간다.
+            room.entranceDoor.transform.position = GroundBelow(parent);
+            DungeonBranchDoor.Link(room.entranceDoor, parent, room.returnDoor, room);
         }
+    }
+
+    // 방 루트의 트리거 콜라이더가 곧 방의 영역이다(DungeonRoom 진입 판정과 같은 기준).
+    bool TryGetRoomRect(DungeonRoom room, out Rect rect) {
+        rect = default;
+        Collider2D col = room != null ? (room.roomTrigger != null ? room.roomTrigger : room.GetComponent<Collider2D>()) : null;
+        if (col == null) return false;
+
+        Bounds b = col.bounds;
+        rect = Rect.MinMaxRect(b.min.x, b.min.y, b.max.x, b.max.y);
+        return true;
+    }
+
+    // branchAnchor 는 방마다 발판 위 몸통 높이이거나 허공에 떠 있기도 하다. 문은 땅에 서 있어야 하므로 아래 바닥을 찾아 세운다.
+    // 지형을 타일맵으로 옮기면서 소켓 밑 발판이 사라진 방도 있어(Room_Vertical_B 의 벽감), 가까운 곳만 보지 않고
+    // 부모 방 바닥까지 내려가며 찾는다. 이웃 방 지형이 부모 방 영역으로 삐져나와 있을 수 있으므로 부모 방 것만 인정한다.
+    // 끝내 못 찾으면 소켓 높이 규칙(바닥 + 1.1)을 거꾸로 적용해 둔다.
+    readonly RaycastHit2D[] groundHits = new RaycastHit2D[16];
+
+    Vector3 GroundBelow(DungeonRoom parent) {
+        Vector3 anchor = parent.branchAnchor.position;
+        float depth = TryGetRoomRect(parent, out Rect rect) ? Mathf.Max(0f, anchor.y - rect.yMin) : 8f;
+
+        var filter = new ContactFilter2D {
+            useLayerMask = true,
+            layerMask = branchDoorGroundMask.value != 0 ? branchDoorGroundMask : (LayerMask)LayerMask.GetMask("ground"),
+            useTriggers = false, // 가시밭·낙사 영역 같은 트리거 위에 문을 세우지 않는다.
+        };
+
+        int count = Physics2D.Raycast(anchor, Vector2.down, filter, groundHits, depth);
+        RaycastHit2D best = default;
+        for (int i = 0; i < count; i++) {
+            RaycastHit2D hit = groundHits[i];
+            if (hit.distance <= 0f) continue;          // 콜라이더 안에서 시작한 판정은 바닥이 아니다.
+            if (hit.normal.y < 0.5f) continue;         // 벽 옆면에 걸린 것은 설 자리가 아니다.
+            if (!hit.collider.transform.IsChildOf(parent.transform)) continue;
+            if (best.collider == null || hit.distance < best.distance) best = hit;
+        }
+
+        if (best.collider != null) return new Vector3(anchor.x, best.point.y, anchor.z);
+        return anchor + Vector3.down * 1.1f;
     }
 
     #endregion

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-// E키 상호작용의 대상이 되는 오브젝트가 구현하는 인터페이스.
+// F키 상호작용의 대상이 되는 오브젝트가 구현하는 인터페이스.
 // PlayerInteractor는 이 인터페이스만 알면 되므로, 거울·NPC·조사 오브젝트를 새로 만들 때
 // 여기만 구현하면 탐지·프롬프트·입력 전달은 자동으로 따라온다.
 public interface IInteractable {

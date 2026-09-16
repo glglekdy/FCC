@@ -30,6 +30,9 @@ public static class LocalizationBootstrap {
     // UI 문구(단문·길이 제한 있음)는 검수 기준이 달라서 시트를 따로 두는 편이 관리가 쉽다.
     public const string DialogueTable = "Dialogue";
     public const string ObjectiveTable = "Objective";
+    // 메뉴·HUD·설정·정비 화면처럼 화면에 고정으로 붙는 문구. 목표 문구와도 나눈 이유는 목표는 기획이
+    // 늘 때마다 키가 불어나는 반면 UI 문구는 화면 단위로 묶여 있어 검수 시점이 다르기 때문이다.
+    public const string UiTable = "Ui";
 
     // 원문 언어. 번역이 비어 있을 때 이 언어로 되돌아간다.
     const string SourceLocaleCode = "ko";
@@ -51,12 +54,13 @@ public static class LocalizationBootstrap {
 
         EnsureTable(DialogueTable, locales);
         EnsureTable(ObjectiveTable, locales);
+        EnsureTable(UiTable, locales);
 
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
 
         Debug.Log($"[Localization] 셋업 완료 — 언어 {string.Join(" / ", LocaleCodes)}, " +
-            $"테이블 '{DialogueTable}' · '{ObjectiveTable}'. " +
+            $"테이블 '{DialogueTable}' · '{ObjectiveTable}' · '{UiTable}'. " +
             "번역은 Window ▸ Asset Management ▸ Localization Tables 에서 편집하세요.");
 
         Selection.activeObject = settings;
@@ -181,7 +185,9 @@ public static class LocalizationBootstrap {
     static void EnsureTable(string tableName, IList<Locale> locales) {
         if (LocalizationEditorSettings.GetStringTableCollection(tableName) != null) return;
 
-        LocalizationEditorSettings.CreateStringTableCollection(tableName, TableFolder, locales);
+        // 테이블마다 언어 수만큼 에셋이 생기므로(공유 데이터 + ko + en …) 이름별 하위 폴더에 모아 둔다.
+        EnsureFolder(TableFolder, tableName);
+        LocalizationEditorSettings.CreateStringTableCollection(tableName, $"{TableFolder}/{tableName}", locales);
     }
 
     #endregion

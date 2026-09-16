@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 300
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -100,19 +100,19 @@ TextureImporter:
       name: Monster_Bomber_Move_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 0
-        height: 0
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 149
+        y: 681
+        width: 386
+        height: 492
+      alignment: 9
+      pivot: {x: 0.4261658, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: bfde3d114203c8a80800000000000000
+      spriteID: f266a03d35a1b9f428c53815ad3d0b8d
       internalID: -8463336668259947013
       vertices: []
       indices: 
@@ -122,19 +122,19 @@ TextureImporter:
       name: Monster_Bomber_Move_1
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 0
-        height: 0
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 748
+        y: 674
+        width: 403
+        height: 488
+      alignment: 9
+      pivot: {x: 0.47766748, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 8fff1d33511646310800000000000000
+      spriteID: 50a818e33d7c5bb459826c60af4ea3d9
       internalID: 1397348528083304440
       vertices: []
       indices: 
@@ -144,19 +144,19 @@ TextureImporter:
       name: Monster_Bomber_Move_2
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 0
-        height: 0
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 143
+        y: 54
+        width: 397
+        height: 511
+      alignment: 9
+      pivot: {x: 0.42947105, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: d36418768ad185270800000000000000
+      spriteID: 6eccdff069c722f4799b916724087826
       internalID: 8239368127402559037
       vertices: []
       indices: 
@@ -166,19 +166,19 @@ TextureImporter:
       name: Monster_Bomber_Move_3
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 0
-        height: 0
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 775
+        y: 64
+        width: 382
+        height: 492
+      alignment: 9
+      pivot: {x: 0.43324608, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 0de667b443ebb6a00800000000000000
+      spriteID: cc6b05f041e85df4c95ef74f854597b9
       internalID: 750902894700949200
       vertices: []
       indices: 

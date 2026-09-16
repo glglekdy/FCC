@@ -1,0 +1,1580 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: Ui Shared Data
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.SharedTableData
+  m_TableCollectionName: Ui
+  m_TableCollectionNameGuidString: faad6b85577d36644b8354cedbc7df40
+  m_Entries:
+  - m_Id: 2940207104
+    m_Key: common.cancel
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826497
+  - m_Id: 2977955840
+    m_Key: common.settings
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826498
+  - m_Id: 2994733056
+    m_Key: common.back
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826499
+  - m_Id: 3019898880
+    m_Key: common.memory_shards
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826500
+  - m_Id: 3036676096
+    m_Key: common.ego
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826501
+  - m_Id: 3057647616
+    m_Key: common.on
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826502
+  - m_Id: 3074424832
+    m_Key: common.off
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826503
+  - m_Id: 3095396352
+    m_Key: common.empty
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826504
+  - m_Id: 3124756480
+    m_Key: common.equipped
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826505
+  - m_Id: 3141533696
+    m_Key: lobby.subtitle
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826506
+  - m_Id: 3162505216
+    m_Key: lobby.continue
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826507
+  - m_Id: 3179282432
+    m_Key: lobby.new_game
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826508
+  - m_Id: 3200253952
+    m_Key: lobby.memory_room
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826509
+  - m_Id: 3221225472
+    m_Key: lobby.quit
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826510
+  - m_Id: 3242196992
+    m_Key: lobby.hint
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826511
+  - m_Id: 3263168512
+    m_Key: lobby.continue_empty
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826512
+  - m_Id: 3279945728
+    m_Key: pause.title
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826513
+  - m_Id: 3305111552
+    m_Key: pause.subtitle
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826514
+  - m_Id: 3330277376
+    m_Key: pause.resume
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826515
+  - m_Id: 3347054592
+    m_Key: pause.return_to_menu
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826516
+  - m_Id: 3372220416
+    m_Key: pause.hint
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826517
+  - m_Id: 3393191936
+    m_Key: pause.confirm_save_title
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826518
+  - m_Id: 3409969152
+    m_Key: pause.confirm_save_message_format
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826519
+  - m_Id: 3430940672
+    m_Key: pause.confirm_unsavable_title
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826520
+  - m_Id: 3451912192
+    m_Key: pause.confirm_unsavable_message
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826521
+  - m_Id: 3472883712
+    m_Key: pause.confirm_leave
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826522
+  - m_Id: 3489660928
+    m_Key: saveslot.new_game_title
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826523
+  - m_Id: 3519021056
+    m_Key: saveslot.new_game_subtitle
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826524
+  - m_Id: 3535798272
+    m_Key: saveslot.load_title
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826525
+  - m_Id: 3556769792
+    m_Key: saveslot.load_subtitle
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826526
+  - m_Id: 3577741312
+    m_Key: saveslot.hint
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826527
+  - m_Id: 3598712832
+    m_Key: saveslot.unknown_region
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826528
+  - m_Id: 3619684352
+    m_Key: saveslot.checkpoint_format
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826529
+  - m_Id: 3640655872
+    m_Key: saveslot.unnamed_checkpoint
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826530
+  - m_Id: 3661627392
+    m_Key: saveslot.quick_save
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826531
+  - m_Id: 3682598912
+    m_Key: saveslot.overwrite_title_format
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826532
+  - m_Id: 3703570432
+    m_Key: saveslot.delete_title_format
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826533
+  - m_Id: 3724541952
+    m_Key: saveslot.warning
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826534
+  - m_Id: 3745513472
+    m_Key: saveslot.overwrite
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826535
+  - m_Id: 3766484992
+    m_Key: saveslot.delete
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826536
+  - m_Id: 3787456512
+    m_Key: saveslot.summary_format
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826537
+  - m_Id: 3812622336
+    m_Key: saveslot.row.empty_title
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826538
+  - m_Id: 3833593856
+    m_Key: saveslot.row.create_new
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826539
+  - m_Id: 3858759680
+    m_Key: saveslot.row.empty_create
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826540
+  - m_Id: 3875536896
+    m_Key: saveslot.row.empty_load
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826541
+  - m_Id: 3896508416
+    m_Key: saveslot.row.equipped_skills
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826542
+  - m_Id: 3917479936
+    m_Key: area.prologue
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826543
+  - m_Id: 3938451456
+    m_Key: area.circus_theater
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826544
+  - m_Id: 3963617280
+    m_Key: area.underside
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826545
+  - m_Id: 3980394496
+    m_Key: interact.prepare
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826546
+  - m_Id: 4005560320
+    m_Key: interact.talk
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826547
+  - m_Id: 4026531840
+    m_Key: interact.enter
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826548
+  - m_Id: 4047503360
+    m_Key: interact.return
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826549
+  - m_Id: 4068474880
+    m_Key: unlock.skill_subtitle
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826550
+  - m_Id: 4089446400
+    m_Key: unlock.ability_subtitle
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826551
+  - m_Id: 4102029312
+    m_Key: ability.double_jump
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826552
+  - m_Id: 4123000832
+    m_Key: ability.dash
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826553
+  - m_Id: 4139778048
+    m_Key: loadout.title
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826554
+  - m_Id: 4156555264
+    m_Key: loadout.owned_skills
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826555
+  - m_Id: 4177526784
+    m_Key: loadout.equip_slots
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826556
+  - m_Id: 4198498304
+    m_Key: loadout.slot_1
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826557
+  - m_Id: 4215275520
+    m_Key: loadout.slot_2
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826558
+  - m_Id: 4236247040
+    m_Key: loadout.slot_3
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826559
+  - m_Id: 4253024256
+    m_Key: loadout.stats_header
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826560
+  - m_Id: 4269801472
+    m_Key: loadout.help
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826561
+  - m_Id: 4290772992
+    m_Key: loadout.level_max_format
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826562
+  - m_Id: 4311744512
+    m_Key: loadout.upgrade_format
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826563
+  - m_Id: 4328521728
+    m_Key: loadout.short_of_shards_format
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826564
+  - m_Id: 4349493248
+    m_Key: loadout.max_level
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826565
+  - m_Id: 4370464768
+    m_Key: loadout.refund_format
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826566
+  - m_Id: 4387241984
+    m_Key: loadout.cost_format
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826567
+  - m_Id: 4408213504
+    m_Key: loadout.cost_basis_format
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826568
+  - m_Id: 4429185024
+    m_Key: loadout.cost_basis_minimum_format
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826569
+  - m_Id: 4445962240
+    m_Key: loadout.cost_basis_percent_format
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826570
+  - m_Id: 4475322368
+    m_Key: loadout.equipped_format
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826571
+  - m_Id: 4500488192
+    m_Key: loadout.not_equipped
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826572
+  - m_Id: 4521459712
+    m_Key: loadout.locked_state
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826573
+  - m_Id: 4534042624
+    m_Key: loadout.no_level
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826574
+  - m_Id: 4559208448
+    m_Key: skill.unnamed
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826575
+  - m_Id: 4584374272
+    m_Key: skill.pure_dream.name
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826576
+  - m_Id: 4605345792
+    m_Key: skill.pure_dream.role
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826577
+  - m_Id: 4630511616
+    m_Key: skill.pure_dream.desc
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826578
+  - m_Id: 4651483136
+    m_Key: skill.broken_phantasm.name
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826579
+  - m_Id: 4676648960
+    m_Key: skill.broken_phantasm.role
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826580
+  - m_Id: 4701814784
+    m_Key: skill.broken_phantasm.desc
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826581
+  - m_Id: 4726980608
+    m_Key: skill.cycle_of_fate.name
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826582
+  - m_Id: 4747952128
+    m_Key: skill.cycle_of_fate.role
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826583
+  - m_Id: 4773117952
+    m_Key: skill.cycle_of_fate.desc
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826584
+  - m_Id: 4798283776
+    m_Key: skill.invisible_reality.name
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826585
+  - m_Id: 4823449600
+    m_Key: skill.invisible_reality.role
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826586
+  - m_Id: 4848615424
+    m_Key: skill.invisible_reality.desc
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826587
+  - m_Id: 4873781248
+    m_Key: skill.close_call.name
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826588
+  - m_Id: 4890558464
+    m_Key: skill.close_call.role
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826589
+  - m_Id: 4911529984
+    m_Key: skill.close_call.desc
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826590
+  - m_Id: 4928307200
+    m_Key: skill.stat.damage
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826591
+  - m_Id: 4953473024
+    m_Key: skill.stat.range
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826592
+  - m_Id: 4974444544
+    m_Key: skill.stat.area
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826593
+  - m_Id: 4995416064
+    m_Key: skill.stat.pierce
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826594
+  - m_Id: 5016387584
+    m_Key: skill.stat.pierce_value_format
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826595
+  - m_Id: 5033164800
+    m_Key: skill.stat.execute_threshold
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826596
+  - m_Id: 5058330624
+    m_Key: skill.stat.execute_threshold_value_format
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826597
+  - m_Id: 5083496448
+    m_Key: skill.stat.restrain
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826598
+  - m_Id: 5104467968
+    m_Key: skill.stat.duration
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826599
+  - m_Id: 5125439488
+    m_Key: skill.stat.seconds_format
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826600
+  - m_Id: 5150605312
+    m_Key: skill.stat.max_count
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826601
+  - m_Id: 5171576832
+    m_Key: skill.stat.ball_count
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826602
+  - m_Id: 5192548352
+    m_Key: skill.stat.ball_size
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826603
+  - m_Id: 5209325568
+    m_Key: skill.stat.stack_gain
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826604
+  - m_Id: 5234491392
+    m_Key: skill.stat.explosion_damage
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826605
+  - m_Id: 5251268608
+    m_Key: skill.stat.self_heal
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826606
+  - m_Id: 5276434432
+    m_Key: settings.tab.general
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826607
+  - m_Id: 5297405952
+    m_Key: settings.tab.controls
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826608
+  - m_Id: 5318377472
+    m_Key: settings.tab.graphics
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826609
+  - m_Id: 5335154688
+    m_Key: settings.close_hint
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826610
+  - m_Id: 5364514816
+    m_Key: settings.apply
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826611
+  - m_Id: 5385486336
+    m_Key: settings.reset_defaults
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826612
+  - m_Id: 5406457856
+    m_Key: settings.section.sound
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826613
+  - m_Id: 5423235072
+    m_Key: settings.section.display
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826614
+  - m_Id: 5448400896
+    m_Key: settings.section.dialogue
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826615
+  - m_Id: 5473566720
+    m_Key: settings.section.actions
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826616
+  - m_Id: 5498732544
+    m_Key: settings.section.keyboard
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826617
+  - m_Id: 5519704064
+    m_Key: settings.section.gamepad
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826618
+  - m_Id: 5540675584
+    m_Key: settings.section.screen
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826619
+  - m_Id: 5561647104
+    m_Key: settings.master_volume
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826620
+  - m_Id: 5586812928
+    m_Key: settings.music_volume
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826621
+  - m_Id: 5607784448
+    m_Key: settings.sfx_volume
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826622
+  - m_Id: 5628755968
+    m_Key: settings.language
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826623
+  - m_Id: 5653921792
+    m_Key: settings.damage_numbers
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826624
+  - m_Id: 5670699008
+    m_Key: settings.screen_shake
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826625
+  - m_Id: 5695864832
+    m_Key: settings.resolution
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826626
+  - m_Id: 5716836352
+    m_Key: settings.screen_mode
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826627
+  - m_Id: 5737807872
+    m_Key: settings.vsync
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826628
+  - m_Id: 5767168000
+    m_Key: settings.frame_limit
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826629
+  - m_Id: 5783945216
+    m_Key: settings.screen_mode.fullscreen
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826630
+  - m_Id: 5809111040
+    m_Key: settings.screen_mode.borderless
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826631
+  - m_Id: 5825888256
+    m_Key: settings.screen_mode.windowed
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826632
+  - m_Id: 5846859776
+    m_Key: settings.frame_limit.unlimited
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826633
+  - m_Id: 5872025600
+    m_Key: settings.hint.general
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826634
+  - m_Id: 5892997120
+    m_Key: settings.hint.controls
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826635
+  - m_Id: 5909774336
+    m_Key: settings.hint.graphics
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826636
+  - m_Id: 5930745856
+    m_Key: keybind.action.move_left
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826637
+  - m_Id: 5951717376
+    m_Key: keybind.action.move_right
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826638
+  - m_Id: 5976883200
+    m_Key: keybind.action.jump
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826639
+  - m_Id: 5997854720
+    m_Key: keybind.action.attack
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826640
+  - m_Id: 6014631936
+    m_Key: keybind.action.interact
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826641
+  - m_Id: 6039797760
+    m_Key: keybind.action.skill_1
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826642
+  - m_Id: 6060769280
+    m_Key: keybind.action.skill_2
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826643
+  - m_Id: 6081740800
+    m_Key: keybind.action.skill_3
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826644
+  - m_Id: 6098518016
+    m_Key: keybind.action.next_dialogue
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826645
+  - m_Id: 6127878144
+    m_Key: keybind.action.pause
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826646
+  - m_Id: 6144655360
+    m_Key: keybind.key.mouse_left
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826647
+  - m_Id: 6169821184
+    m_Key: keybind.key.mouse_right
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826648
+  - m_Id: 6190792704
+    m_Key: keybind.key.mouse_middle
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826649
+  - m_Id: 6207569920
+    m_Key: keybind.key.mouse_forward
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826650
+  - m_Id: 6232735744
+    m_Key: keybind.key.mouse_back
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826651
+  - m_Id: 6245318656
+    m_Key: keybind.key.gamepad_south
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826652
+  - m_Id: 6270484480
+    m_Key: keybind.key.gamepad_east
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826653
+  - m_Id: 6291456000
+    m_Key: keybind.key.gamepad_west
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826654
+  - m_Id: 6316621824
+    m_Key: keybind.key.gamepad_north
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826655
+  - m_Id: 6337593344
+    m_Key: keybind.key.left_stick_press
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826656
+  - m_Id: 6354370560
+    m_Key: keybind.key.right_stick_press
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826657
+  - m_Id: 6379536384
+    m_Key: keybind.key.dpad_up
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826658
+  - m_Id: 6400507904
+    m_Key: keybind.key.dpad_down
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826659
+  - m_Id: 6421479424
+    m_Key: keybind.key.dpad_left
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826660
+  - m_Id: 6442450944
+    m_Key: keybind.key.dpad_right
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826661
+  - m_Id: 6459228160
+    m_Key: keybind.key.left_stick_up
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826662
+  - m_Id: 6480199680
+    m_Key: keybind.key.left_stick_down
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826663
+  - m_Id: 6496976896
+    m_Key: keybind.key.left_stick_left
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826664
+  - m_Id: 6522142720
+    m_Key: keybind.key.left_stick_right
+    m_Metadata:
+      m_Items:
+      - rid: 5254442198914826665
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 5254442198914826496
+  references:
+    version: 2
+    RefIds:
+    - rid: 5254442198914826496
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1789578830724
+    - rid: 5254442198914826497
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "PauseMenu \xB7 SaveSlotSelect \xB7 SettingsPanel \uBC84\uD2BC"
+    - rid: 5254442198914826498
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "MainLobby \xB7 PauseMenu \uBA54\uB274 \uC904, SettingsPanel
+          \uC81C\uBAA9"
+    - rid: 5254442198914826499
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SaveSlotSelect \uBC84\uD2BC"
+    - rid: 5254442198914826500
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "PlayerHud \xB7 SaveSlotRow \xB7 SkillLoadout \uB77C\uBCA8"
+    - rid: 5254442198914826501
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SaveSlotRow \uB77C\uBCA8 (\uC790\uC544 \uAC8C\uC774\uC9C0
+          = \uCCB4\uB825)"
+    - rid: 5254442198914826502
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: SettingsToggleRow.onText
+    - rid: 5254442198914826503
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: SettingsToggleRow.offText
+    - rid: 5254442198914826504
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SkillLoadout \uC2AC\uB86F \xB7 SkillLoadoutView.emptySlotText"
+    - rid: 5254442198914826505
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: SkillRowView.equippedText
+    - rid: 5254442198914826506
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "MainLobby \uBD80\uC81C"
+    - rid: 5254442198914826507
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "MainLobby \uBA54\uB274 \uC904"
+    - rid: 5254442198914826508
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "MainLobby \uBA54\uB274 \uC904"
+    - rid: 5254442198914826509
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "MainLobby \uBA54\uB274 \uC904"
+    - rid: 5254442198914826510
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "MainLobby \uBA54\uB274 \uC904"
+    - rid: 5254442198914826511
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "MainLobby \uC870\uC791 \uC548\uB0B4"
+    - rid: 5254442198914826512
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: MainLobbyView.continueEmptyText
+    - rid: 5254442198914826513
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "PauseMenu \uC81C\uBAA9"
+    - rid: 5254442198914826514
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "PauseMenu \uBD80\uC81C"
+    - rid: 5254442198914826515
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "PauseMenu \uBA54\uB274 \uC904"
+    - rid: 5254442198914826516
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "PauseMenu \uBA54\uB274 \uC904"
+    - rid: 5254442198914826517
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "PauseMenu \uC870\uC791 \uC548\uB0B4"
+    - rid: 5254442198914826518
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: PauseMenuView.saveTitle
+    - rid: 5254442198914826519
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "PauseMenuView.saveMessageFormat \u2014 {0} = \uC790\uB9AC
+          \uBC88\uD638"
+    - rid: 5254442198914826520
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: PauseMenuView.unsavableTitle
+    - rid: 5254442198914826521
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: PauseMenuView.unsavableMessage
+    - rid: 5254442198914826522
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "PauseMenu \uD655\uC778 \uCC3D \uBC84\uD2BC"
+    - rid: 5254442198914826523
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: SaveSlotSelectView.newGameTitle
+    - rid: 5254442198914826524
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: SaveSlotSelectView.newGameSubtitle
+    - rid: 5254442198914826525
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: SaveSlotSelectView.loadTitle
+    - rid: 5254442198914826526
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: SaveSlotSelectView.loadSubtitle
+    - rid: 5254442198914826527
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SaveSlotSelect \uC870\uC791 \uC548\uB0B4"
+    - rid: 5254442198914826528
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: SaveSlotSelectView.unknownRegionText
+    - rid: 5254442198914826529
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SaveSlotSelectView.checkpointFormat \u2014 {0} = \uAC70\uC6B8
+          \uC774\uB984"
+    - rid: 5254442198914826530
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: SaveSlotSelectView.unnamedCheckpointText
+    - rid: 5254442198914826531
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: SaveSlotSelectView.quickSaveText
+    - rid: 5254442198914826532
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SaveSlotSelectView.overwriteTitleFormat \u2014 {0} = \uC790\uB9AC
+          \uBC88\uD638"
+    - rid: 5254442198914826533
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SaveSlotSelectView.deleteTitleFormat \u2014 {0} = \uC790\uB9AC
+          \uBC88\uD638"
+    - rid: 5254442198914826534
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SaveSlotSelect \uD655\uC778 \uCC3D \uACBD\uACE0"
+    - rid: 5254442198914826535
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: SaveSlotSelectView.overwriteAcceptText
+    - rid: 5254442198914826536
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: SaveSlotSelectView.deleteAcceptText
+    - rid: 5254442198914826537
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SaveSlotSelectView.summaryFormat \u2014 {0} \uC9C0\uC5ED
+          {1} \uD604\uC7AC {2} \uCD5C\uB300 {3} \uC870\uAC01"
+    - rid: 5254442198914826538
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SaveSlotRow \uC81C\uBAA9"
+    - rid: 5254442198914826539
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SaveSlotRow \uBE48\uC790\uB9AC \uB77C\uBCA8"
+    - rid: 5254442198914826540
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: SaveSlotRowView.emptyCreateText
+    - rid: 5254442198914826541
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: SaveSlotRowView.emptyLoadText
+    - rid: 5254442198914826542
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SaveSlotRow \uB77C\uBCA8"
+    - rid: 5254442198914826543
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: SaveSlotSelectView.sceneNames (First)
+    - rid: 5254442198914826544
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: SaveSlotSelectView.sceneNames (CoreScene)
+    - rid: 5254442198914826545
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "DungeonGate.areaTitle \xB7 AreaTitle \uC9C0\uC5ED \uC774\uB984
+          (\uB358\uC804)"
+    - rid: 5254442198914826546
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SaveMirror.label \uC0C1\uD638\uC791\uC6A9 \uD504\uB86C\uD504\uD2B8"
+    - rid: 5254442198914826547
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "NpcDialogue.label \uC0C1\uD638\uC791\uC6A9 \uD504\uB86C\uD504\uD2B8"
+    - rid: 5254442198914826548
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "DungeonGate \xB7 DungeonBranchDoor.label \uC0C1\uD638\uC791\uC6A9
+          \uD504\uB86C\uD504\uD2B8"
+    - rid: 5254442198914826549
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "Room_Secret \uD504\uB9AC\uD339 \uBB38 label \uC0C1\uD638\uC791\uC6A9
+          \uD504\uB86C\uD504\uD2B8"
+    - rid: 5254442198914826550
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: SkillManager.unlockAnnounceSubtitle
+    - rid: 5254442198914826551
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: Player_move.abilityAnnounceSubtitle
+    - rid: 5254442198914826552
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: Player_move.GetAbilityDisplayName
+    - rid: 5254442198914826553
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: Player_move.GetAbilityDisplayName
+    - rid: 5254442198914826554
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SkillLoadout \uC81C\uBAA9"
+    - rid: 5254442198914826555
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SkillLoadout \uBAA9\uB85D \uBA38\uB9AC\uAE00"
+    - rid: 5254442198914826556
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SkillLoadout \uC2AC\uB86F \uBA38\uB9AC\uAE00"
+    - rid: 5254442198914826557
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SkillLoadout \uC2AC\uB86F \uB77C\uBCA8"
+    - rid: 5254442198914826558
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SkillLoadout \uC2AC\uB86F \uB77C\uBCA8"
+    - rid: 5254442198914826559
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SkillLoadout \uC2AC\uB86F \uB77C\uBCA8"
+    - rid: 5254442198914826560
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SkillLoadout \uC218\uCE58\uD45C \uBA38\uB9AC\uAE00 \u2014
+          <pos> \uD0DC\uADF8 \uC720\uC9C0"
+    - rid: 5254442198914826561
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SkillLoadout \uC870\uC791 \uC548\uB0B4"
+    - rid: 5254442198914826562
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: SkillLoadoutView.levelMaxFormat
+    - rid: 5254442198914826563
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SkillLoadoutView.upgradeText \u2014 {0} = \uC62C\uB77C\uAC08
+          \uB808\uBCA8"
+    - rid: 5254442198914826564
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SkillLoadoutView.shortOfShardsText \u2014 {0} = \uBAA8\uC790\uB780
+          \uAC1C\uC218"
+    - rid: 5254442198914826565
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: SkillLoadoutView.maxLevelText
+    - rid: 5254442198914826566
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SkillLoadoutView.refundText \u2014 {0} = \uB3CC\uB824\uBC1B\uC744
+          \uAC1C\uC218"
+    - rid: 5254442198914826567
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: SkillLoadoutView.costFormat
+    - rid: 5254442198914826568
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SkillLoadoutView.costBasisFormat \u2014 {0} \uADFC\uAC70
+          {1} \uBCF4\uC720\uB7C9"
+    - rid: 5254442198914826569
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: SkillLoadoutView.minimumBasisFormat
+    - rid: 5254442198914826570
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: SkillLoadoutView.percentBasisFormat
+    - rid: 5254442198914826571
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SkillLoadoutView.equippedFormat \u2014 {0} = \uC2AC\uB86F
+          \uBC88\uD638"
+    - rid: 5254442198914826572
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: SkillLoadoutView.notEquippedText
+    - rid: 5254442198914826573
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: SkillRowView.lockedStateText
+    - rid: 5254442198914826574
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: SkillRowView.noLevelText
+    - rid: 5254442198914826575
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SkillBase.skillName \uAE30\uBCF8\uAC12"
+    - rid: 5254442198914826576
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: Skill_PureDream.skillName
+    - rid: 5254442198914826577
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: Skill_PureDream.roleLabel
+    - rid: 5254442198914826578
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: Skill_PureDream.description
+    - rid: 5254442198914826579
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: Skill_BrokenPhantasm.skillName
+    - rid: 5254442198914826580
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: Skill_BrokenPhantasm.roleLabel
+    - rid: 5254442198914826581
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: Skill_BrokenPhantasm.description
+    - rid: 5254442198914826582
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: Skill_CycleOfFate.skillName
+    - rid: 5254442198914826583
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: Skill_CycleOfFate.roleLabel
+    - rid: 5254442198914826584
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "Skill_CycleOfFate.description \u2014 \uC6D0\uBCF8 \uC5D0\uC14B\uC758
+          \uC624\uD0C0(\uC30A\uC774\uACE0)\uB97C \uBC14\uB85C\uC7A1\uC74C"
+    - rid: 5254442198914826585
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: Skill_InvisibleReality.skillName
+    - rid: 5254442198914826586
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: Skill_InvisibleReality.roleLabel
+    - rid: 5254442198914826587
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: Skill_InvisibleReality.description
+    - rid: 5254442198914826588
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: Skill_CloseCall.skillName
+    - rid: 5254442198914826589
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: Skill_CloseCall.roleLabel
+    - rid: 5254442198914826590
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: Skill_CloseCall.description
+    - rid: 5254442198914826591
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SkillStat \uB77C\uBCA8 (PureDream \xB7 BrokenPhantasm \xB7
+          CycleOfFate \xB7 CloseCall)"
+    - rid: 5254442198914826592
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SkillStat \uB77C\uBCA8 (BrokenPhantasm \xB7 CloseCall)"
+    - rid: 5254442198914826593
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SkillStat \uB77C\uBCA8 (PureDream \xB7 InvisibleReality)"
+    - rid: 5254442198914826594
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SkillStat \uB77C\uBCA8 (BrokenPhantasm)"
+    - rid: 5254442198914826595
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "Skill_BrokenPhantasm \uAD00\uD1B5 \uC218\uCE58 \u2014 {0}
+          = \uAD00\uD1B5 \uC218"
+    - rid: 5254442198914826596
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SkillStat \uB77C\uBCA8 (CloseCall)"
+    - rid: 5254442198914826597
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "Skill_CloseCall \uCC98\uD615 \uAE30\uC900 \uC218\uCE58 \u2014
+          {0} = \uD37C\uC13C\uD2B8"
+    - rid: 5254442198914826598
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SkillStat \uB77C\uBCA8 (CloseCall)"
+    - rid: 5254442198914826599
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SkillStat \uB77C\uBCA8 (InvisibleReality)"
+    - rid: 5254442198914826600
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "CloseCall \uAD6C\uC18D \xB7 InvisibleReality \uC9C0\uC18D
+          \uC218\uCE58 \u2014 {0} = \uCD08"
+    - rid: 5254442198914826601
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SkillStat \uB77C\uBCA8 (InvisibleReality)"
+    - rid: 5254442198914826602
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SkillStat \uB77C\uBCA8 (CycleOfFate)"
+    - rid: 5254442198914826603
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SkillStat \uB77C\uBCA8 (CycleOfFate)"
+    - rid: 5254442198914826604
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SkillStat \uB77C\uBCA8 (CycleOfFate)"
+    - rid: 5254442198914826605
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SkillStat \uB77C\uBCA8 (CycleOfFate)"
+    - rid: 5254442198914826606
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SkillStat \uB77C\uBCA8 (PureDream)"
+    - rid: 5254442198914826607
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SettingsPanel \uD0ED"
+    - rid: 5254442198914826608
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SettingsPanel \uD0ED"
+    - rid: 5254442198914826609
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SettingsPanel \uD0ED"
+    - rid: 5254442198914826610
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SettingsPanel \uC6B0\uC0C1\uB2E8"
+    - rid: 5254442198914826611
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SettingsPanel \uBC84\uD2BC"
+    - rid: 5254442198914826612
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SettingsPanel \uBC84\uD2BC"
+    - rid: 5254442198914826613
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SettingsPanel \uC77C\uBC18 \uD0ED \uAD6C\uD68D"
+    - rid: 5254442198914826614
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SettingsPanel \uC77C\uBC18 \uD0ED \uAD6C\uD68D"
+    - rid: 5254442198914826615
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SettingsPanel \uC77C\uBC18 \uD0ED \uAD6C\uD68D"
+    - rid: 5254442198914826616
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SettingsPanel \uCEE8\uD2B8\uB864 \uD0ED \uC5F4 \uBA38\uB9AC\uAE00"
+    - rid: 5254442198914826617
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SettingsPanel \uCEE8\uD2B8\uB864 \uD0ED \uC5F4 \uBA38\uB9AC\uAE00"
+    - rid: 5254442198914826618
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SettingsPanel \uCEE8\uD2B8\uB864 \uD0ED \uC5F4 \uBA38\uB9AC\uAE00"
+    - rid: 5254442198914826619
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SettingsPanel \uADF8\uB798\uD53D \uD0ED \uAD6C\uD68D"
+    - rid: 5254442198914826620
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SettingsPanel \uC904"
+    - rid: 5254442198914826621
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SettingsPanel \uC904"
+    - rid: 5254442198914826622
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SettingsPanel \uC904"
+    - rid: 5254442198914826623
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SettingsPanel \uC904"
+    - rid: 5254442198914826624
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SettingsPanel \uC904"
+    - rid: 5254442198914826625
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SettingsPanel \uC904"
+    - rid: 5254442198914826626
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SettingsPanel \uC904"
+    - rid: 5254442198914826627
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SettingsPanel \uC904"
+    - rid: 5254442198914826628
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SettingsPanel \uC904"
+    - rid: 5254442198914826629
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SettingsPanel \uC904"
+    - rid: 5254442198914826630
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: 'GameSettings.ScreenModeLabels[0]'
+    - rid: 5254442198914826631
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: 'GameSettings.ScreenModeLabels[1]'
+    - rid: 5254442198914826632
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: 'GameSettings.ScreenModeLabels[2]'
+    - rid: 5254442198914826633
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: 'GameSettings.FrameLimitLabels[3]'
+    - rid: 5254442198914826634
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SettingsPanel \uC77C\uBC18 \uD0ED \uC548\uB0B4"
+    - rid: 5254442198914826635
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SettingsPanel \uCEE8\uD2B8\uB864 \uD0ED \uC548\uB0B4"
+    - rid: 5254442198914826636
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SettingsPanel \uADF8\uB798\uD53D \uD0ED \uC548\uB0B4"
+    - rid: 5254442198914826637
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "InputBindings \uD56D\uBAA9 \xB7 SettingsPanel \uD0A4 \uC124\uC815
+          \uC904"
+    - rid: 5254442198914826638
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "InputBindings \uD56D\uBAA9 \xB7 SettingsPanel \uD0A4 \uC124\uC815
+          \uC904"
+    - rid: 5254442198914826639
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "InputBindings \uD56D\uBAA9 \xB7 SettingsPanel \uD0A4 \uC124\uC815
+          \uC904"
+    - rid: 5254442198914826640
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "InputBindings \uD56D\uBAA9 \xB7 SettingsPanel \uD0A4 \uC124\uC815
+          \uC904"
+    - rid: 5254442198914826641
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "InputBindings \uD56D\uBAA9 \xB7 SettingsPanel \uD0A4 \uC124\uC815
+          \uC904"
+    - rid: 5254442198914826642
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "InputBindings \uD56D\uBAA9 \xB7 SettingsPanel \uD0A4 \uC124\uC815
+          \uC904"
+    - rid: 5254442198914826643
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "InputBindings \uD56D\uBAA9 \xB7 SettingsPanel \uD0A4 \uC124\uC815
+          \uC904"
+    - rid: 5254442198914826644
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "InputBindings \uD56D\uBAA9 \xB7 SettingsPanel \uD0A4 \uC124\uC815
+          \uC904"
+    - rid: 5254442198914826645
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "InputBindings \uD56D\uBAA9 \xB7 SettingsPanel \uD0A4 \uC124\uC815
+          \uC904"
+    - rid: 5254442198914826646
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "InputBindings \uD56D\uBAA9 \xB7 SettingsPanel \uD0A4 \uC124\uC815
+          \uC904"
+    - rid: 5254442198914826647
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "InputBindings \uD0A4 \uC774\uB984"
+    - rid: 5254442198914826648
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "InputBindings \uD0A4 \uC774\uB984"
+    - rid: 5254442198914826649
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "InputBindings \uD0A4 \uC774\uB984"
+    - rid: 5254442198914826650
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "InputBindings \uD0A4 \uC774\uB984"
+    - rid: 5254442198914826651
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "InputBindings \uD0A4 \uC774\uB984"
+    - rid: 5254442198914826652
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "InputBindings \uD0A4 \uC774\uB984"
+    - rid: 5254442198914826653
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "InputBindings \uD0A4 \uC774\uB984"
+    - rid: 5254442198914826654
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "InputBindings \uD0A4 \uC774\uB984"
+    - rid: 5254442198914826655
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "InputBindings \uD0A4 \uC774\uB984"
+    - rid: 5254442198914826656
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "InputBindings \uD0A4 \uC774\uB984"
+    - rid: 5254442198914826657
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "InputBindings \uD0A4 \uC774\uB984"
+    - rid: 5254442198914826658
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "InputBindings \uD0A4 \uC774\uB984"
+    - rid: 5254442198914826659
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "InputBindings \uD0A4 \uC774\uB984"
+    - rid: 5254442198914826660
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "InputBindings \uD0A4 \uC774\uB984"
+    - rid: 5254442198914826661
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "InputBindings \uD0A4 \uC774\uB984"
+    - rid: 5254442198914826662
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "InputBindings \uD0A4 \uC774\uB984"
+    - rid: 5254442198914826663
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "InputBindings \uD0A4 \uC774\uB984"
+    - rid: 5254442198914826664
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "InputBindings \uD0A4 \uC774\uB984"
+    - rid: 5254442198914826665
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "InputBindings \uD0A4 \uC774\uB984"

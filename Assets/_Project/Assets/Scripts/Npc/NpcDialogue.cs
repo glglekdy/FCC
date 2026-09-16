@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-// E키로 반복해서 말을 걸 수 있는 NPC. 대화를 건 횟수(NpcDialogueManager가 세이브까지 기억한다)에 따라
+// F키로 반복해서 말을 걸 수 있는 NPC. 대화를 건 횟수(NpcDialogueManager가 세이브까지 기억한다)에 따라
 // dialogueSets 중 해당 순번의 대사를 재생하고, 목록보다 많이 말을 걸면 마지막 세트를 반복한다.
 // 재생 루프는 DialogueTriggerZone과 같은 DialoguePlayer를 쓴다.
 //
@@ -82,8 +82,9 @@ public class NpcDialogue : MonoBehaviour, IInteractable {
 
         int talkCount = NpcDialogueManager.Instance != null ? NpcDialogueManager.Instance.GetTalkCount(npcId) : 0;
         int index = Mathf.Min(talkCount, dialogueSets.Count - 1);
+        NpcDialogueSet set = dialogueSets[index];
 
-        yield return DialoguePlayer.Play(view, dialogueSets[index].entries, advanceAction, hideOnFinish);
+        yield return DialoguePlayer.Play(view, set.entries, advanceAction, hideOnFinish);
 
         if (NpcDialogueManager.Instance != null) {
             NpcDialogueManager.Instance.IncrementTalkCount(npcId);
@@ -94,6 +95,9 @@ public class NpcDialogue : MonoBehaviour, IInteractable {
 
         if (playerMove != null) playerMove.isMovementLocked = false;
         isTalking = false;
+
+        // 마지막 세트를 반복해서 들어도 이미 배운 기술이면 UnlockAbility 가 조용히 무시한다.
+        if (set.unlockAbility != Player_Ability.None) Player_AbilityUnlocker.Unlock(set.unlockAbility);
 
         // 파괴된 뒤에도 C# 참조가 남을 수 있어 ?. 대신 != null 로 Unity의 == 오버로드를 탄다.
         if (!string.IsNullOrEmpty(objectiveId) && ObjectiveManager.Instance != null) {

@@ -51,7 +51,16 @@ AnimationClip:
       m_RotationOrder: 4
     path: Renderer
   m_FloatCurves: []
-  m_PPtrCurves: []
+  m_PPtrCurves:
+  - serializedVersion: 2
+    curve:
+    - time: 0
+      value: {fileID: -8463336668259947013, guid: a1f6c1b7d2e34e16a48f8d0a9bc30111, type: 3}
+    attribute: m_Sprite
+    path: Renderer/Sprite
+    classID: 212
+    script: {fileID: 0}
+    flags: 2
   m_SampleRate: 30
   m_WrapMode: 2
   m_Bounds:
@@ -68,7 +77,17 @@ AnimationClip:
       isPPtrCurve: 0
       isIntCurve: 0
       isSerializeReferenceCurve: 0
-    pptrCurveMapping: []
+    - serializedVersion: 2
+      path: 3083561278
+      attribute: 0
+      script: {fileID: 0}
+      typeID: 212
+      customType: 23
+      isPPtrCurve: 1
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
+    pptrCurveMapping:
+    - {fileID: -8463336668259947013, guid: a1f6c1b7d2e34e16a48f8d0a9bc30111, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}

@@ -5,4 +5,5 @@ using System.Collections.Generic;
 [System.Serializable]
 public class NpcDialogueSet {
     public List<DialogueEntry> entries = new(); // 이 순번에 재생할 대사.
+    public Player_Ability unlockAbility; // None 이 아니면 이 순번의 대사가 끝날 때 이 이동 패시브를 배운다. 곡예사 NPC가 대화마다 하나씩 가르칠 때 쓴다.
 }

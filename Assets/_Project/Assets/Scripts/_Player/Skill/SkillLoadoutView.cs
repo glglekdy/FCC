@@ -84,7 +84,7 @@ public class SkillLoadoutView : MonoBehaviour {
     int selectedSlot; // 지금 고른 장착 슬롯 (0~2).
     int highlightedRow; // 지금 커서가 올라간 스킬 줄. 잠긴 줄에는 머물지 않는다.
     int unlockedRowCount; // 목록 앞쪽의 되찾은 스킬 줄 수. 잠긴 줄은 그 뒤에 붙는다.
-    int openedFrame = -1; // 연 프레임. 거울을 연 E 가 같은 프레임에 강화(E)로 먹히는 것을 막는다.
+    int openedFrame = -1; // 연 프레임. 거울을 연 입력(F)과 같은 프레임에 눌린 키가 정비 조작으로 먹히는 것을 막는다.
     float savedTimeScale = 1f;
     bool isReady; // 프리팹 연결이 온전한지. 어긋난 채로 열면 NullReference가 쏟아지므로 Awake에서 한 번만 검사한다.
 

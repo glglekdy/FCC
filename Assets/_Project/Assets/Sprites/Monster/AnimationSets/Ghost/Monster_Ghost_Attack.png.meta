@@ -1,31 +1,94 @@
 fileFormatVersion: 2
-guid: 3728c265d9e1afe4ba3d46c38a54a122
+guid: 3cee0a2a768ca964bb675eec13c50013
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -342282369017344436
-    second: Monster_Wraith_States_0
+      213: 2717605187006403561
+    second: Monster_Ghost_Attack_0
   - first:
-      213: 5497365400647463955
-    second: Monster_Wraith_States_1
+      213: 2397357171057511851
+    second: Monster_Ghost_Attack_1
   - first:
-      213: -6925998690434173825
-    second: Monster_Wraith_States_2
+      213: 458994133612765315
+    second: Monster_Ghost_Attack_2
   - first:
-      213: 1292725312048397738
-    second: Monster_Wraith_States_3
+      213: -7398111844130138652
+    second: Monster_Ghost_Attack_3
   - first:
-      213: 1537483238812679701
-    second: Monster_Wraith_States_4
+      213: -6386959629015453442
+    second: Monster_Ghost_Attack_4
   - first:
-      213: 1906249384399483821
-    second: Monster_Wraith_States_5
+      213: -9020811713855338209
+    second: Monster_Ghost_Attack_5
   - first:
-      213: 8652248493173097516
-    second: Monster_Wraith_States_6
+      213: 6973976630151496918
+    second: Monster_Ghost_Attack_6
   - first:
-      213: 6281624216899824458
-    second: Monster_Wraith_States_7
+      213: 8906769673861875118
+    second: Monster_Ghost_Attack_7
+  - first:
+      213: 2351849551375107186
+    second: Monster_Ghost_Attack_8
+  - first:
+      213: -5407100278350060613
+    second: Monster_Ghost_Attack_9
+  - first:
+      213: -1284298151344336508
+    second: Monster_Ghost_Attack_10
+  - first:
+      213: 176507991838994335
+    second: Monster_Ghost_Attack_11
+  - first:
+      213: -3365812872678296315
+    second: Monster_Ghost_Attack_12
+  - first:
+      213: -6461670590181695069
+    second: Monster_Ghost_Attack_13
+  - first:
+      213: -2789999264801358229
+    second: Monster_Ghost_Attack_14
+  - first:
+      213: 8975462104655954511
+    second: Monster_Ghost_Attack_15
+  - first:
+      213: 535620684843896737
+    second: Monster_Ghost_Attack_16
+  - first:
+      213: 1576383366180132415
+    second: Monster_Ghost_Attack_17
+  - first:
+      213: 3343468174063508515
+    second: Monster_Ghost_Attack_18
+  - first:
+      213: -8407107525733441540
+    second: Monster_Ghost_Attack_19
+  - first:
+      213: -7072374836747251125
+    second: Monster_Ghost_Attack_20
+  - first:
+      213: 8697869572642376116
+    second: Monster_Ghost_Attack_21
+  - first:
+      213: 1268143010704120798
+    second: Monster_Ghost_Attack_22
+  - first:
+      213: -8389959331766426857
+    second: Monster_Ghost_Attack_23
+  - first:
+      213: -6968585518285290748
+    second: Monster_Ghost_Attack_24
+  - first:
+      213: -7996032720064101466
+    second: Monster_Ghost_Attack_25
+  - first:
+      213: 5370807087581380563
+    second: Monster_Ghost_Attack_26
+  - first:
+      213: -4801429929939331571
+    second: Monster_Ghost_Attack_27
+  - first:
+      213: -3981668764106028493
+    second: Monster_Ghost_Attack_28
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -72,7 +135,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 520
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -121,89 +184,89 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Monster_Wraith_States_0
+      name: Monster_Ghost_Attack_0
       rect:
         serializedVersion: 2
-        x: 32
-        y: 612
-        width: 574
-        height: 640
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 87
+        y: 679
+        width: 521
+        height: 439
+      alignment: 9
+      pivot: {x: 0.43474087, y: 0.595672}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c4e87d5bff7ff3bf0800000000000000
-      internalID: -342282369017344436
+      spriteID: 9e39643e48fd6b520800000000000000
+      internalID: 2717605187006403561
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Monster_Wraith_States_1
+      name: Monster_Ghost_Attack_1
       rect:
         serializedVersion: 2
-        x: 626
-        y: 673
-        width: 609
-        height: 561
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 655
+        y: 645
+        width: 556
+        height: 383
+      alignment: 9
+      pivot: {x: 0.5134892, y: 0.77154046}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3147d12a4b09a4c40800000000000000
-      internalID: 5497365400647463955
+      spriteID: bad4e9435af154120800000000000000
+      internalID: 2397357171057511851
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Monster_Wraith_States_2
+      name: Monster_Ghost_Attack_2
       rect:
         serializedVersion: 2
-        x: 48
-        y: 55
-        width: 550
-        height: 532
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 53
+        y: 88
+        width: 653
+        height: 373
+      alignment: 9
+      pivot: {x: 0.39892802, y: 0.60455763}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f74b9d5f2e8e1ef90800000000000000
-      internalID: -6925998690434173825
+      spriteID: 3802aff8bbcae5600800000000000000
+      internalID: 458994133612765315
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Monster_Wraith_States_4
+      name: Monster_Ghost_Attack_3
       rect:
         serializedVersion: 2
-        x: 669
-        y: 0
-        width: 566
-        height: 605
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 776
+        y: 71
+        width: 447
+        height: 408
+      alignment: 9
+      pivot: {x: 0.36800894, y: 0.59436274}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 51efb891cdc365510800000000000000
-      internalID: 1537483238812679701
+      spriteID: 4e553028970a45990800000000000000
+      internalID: -7398111844130138652
       vertices: []
       indices: 
       edges: []
@@ -212,7 +275,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: fbfdf06363b5ded4ca1ef47724d3eeb9
+    spriteID: 1dd02d84de967a54c8f46b042a0d5be2
     internalID: 0
     vertices: []
     indices: 
@@ -222,14 +285,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Monster_Wraith_States_0: -342282369017344436
-      Monster_Wraith_States_1: 5497365400647463955
-      Monster_Wraith_States_2: -6925998690434173825
-      Monster_Wraith_States_3: 1292725312048397738
-      Monster_Wraith_States_4: 1537483238812679701
-      Monster_Wraith_States_5: 1906249384399483821
-      Monster_Wraith_States_6: 8652248493173097516
-      Monster_Wraith_States_7: 6281624216899824458
+      Monster_Ghost_Attack_0: 2717605187006403561
+      Monster_Ghost_Attack_1: 2397357171057511851
+      Monster_Ghost_Attack_2: 458994133612765315
+      Monster_Ghost_Attack_3: -7398111844130138652
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -195,6 +195,11 @@ public abstract class SettingsRowView : MonoBehaviour,
         return false;
     }
 
+    // Backspace 입력. 키 재지정 줄만 할당을 비우는 데 쓴다.
+    public virtual bool Clear() {
+        return false;
+    }
+
     #endregion
     #region 마우스
 

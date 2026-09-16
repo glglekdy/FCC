@@ -7,12 +7,13 @@ using UnityEngine;
 // 돌진 자체가 공격이라 분리하면 상태·조준 스냅샷·스윕 시작 위치를 매 프레임 두 컴포넌트가 주고받아야 한다.
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Health))]
-public class FlyMoveSystem : MonoBehaviour {
+public class FlyMoveSystem : MonoBehaviour, IRestrainable {
     #region 인스펙터 변수
 
     [Header("연결")]
     public Transform visual; // 회전·반전시킬 스프라이트 자식. **몬스터 밑의 Renderer 오브젝트를 연결하세요.**
-    public SpriteStateAnimator spriteAnimator; // 상태별 스프라이트 전환 담당. **visual과 같은 Renderer 오브젝트에 붙이고 연결하세요.**
+    public Animator animator; // 상태별 프레임 애니메이션. **visual과 같은 Renderer 오브젝트의 Animator를 연결하세요.** 스테이트 이름은 Idle · Aim · Charge · Drift · Hurt 여야 한다.
+    public SpriteStateAnimator spriteAnimator; // (구) 상태별 정지 이미지 한 장. animator를 연결하면 쓰이지 않는다.
 
     [Header("레이어")]
     public LayerMask playerLayer; // 플레이어 레이어. **Player(3) 를 지정하세요.**
@@ -90,6 +91,7 @@ public class FlyMoveSystem : MonoBehaviour {
     FlyState state = FlyState.Patrol;
     float stateTimer; // 현재 상태에 머문 시간.
     float knockbackTimer; // 0보다 크면 넉백 중 - 추력을 넣지 않아 물리 힘이 그대로 유지된다.
+    float restrainTimer; // 0보다 크면 구속 중(Close Call) - 허공에 멈춰 선다.
     float wallStunTimer;
     float wallHitTimer;
     float lostSightTimer;
@@ -156,6 +158,13 @@ public class FlyMoveSystem : MonoBehaviour {
         float dt = Time.fixedDeltaTime;
         TickTimers(dt);
 
+        // 비행체라 중력이 없으므로 속도를 0으로 못 박으면 그 자리에 떠서 멈춘다.
+        if (restrainTimer > 0f) {
+            rigid.linearVelocity = Vector2.zero;
+            lastCheckPosition = rigid.position;
+            return;
+        }
+
         if (knockbackTimer > 0f) {
             // 속도를 직접 대입하는 방식이라 한 스텝만 개입해도 넉백이 통째로 사라진다.
             lastCheckPosition = rigid.position;
@@ -197,6 +206,7 @@ public class FlyMoveSystem : MonoBehaviour {
 
     void TickTimers(float dt) {
         if (knockbackTimer > 0f) knockbackTimer -= dt;
+        if (restrainTimer > 0f) restrainTimer -= dt;
         if (wallStunTimer > 0f) wallStunTimer -= dt;
         if (wallHitTimer > 0f) wallHitTimer -= dt;
         stateTimer += dt;
@@ -252,7 +262,7 @@ public class FlyMoveSystem : MonoBehaviour {
         state = FlyState.Drift;
         stateTimer = 0f;
         HideAimIndicator();
-        SetStateSprite("Idle"); // 드리프트 전용 스프라이트가 없어 기본상태를 재사용한다. 튕겨나가는 회복 구간이라 위화감이 적다.
+        SetStateSprite("Drift"); // 급제동 → 선회 모션을 한 번 보여 주고, 컨트롤러가 끝나면 Idle 로 되돌린다.
     }
 
     #endregion
@@ -547,6 +557,21 @@ public class FlyMoveSystem : MonoBehaviour {
         // 넉백 잔여 속도가 드리프트 감쇠에 그대로 흡수돼 "튕겨나갔다 미끄러지며 되돌아옴"으로 읽힌다.
         hasHitThisCharge = false;
         if (state != FlyState.Drift) EnterDrift();
+
+        // 드리프트 모션보다 뒤에 건다. 맞았다는 반응이 먼저 읽혀야 하고, 컨트롤러가 끝나면 Idle 로 되돌린다.
+        SetStateSprite("Hurt");
+    }
+
+    // 곡예사의 줄(Close Call)이 호출하는 구속 진입점. 넉백과 같은 이유로 돌진·조준을 끊고 드리프트로 넘긴다 —
+    // 묶였다 풀린 뒤 곧장 돌진을 이어가면 구속이 공격을 늦춰주지 못한다.
+    public void Restrain(float duration) {
+        if (duration <= 0f) return;
+
+        restrainTimer = Mathf.Max(restrainTimer, duration);
+        knockbackTimer = 0f;
+        rigid.linearVelocity = Vector2.zero;
+        hasHitThisCharge = false;
+        if (state != FlyState.Drift) EnterDrift();
     }
 
     #endregion
@@ -568,7 +593,19 @@ public class FlyMoveSystem : MonoBehaviour {
         visual.localScale = scale;
     }
 
+    // 상태 이름 하나로 연출을 고르는 창구. 예전 정지 이미지 방식(SpriteStateAnimator)과 이름 규칙이 같아
+    // 호출부는 그대로 두고 Animator 로만 갈아끼웠다(Monster_Wraith 와 같은 방식).
+    // 같은 이름을 걸러내지 않는다 — 상태에 들어서는 순간에만 부르고, Hurt 처럼 연달아 맞을 때마다 처음부터 다시 재생돼야 하는 모션이 있다.
     void SetStateSprite(string stateName) {
+        if (animator != null) {
+            int hash = Animator.StringToHash(stateName);
+            // 스테이트 이름은 코드에 문자열로 박혀 있고 컨트롤러는 손으로 만드는 것이라, 이름이 어긋나면
+            // Animator.Play 가 조용히 아무것도 안 한다. 그 연출이 통째로 사라진 걸 모르고 넘어가지 않도록 알린다.
+            if (animator.HasState(0, hash)) animator.Play(hash, 0, 0f);
+            else Debug.LogWarning($"[FlyMoveSystem] '{name}' — Animator 에 스테이트 '{stateName}' 가 없습니다. 컨트롤러의 스테이트 이름을 맞추세요.", this);
+            return;
+        }
+
         if (spriteAnimator != null) spriteAnimator.Play(stateName);
     }
 

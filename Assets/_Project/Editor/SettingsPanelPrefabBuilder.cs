@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 // 설정창 프리팹을 한 번 찍어내는 에디터 도구.
@@ -20,6 +21,7 @@ public static class SettingsPanelPrefabBuilder {
 
     const string PrefabDir = "Assets/_Project/Assets/Prefabs/UI";
     const string PrefabPath = PrefabDir + "/SettingsPanel.prefab";
+    const string InputActionsPath = "Assets/_Project/Assets/Input/Client.inputactions"; // 컨트롤 탭이 키를 읽고 바꿀 입력 에셋.
 
     // Figma 안의 수치. 이름을 붙여두면 어디서 온 값인지 나중에 대조할 수 있다.
     const float CurtainWidth = 120f;
@@ -71,6 +73,10 @@ public static class SettingsPanelPrefabBuilder {
         RectTransform panel = Panel(root.transform);
 
         SettingsPanelView view = root.AddComponent<SettingsPanelView>();
+        view.inputActions = AssetDatabase.LoadAssetAtPath<InputActionAsset>(InputActionsPath);
+        if (view.inputActions == null) {
+            Debug.LogWarning("[SettingsPanel] 입력 에셋을 찾지 못했습니다 — " + InputActionsPath + ". 컨트롤 탭의 키 칸이 비게 됩니다.");
+        }
         List<SettingsPanelView.Tab> tabs = new List<SettingsPanelView.Tab>();
 
         BuildHeader(panel, font);
@@ -192,7 +198,7 @@ public static class SettingsPanelPrefabBuilder {
     static void BuildHints(Transform root, TMP_FontAsset font, List<SettingsPanelView.Tab> tabs) {
         string[] texts = {
             "상하 방향키로 항목 이동 / 좌우 방향키로 값 변경 / Enter 확정",
-            "Enter로 다시 지정 / 새 키를 누르면 등록 / Backspace로 해제",
+            "Enter 또는 칸 클릭으로 다시 지정 / 새 키를 누르면 등록 / ESC 취소 / Backspace로 해제",
             "해상도와 화면 모드는 적용을 눌러야 반영됩니다 / 15초 안에 확인하지 않으면 되돌립니다",
         };
 
@@ -240,23 +246,23 @@ public static class SettingsPanelPrefabBuilder {
         Caption(head, font, "키보드", 768f, 0f);
         Caption(head, font, "게임패드", 1028f, 0f);
 
-        // 동작 이름과 초기 키는 GameSettings 가 들고 있다. 여기서 또 적어두면 실행 중 표시와 어긋난다.
-        string[] actions = GameSettings.ActionNames;
-        string[] keys = GameSettings.DefaultKeyboard;
-        string[] pads = GameSettings.DefaultPad;
+        // 동작 이름은 InputBindings 의 대응표가, 칸에 적을 키는 입력 에셋이 들고 있다. 여기서 또 적어두면 실행 중 표시와 어긋난다.
+        // 실행 중에는 SettingsKeybindRow 가 저장된 재지정까지 반영해 다시 적으므로, 여기 값은 편집 화면에서 보이는 자리 표시다.
+        InputActionAsset actionAsset = AssetDatabase.LoadAssetAtPath<InputActionAsset>(InputActionsPath);
+        InputBindings.Entry[] entries = InputBindings.Entries;
 
-        for (int i = 0; i < actions.Length; i++) {
+        for (int i = 0; i < entries.Length; i++) {
             float y = 34f + i * 48f;
 
-            Image bg = Box(page, "Row_" + i + "_" + actions[i].Replace(" ", ""), UiTheme.Transparent);
+            Image bg = Box(page, "Row_" + i + "_" + entries[i].label.Replace(" ", ""), UiTheme.Transparent);
             bg.raycastTarget = true; // 줄의 마우스 입력(SettingsRowView)을 이 배경이 받는다.
             Place(bg.rectTransform, 0f, y, ContentW, RowH);
 
             GameObject marker = FocusMarker(bg.rectTransform);
-            TextMeshProUGUI label = RowLabel(bg.rectTransform, font, actions[i]);
+            TextMeshProUGUI label = RowLabel(bg.rectTransform, font, entries[i].label);
 
-            Image keyChip = Chip(bg.rectTransform, font, "Chip_Key", keys[i], 768f, out TextMeshProUGUI keyText);
-            Image padChip = Chip(bg.rectTransform, font, "Chip_Pad", pads[i], 1028f, out TextMeshProUGUI padText);
+            Image keyChip = Chip(bg.rectTransform, font, "Chip_Key", DefaultName(actionAsset, i, BindingDevice.Keyboard), 768f, out TextMeshProUGUI keyText);
+            Image padChip = Chip(bg.rectTransform, font, "Chip_Pad", DefaultName(actionAsset, i, BindingDevice.Gamepad), 1028f, out TextMeshProUGUI padText);
 
             SettingsKeybindRow row = bg.gameObject.AddComponent<SettingsKeybindRow>();
             row.field = SettingsField.Keybind;
@@ -269,6 +275,12 @@ public static class SettingsPanelPrefabBuilder {
             row.padChip = padChip;
             row.padLabel = padText;
         }
+    }
+
+    // 바인딩이 없는 칸(이동의 게임패드 칸 등)은 줄에서 쓰는 것과 같은 표시로 둔다.
+    static string DefaultName(InputActionAsset asset, int entryIndex, BindingDevice device) {
+        string name = InputBindings.DefaultName(asset, entryIndex, device);
+        return string.IsNullOrEmpty(name) ? "-" : name;
     }
 
     static Image Chip(RectTransform parent, TMP_FontAsset font, string name, string text, float x, out TextMeshProUGUI label) {

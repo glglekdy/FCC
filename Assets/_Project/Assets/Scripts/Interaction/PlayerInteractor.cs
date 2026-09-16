@@ -18,7 +18,8 @@ public class PlayerInteractor : MonoBehaviour {
 
     [Header("프롬프트 문구")]
     public TMP_FontAsset fontAsset; // **한글 문구를 쓰므로 SCDream SDF를 지정하세요.** 비워두면 TMP 기본 폰트라 한글이 깨진다.
-    public string keyLabel = "E"; // 문구 앞에 붙는 키 이름. 키 바인딩을 바꾸면 여기도 같이 고칠 것.
+    public string actionName = "Interact"; // 문구에 키 이름을 적을 입력 액션 (Client ▸ Player). 설정에서 키를 바꾸면 문구도 따라간다.
+    public string keyLabel = "F"; // 액션을 찾지 못했을 때만 쓰는 키 이름.
     public float fontSize = 3f;
     public Color textColor = new(1f, 0.95f, 0.8f, 1f);
     public Color outlineColor = Color.black;
@@ -35,6 +36,9 @@ public class PlayerInteractor : MonoBehaviour {
     #region 컴포넌트 변수
 
     Player_move playerMove;
+    PlayerInput playerInput; // 상호작용 키 이름을 읽어 올 곳. 입력 자체는 SendMessage(OnInteract)로 받는다.
+    string shownKey; // 문구 앞에 적는 키 이름. 매 프레임 만들지 않도록 기억해 둔다.
+    bool keyDirty = true;
     TextMeshPro prompt;
     IInteractable current; // 지금 프롬프트가 가리키고 있는 대상.
     float promptAlpha;
@@ -48,6 +52,10 @@ public class PlayerInteractor : MonoBehaviour {
 
     void Awake() {
         playerMove = GetComponent<Player_move>();
+        playerInput = GetComponentInParent<PlayerInput>();
+
+        // **static 이벤트라 OnDestroy 에서 반드시 해제해야 한다.**
+        InputBindings.OnApplied += HandleBindingsApplied;
 
         overlapFilter = new ContactFilter2D {
             useTriggers = true, // 상호작용 오브젝트는 플레이어를 밀지 않도록 트리거 콜라이더로 두는 편이 편하다.
@@ -63,6 +71,11 @@ public class PlayerInteractor : MonoBehaviour {
 
     void OnDestroy() {
         if (prompt != null) Destroy(prompt.gameObject); // 플레이어에 부모로 붙이지 않았으므로 직접 정리한다.
+        InputBindings.OnApplied -= HandleBindingsApplied;
+    }
+
+    void HandleBindingsApplied() {
+        keyDirty = true;
     }
 
     #endregion
@@ -122,7 +135,7 @@ public class PlayerInteractor : MonoBehaviour {
         prompt.fontSize = fontSize;
         prompt.fontStyle = FontStyles.Bold;
         prompt.alignment = TextAlignmentOptions.Center;
-        prompt.rectTransform.sizeDelta = new Vector2(10f, 2f); // 줄바꿈 없이 "[E] 정비하기" 정도가 들어갈 폭.
+        prompt.rectTransform.sizeDelta = new Vector2(10f, 2f); // 줄바꿈 없이 "[F] 정비하기" 정도가 들어갈 폭.
 
         prompt.outlineColor = outlineColor;
         prompt.outlineWidth = outlineWidth;
@@ -149,13 +162,28 @@ public class PlayerInteractor : MonoBehaviour {
 
         // 대상이 사라진 뒤(페이드 아웃 중)에는 마지막 문구/위치를 그대로 두고 알파만 내린다.
         if (current != null) {
-            prompt.text = $"[{keyLabel}] {current.InteractLabel}";
+            if (keyDirty) RefreshKeyName();
+            prompt.text = $"[{shownKey}] {current.InteractLabel}";
             prompt.transform.position = current.PromptAnchor + Vector3.up * (Mathf.Sin(Time.unscaledTime * bobSpeed) * bobHeight);
         }
 
         Color color = textColor;
         color.a *= promptAlpha;
         prompt.color = color;
+    }
+
+    void RefreshKeyName() {
+        InputAction action = playerInput != null && playerInput.actions != null ? playerInput.actions.FindAction(actionName) : null;
+
+        // 액션을 찾기 전에는 인스펙터에 적어둔 이름을 쓰고 다음 프레임에 다시 찾는다 (PlayerInput 이 늦게 준비되는 경우).
+        if (action == null) {
+            shownKey = keyLabel;
+            return;
+        }
+
+        string name = InputBindings.ActionKeyName(action);
+        shownKey = string.IsNullOrEmpty(name) ? "-" : name; // 설정에서 할당을 비웠으면 누를 키가 없다는 뜻이다.
+        keyDirty = false;
     }
 
     #endregion

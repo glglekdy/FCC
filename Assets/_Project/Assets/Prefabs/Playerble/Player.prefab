@@ -715,7 +715,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   fontAsset: {fileID: 11400000, guid: 2519b0f0f3caf464b81c62be38c99706, type: 2}
-  keyLabel: E
+  keyLabel: F
   fontSize: 3
   textColor: {r: 1, g: 0.95, b: 0.8, a: 1}
   outlineColor: {r: 0, g: 0, b: 0, a: 1}
@@ -743,6 +743,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 27f10c585109ba746a85b164113fa2ee, type: 2}
   - {fileID: 11400000, guid: c196a40f292b3c941bbb5c25cf356802, type: 2}
   - {fileID: 11400000, guid: ca9191503b44ce8438c91180dd2a5b76, type: 2}
+  - {fileID: 11400000, guid: 7337058f36d64008a23551f83aab5bcd, type: 2}
   equippedSkills:
   - {fileID: 11400000, guid: 7267f24ee051bd64fac54df058e10596, type: 2}
   - {fileID: 0}

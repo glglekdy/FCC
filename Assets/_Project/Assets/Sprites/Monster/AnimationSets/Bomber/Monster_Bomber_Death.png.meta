@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 300
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -100,19 +100,19 @@ TextureImporter:
       name: Monster_Bomber_Death_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 0
-        height: 0
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 138
+        y: 660
+        width: 420
+        height: 503
+      alignment: 9
+      pivot: {x: 0.41785714, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 2b7cb775796077c60800000000000000
+      spriteID: 5ab9eb8e1339c9349b71723a905d4016
       internalID: 7815722925402343346
       vertices: []
       indices: 
@@ -122,19 +122,19 @@ TextureImporter:
       name: Monster_Bomber_Death_1
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 0
-        height: 0
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 712
+        y: 652
+        width: 454
+        height: 354
+      alignment: 9
+      pivot: {x: 0.50330395, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: ed0661492046d8b00800000000000000
+      spriteID: ceb6d27a1fd96a64fad096930ec95f20
       internalID: 832431468370616542
       vertices: []
       indices: 
@@ -144,19 +144,19 @@ TextureImporter:
       name: Monster_Bomber_Death_2
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 0
-        height: 0
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 60
+        y: 89
+        width: 520
+        height: 401
+      alignment: 9
+      pivot: {x: 0.4875, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 946bcb1900f9d11a0800000000000000
+      spriteID: c68ce8de116c4ab499cd811eb5e1aca2
       internalID: -6837133834484664759
       vertices: []
       indices: 
@@ -166,19 +166,19 @@ TextureImporter:
       name: Monster_Bomber_Death_3
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 0
-        height: 0
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 688
+        y: 62
+        width: 516
+        height: 445
+      alignment: 9
+      pivot: {x: 0.48934108, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: f9e93e51e656c4280800000000000000
+      spriteID: 2dbc674adae79474daff9d13611a268b
       internalID: -9057753227060863329
       vertices: []
       indices: 

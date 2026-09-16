@@ -593,6 +593,8 @@ MonoBehaviour:
   respawnPoint: {fileID: 3841245858575355405}
   spawner: {fileID: 0}
   lockBarrier: {fileID: 0}
+  entranceDoor: {fileID: 0}
+  returnDoor: {fileID: 0}
 --- !u!1 &5582460794879083496
 GameObject:
   m_ObjectHideFlags: 0

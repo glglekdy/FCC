@@ -712,7 +712,8 @@ MonoBehaviour:
   generator: {fileID: 1067941820}
   outsideReturnPoint: {fileID: 755825907}
   objectiveId: 
-  memoryShardReward: 1
+  memoryShardRewardMin: 1
+  memoryShardRewardMax: 5
   deathHealthRestoreRatio: 1
   fallDamage: 10
   fallInvincibleTime: 3
@@ -2229,25 +2230,9 @@ PrefabInstance:
     m_TransformParent: {fileID: 226514153}
     m_Modifications:
     - target: {fileID: 401768329208796426, guid: 8f65e7b640fc0504794211390c619047, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 401768329208796426, guid: 8f65e7b640fc0504794211390c619047, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 401768329208796426, guid: 8f65e7b640fc0504794211390c619047, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 401768329208796426, guid: 8f65e7b640fc0504794211390c619047, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1697511907542419949, guid: 8f65e7b640fc0504794211390c619047, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -5007752093742055701, guid: 6b4923730e8a20146973128c49f8b9eb, type: 3}
     - target: {fileID: 3252004120732213463, guid: 8f65e7b640fc0504794211390c619047, type: 3}
       propertyPath: m_Name
       value: Monster_Fly
@@ -3130,6 +3115,7 @@ MonoBehaviour:
       Sound: {fileID: 0}
       Background: {fileID: 0}
       BlackoutBackground: 0
+    unlockAbility: 0
   - entries:
     - Speaker:
         m_TableReference:
@@ -3154,6 +3140,7 @@ MonoBehaviour:
       Sound: {fileID: 0}
       Background: {fileID: 0}
       BlackoutBackground: 0
+    unlockAbility: 0
   - entries:
     - Speaker:
         m_TableReference:
@@ -3178,6 +3165,7 @@ MonoBehaviour:
       Sound: {fileID: 0}
       Background: {fileID: 0}
       BlackoutBackground: 0
+    unlockAbility: 0
   hideOnFinish: 1
   label: "\uB300\uD654\uD558\uAE30"
   promptOffset: {x: 0, y: 1.6, z: 0}
@@ -4014,6 +4002,11 @@ MonoBehaviour:
     weight: 0.3
   dungeonOrigin: {fileID: 1343930225}
   outsideBounds: {fileID: 0}
+  branchRowGap: 12
+  branchSpacing: 4
+  branchDoorGroundMask:
+    serializedVersion: 2
+    m_Bits: 0
   fallYThreshold: -50
 --- !u!4 &1067941821
 Transform:
@@ -5551,6 +5544,7 @@ MonoBehaviour:
   lockPlayerMovement: 1
   objectiveId: finish_sample_dialogue
   unlockSkill: {fileID: 0}
+  unlockAbility: 0
   blackoutOnFinish: 0
   blackoutDuration: 1
   references:
@@ -10993,6 +10987,9 @@ Tilemap:
   - serializedVersion: 2
     m_RefCount: 7
     m_Data: {fileID: -1649741480, guid: c25c6f759d04d2a47972198caed41986, type: 3}
+  - serializedVersion: 2
+    m_RefCount: 0
+    m_Data: {fileID: -610765974, guid: c25c6f759d04d2a47972198caed41986, type: 3}
   m_TileMatrixArray:
   - serializedVersion: 2
     m_RefCount: 378

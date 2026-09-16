@@ -35,6 +35,7 @@ public class SettingsPanelView : MonoBehaviour, IPointerClickHandler {
     public Button resetButton;
     public Button cancelButton;
     public Button applyButton;
+    public InputActionAsset inputActions; // **Client.inputactions 를 넣으세요.** 키 재지정 줄이 이 에셋의 바인딩을 읽고 바꿉니다.
 
     [Header("색상")]
     public Color tabColor = UiTheme.TextBody;
@@ -66,6 +67,10 @@ public class SettingsPanelView : MonoBehaviour, IPointerClickHandler {
         if (applyButton == null) Debug.LogError("[SettingsPanel] applyButton 이 연결되지 않았습니다.", this);
         if (cancelButton == null) Debug.LogError("[SettingsPanel] cancelButton 이 연결되지 않았습니다.", this);
         if (resetButton == null) Debug.LogError("[SettingsPanel] resetButton 이 연결되지 않았습니다.", this);
+        if (inputActions == null) Debug.LogError("[SettingsPanel] inputActions 가 연결되지 않았습니다. 컨트롤 탭의 키를 바꿀 수 없습니다.", this);
+
+        // 메인 메뉴처럼 플레이어(PlayerInput)가 없는 씬에서도 컨트롤 탭이 키를 읽을 수 있도록 에셋을 알린다.
+        InputBindings.Register(inputActions);
 
         if (applyButton != null) applyButton.onClick.AddListener(ApplyAndClose);
         if (cancelButton != null) cancelButton.onClick.AddListener(CancelAndClose);
@@ -90,7 +95,16 @@ public class SettingsPanelView : MonoBehaviour, IPointerClickHandler {
         SelectTab(0);
     }
 
+    // 편집용 사본은 창이 열려 있는 동안만 쓴다. 다음에 열 때는 확정값에서 새로 만든다.
+    void OnDisable() {
+        InputBindings.ReleaseEditCopy();
+    }
+
     void Update() {
+        // 키 입력을 기다리는 동안에는 화면 조작을 전부 쉰다. 누른 키는 새 할당이지 탭 전환(Q/E) · 줄 이동(W/S)이 아니다.
+        // Input System 이 대기 중에 누른 키를 삼키긴 하지만, 패드 칸을 기다리는 중에 누른 키보드처럼 대기와 무관한 입력도 있다.
+        if (InputBindings.IsRebinding) return;
+
         HandleNavigation();
         HandleShortcuts();
     }
@@ -209,6 +223,7 @@ public class SettingsPanelView : MonoBehaviour, IPointerClickHandler {
 
     void HandleShortcuts() {
         if (WasPressed(Key.Enter, Key.NumpadEnter) && rows.Count > 0) rows[rowIndex].Submit();
+        if (WasPressed(Key.Backspace) && rows.Count > 0) rows[rowIndex].Clear();
 
         // 탭 전환은 Q/E 로. 좌우 방향키는 값 변경에 이미 쓰이고 있어 겹칠 수 없다.
         if (WasPressed(Key.Q)) SelectTab(tabIndex - 1 < 0 ? tabs.Length - 1 : tabIndex - 1);
@@ -249,16 +264,22 @@ public class SettingsPanelView : MonoBehaviour, IPointerClickHandler {
     }
 
     public void ResetToDefaults() {
+        InputBindings.CancelRebind();
         GameSettings.ResetToDefaults();
+        RefreshAllRows();
 
-        // 기본값은 모든 탭에 걸쳐 바뀌므로 지금 탭만 다시 그리면 다른 탭이 옛 값을 들고 있게 된다.
+        SetRow(rowIndex);
+        ClearUiSelection();
+    }
+
+    // 여러 줄에 걸쳐 값이 바뀌었을 때(기본값 복원 · 키 맞바꾸기). 지금 탭만 다시 그리면 다른 탭이 옛 값을 들고 있게 된다.
+    public void RefreshAllRows() {
+        if (tabs == null) return;
+
         foreach (Tab t in tabs) {
             if (t.content == null) continue;
             foreach (SettingsRowView row in t.content.GetComponentsInChildren<SettingsRowView>(true)) row.Refresh();
         }
-
-        SetRow(rowIndex);
-        ClearUiSelection();
     }
 
     void Close() {
