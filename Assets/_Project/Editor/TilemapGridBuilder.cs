@@ -28,6 +28,16 @@ public static class TilemapGridBuilder {
 
     public const string GridName = "Tilemap";
 
+    // 층 이름을 문자열로 흩뿌리면 오타 한 글자에 그 층만 조용히 비어 버린다. 찾는 쪽도 여기만 본다.
+    public const string SolidLayerName = "Tilemap_Solid";
+    public const string PlatformLayerName = "Tilemap_Platform";
+    public const string BackgroundLayerName = "Tilemap_Background";
+
+    // 지형에 쓰는 타일 에셋. 막힘 지형은 CoreScene 본편이 이미 장밋빛으로 칠해져 있어 그쪽에 맞추고,
+    // 통과 발판만 황금빛으로 갈라 둔다. "밟고 올라설 수 있는 면"이 색으로 구분돼야 방을 읽기 쉽다.
+    const string SolidTilePath = TileDir + "/Tile_KingAndPig_Rose.asset";
+    const string PlatformTilePath = TileDir + "/Tile_KingAndPig_Gold.asset";
+
     // 32px = 1유닛. 방 빌더가 1유닛 격자(폭 38 · 높이 18 등 정수)로 방을 짜 두었으므로 타일 한 칸을 1유닛에 맞춘다.
     const int TilePixels = 32;
 
@@ -60,9 +70,9 @@ public static class TilemapGridBuilder {
     // 막히는 지형과 통과 발판을 층으로 나누는 이유: 이펙터는 콜라이더 단위로 걸리는데, 타일맵은 층 전체가
     // 콜라이더 하나로 합쳐진다. 한 층에 섞으면 벽까지 아래에서 뚫리는 지형이 된다.
     static readonly LayerSpec[] Layers = {
-        new LayerSpec("Tilemap_Background", LayerKind.Visual, OrderBackground),
-        new LayerSpec("Tilemap_Solid", LayerKind.Solid, OrderTerrain),
-        new LayerSpec("Tilemap_Platform", LayerKind.Platform, OrderTerrain),
+        new LayerSpec(BackgroundLayerName, LayerKind.Visual, OrderBackground),
+        new LayerSpec(SolidLayerName, LayerKind.Solid, OrderTerrain),
+        new LayerSpec(PlatformLayerName, LayerKind.Platform, OrderTerrain),
         new LayerSpec("Tilemap_Decor", LayerKind.Visual, OrderDecor),
         new LayerSpec("Tilemap_Foreground", LayerKind.Visual, OrderForeground), // 비밀 통로를 덮어 가리는 용도.
     };
@@ -76,12 +86,12 @@ public static class TilemapGridBuilder {
         EnsureFolder(TileDir);
 
         // 색은 UI 테마 토큰에서 가져온다. 임시 타일이라도 따로 색을 만들면 화면 톤이 테마에서 벗어난다.
-        Sprite solidTop = WriteSprite("Tile_Solid_Top", (x, y) => {
+        WriteSprite("Tile_Solid_Top", (x, y) => {
             if (y >= TilePixels - 3) return UiTheme.TextDim; // 밟는 면을 한눈에 알아보도록 윗줄만 밝게.
             if (x == 0 || y == 0) return UiTheme.Line;
             return UiTheme.PanelRaised;
         });
-        Sprite solidInner = WriteSprite("Tile_Solid_Inner", (x, y) => {
+        WriteSprite("Tile_Solid_Inner", (x, y) => {
             if (x == 0 || y == 0) return UiTheme.Line; // 칸 경계가 보여야 단차를 셀 수 있다.
             return UiTheme.Panel;
         });
@@ -99,8 +109,6 @@ public static class TilemapGridBuilder {
         SetPhysicsRect(platLeft, PlatformPixels);
         SetPhysicsRect(platRight, PlatformPixels);
 
-        BuildSolidTile(solidTop, solidInner);
-        BuildPlatformTile(platMid, platLeft, platRight);
         BuildBackgroundTile(background);
 
         AssetDatabase.SaveAssets();
@@ -117,49 +125,15 @@ public static class TilemapGridBuilder {
         return UiTheme.PanelRaised;
     }
 
-    static void BuildSolidTile(Sprite top, Sprite inner) {
-        RuleTile tile = LoadOrCreate<RuleTile>($"{TileDir}/Tile_Solid.asset");
-        tile.m_DefaultSprite = inner;
-        tile.m_DefaultColliderType = Tile.ColliderType.Grid; // 막힘 지형은 칸 전체가 충돌. 그림 윤곽과 무관하게 정확하다.
-        tile.m_TilingRules = new List<RuleTile.TilingRule> {
-            Rule(top, Tile.ColliderType.Grid, new Dictionary<Vector3Int, int> {
-                { Vector3Int.up, RuleTile.TilingRuleOutput.Neighbor.NotThis },
-            }),
-        };
-        EditorUtility.SetDirty(tile);
-    }
-
-    static void BuildPlatformTile(Sprite mid, Sprite left, Sprite right) {
-        RuleTile tile = LoadOrCreate<RuleTile>($"{TileDir}/Tile_Platform.asset");
-        tile.m_DefaultSprite = mid;
-        tile.m_DefaultColliderType = Tile.ColliderType.Sprite; // 반 칸 두께를 쓰려면 스프라이트 물리 형태를 따라야 한다.
-        tile.m_TilingRules = new List<RuleTile.TilingRule> {
-            Rule(left, Tile.ColliderType.Sprite, new Dictionary<Vector3Int, int> {
-                { Vector3Int.left, RuleTile.TilingRuleOutput.Neighbor.NotThis },
-                { Vector3Int.right, RuleTile.TilingRuleOutput.Neighbor.This },
-            }),
-            Rule(right, Tile.ColliderType.Sprite, new Dictionary<Vector3Int, int> {
-                { Vector3Int.left, RuleTile.TilingRuleOutput.Neighbor.This },
-                { Vector3Int.right, RuleTile.TilingRuleOutput.Neighbor.NotThis },
-            }),
-        };
-        EditorUtility.SetDirty(tile);
-    }
-
+    // 막힘 지형·통과 발판의 임시 룰 타일은 여기서 만들지 않는다. 지금은 King And Pig 시트에서 뽑은
+    // 47칸 블롭 룰 타일(Tile_KingAndPig_*)을 쓰며, 예전 임시 타일 에셋은 지워졌다. 여기서 다시 만들면
+    // 이 메뉴를 누를 때마다 지운 에셋이 되살아나 팔레트에 두 벌이 뜬다. 스프라이트만 남겨 두는 이유는
+    // 특수 발판(이동·붕괴·가시)이 타일이 아니라 스프라이트 오브젝트로 남아 그 그림을 쓰기 때문이다.
     static void BuildBackgroundTile(Sprite sprite) {
         Tile tile = LoadOrCreate<Tile>($"{TileDir}/Tile_Background.asset");
         tile.sprite = sprite;
         tile.colliderType = Tile.ColliderType.None;
         EditorUtility.SetDirty(tile);
-    }
-
-    static RuleTile.TilingRule Rule(Sprite sprite, Tile.ColliderType collider, Dictionary<Vector3Int, int> neighbors) {
-        var rule = new RuleTile.TilingRule();
-        rule.m_Sprites = new[] { sprite };
-        rule.m_ColliderType = collider;
-        rule.m_Output = RuleTile.TilingRuleOutput.OutputSprite.Single;
-        rule.ApplyNeighbors(neighbors);
-        return rule;
     }
 
     #endregion
@@ -288,8 +262,67 @@ public static class TilemapGridBuilder {
 
         if (spec.kind == LayerKind.Platform) {
             // 이펙터 배선은 기존 발판과 똑같이 OneWayPlatform 에 맡겨, 통과 규칙이 두 갈래로 갈라지지 않게 한다.
-            GetOrAdd<OneWayPlatform>(obj).Apply();
+            OneWayPlatform oneWay = GetOrAdd<OneWayPlatform>(obj);
+            // 층 전체가 합성 콜라이더 하나라 방 안의 모든 발판이 한 덩어리다. 접촉을 묶어 두면 위 발판의
+            // 아랫면에 머리가 닿는 순간 지금 밟고 있는 발판까지 함께 무시되어 발밑이 꺼진다.
+            oneWay.groupContacts = false;
+            oneWay.Apply();
         }
+    }
+
+    #endregion
+    #region 칠하기 — 방 빌더 · 변환기 공용
+
+    public static TileBase SolidTile => AssetDatabase.LoadAssetAtPath<TileBase>(SolidTilePath);
+    public static TileBase PlatformTile => AssetDatabase.LoadAssetAtPath<TileBase>(PlatformTilePath);
+
+    // 방 루트(또는 그리드를 가진 아무 오브젝트)에서 층 하나를 꺼낸다. 없으면 그리드부터 맞춰 준다.
+    public static Tilemap Layer(GameObject root, string layerName) {
+        Transform grid = root.transform.Find(GridName);
+        if (grid == null) grid = EnsureGrid(root).transform;
+
+        Transform layer = grid.Find(layerName);
+        if (layer == null) {
+            ConfigureGrid(grid.gameObject); // 층 하나가 통째로 빠진 그리드. 구성부터 다시 맞춘다.
+            layer = grid.Find(layerName);
+        }
+        return layer != null ? layer.GetComponent<Tilemap>() : null;
+    }
+
+    // 로컬 좌표 사각형을 칸 범위로 옮긴다. 경계는 가까운 칸 선으로 반올림한다 — 기존 그레이박스 지형이
+    // 두께 1.2 · 0.6 처럼 칸에 안 맞게 잡혀 있어서, 내림으로 자르면 발판이 통째로 사라지고 올림으로
+    // 키우면 지나갈 틈이 막힌다.
+    public static RectInt ToCells(Rect local) {
+        int x0 = RoundToCellLine(local.xMin);
+        int y0 = RoundToCellLine(local.yMin);
+        int x1 = RoundToCellLine(local.xMax);
+        int y1 = RoundToCellLine(local.yMax);
+
+        // 두께가 반 칸도 안 되는 지형(0.6 발판)은 반올림하면 위아래 경계가 같은 선에 떨어진다.
+        // 그대로 두면 칸이 하나도 안 칠해져 밟을 것이 없어지므로 최소 한 칸은 남긴다.
+        if (x1 <= x0) x1 = x0 + 1;
+        if (y1 <= y0) y1 = y0 + 1;
+        return new RectInt(x0, y0, x1 - x0, y1 - y0);
+    }
+
+    // 음수 쪽에서도 같은 방향으로 반올림해야 방 왼쪽 절반만 한 칸씩 밀리지 않는다.
+    static int RoundToCellLine(float value) => Mathf.FloorToInt(value + 0.5f);
+
+    // 한 층에 사각형을 칠한다. clearFrom 에 상대 층을 넘기면 그 층의 같은 칸을 지워, 두 층이 같은 칸을
+    // 물고 충돌이 겹치는 것을 막는다(막힘 지형과 통과 발판이 겹치면 통과 규칙이 어느 쪽인지 알 수 없다).
+    public static int Paint(Tilemap map, TileBase tile, RectInt cells, Tilemap clearFrom = null) {
+        if (map == null || tile == null) return 0;
+
+        int painted = 0;
+        for (int x = cells.xMin; x < cells.xMax; x++) {
+            for (int y = cells.yMin; y < cells.yMax; y++) {
+                var pos = new Vector3Int(x, y, 0);
+                if (clearFrom != null) clearFrom.SetTile(pos, null);
+                map.SetTile(pos, tile);
+                painted++;
+            }
+        }
+        return painted;
     }
 
     #endregion

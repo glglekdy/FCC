@@ -4,6 +4,7 @@ using System.IO;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 // 던전 방 프리팹 세트를 한 번에 찍어내는 에디터 도구.
 //
@@ -12,7 +13,16 @@ using UnityEngine;
 // 실제 아트·미세 배치는 만들어진 프리팹을 열어 인스펙터/씬에서 손본다.
 //
 // 지형 수치는 플레이어 점프(jumpForce 11, 중력 1배 → 최대 약 6유닛)를 기준으로, 누구나 쉽게 넘어갈 수
-// 있도록 단차 2.5 · 간격 3~4유닛 안쪽으로만 잡는다. 오브젝트 수도 방당 한 자릿수로 억제한다.
+// 있도록 단차 2.5 · 간격 3~4유닛 안쪽으로만 잡는다.
+//
+// 지형은 오브젝트가 아니라 타일맵 칸으로 남긴다. 아래 방 정의에 적힌 수치는 그대로 두고, 칠하는 단계에서
+// 1유닛 격자에 반올림해 옮긴다(두께 1.2 · 0.6 은 각각 한 칸이 된다). 그래서 지형을 손보고 싶을 때는
+// 이 파일을 고쳐 다시 찍는 대신 타일 팔레트로 칸을 칠하면 되고, 방마다 오브젝트가 수십 개씩 쌓이지 않는다.
+// 층은 "아래에서 뚫고 올라갈 수 있어야 하는가"로 가른다 — 바닥·벽·천장은 Tilemap_Solid, 공중에 뜬
+// 발판만 Tilemap_Platform. 막힘 지형을 Platform 층에 칠하면 벽이 옆·아래로 뚫리고 접지 판정까지 죽는다.
+//
+// 특수 발판(이동·붕괴·가시)만 예외로 오브젝트로 남긴다. 칸 단위로 움직이거나 사라지는 것이 아니라
+// 각자 콜라이더와 스크립트를 들고 따로 동작해야 하기 때문이다.
 //
 // 사용법:
 //   Tools ▸ FCC ▸ Dungeon ▸ Build All Rooms        → 아래 18종 프리팹을 기존 경로에 덮어쓴다(GUID 유지).
@@ -28,7 +38,12 @@ public static class DungeonRoomPrefabBuilder {
     const float WallThick = 1.2f; // 벽·바닥 두께.
     const float SpikeThick = 0.8f; // 가시밭이 바닥 위로 솟은 높이.
 
+    // 특수 발판의 임시 그림. 칸 전체를 채우는 사각형이라 스케일을 늘리면 콜라이더와 크기가 정확히 맞는다.
+    const string BlockSpritePath = "Assets/_Project/Assets/Sprites/Env/Tile_Solid_Inner.png";
+    const int GimmickOrder = 1; // 지형 타일(정렬 0) 바로 앞. 겹치는 자리에서 발판이 지형에 묻히면 안 된다.
+
     static int groundLayer;
+    static Sprite blockSprite;
 
     #endregion
     #region 메뉴 — 전체 빌드
@@ -46,6 +61,16 @@ public static class DungeonRoomPrefabBuilder {
         if (groundLayer < 0) {
             groundLayer = 0;
             Debug.LogWarning("[Dungeon] 'ground' 레이어를 찾지 못해 지형을 Default 레이어에 만듭니다. 플레이어가 밟지 못할 수 있으니 레이어를 확인하세요.");
+        }
+
+        if (TilemapGridBuilder.SolidTile == null || TilemapGridBuilder.PlatformTile == null) {
+            Debug.LogError("[Dungeon] 지형 타일을 찾지 못했습니다. 먼저 Tools ▸ FCC ▸ Tilemap ▸ Build King And Pig Rule Tiles 를 실행하세요.");
+            return;
+        }
+
+        blockSprite = AssetDatabase.LoadAssetAtPath<Sprite>(BlockSpritePath);
+        if (blockSprite == null) {
+            Debug.LogWarning($"[Dungeon] 특수 발판 그림을 찾지 못했습니다: {BlockSpritePath} — 이동·붕괴 발판이 보이지 않게 됩니다.");
         }
 
         BuildEntry();
@@ -878,32 +903,52 @@ public static class DungeonRoomPrefabBuilder {
     }
 
     // 사방이 막히는 지형. 벽·천장처럼 어느 방향에서 와도 통과되면 안 되는 곳에만 쓴다.
-    static void Solid(GameObject parent, string name, Vector3 center, Vector2 size) {
-        Block(parent, name, center, size);
+    static void Solid(GameObject root, string name, Vector3 center, Vector2 size) {
+        Paint(root, name, center, size, passThrough: false);
     }
 
-    // 밟고 올라서는 가로 지형. 아래에서 위로는 통과되고 위에서는 떠받쳐 준다(OneWayPlatform).
-    // 바닥까지 통과형으로 두는 이유는, 방 아래쪽에서 점프로 올라올 때 지형에 걸려 막히는 감각을
-    // 없애자는 요구였기 때문이다. 대신 밟고 있는 동안 아래로 내려가는 길은 만들지 않는다.
-    static GameObject Platform(GameObject parent, string name, Vector3 center, Vector2 size) {
-        GameObject obj = Block(parent, name, center, size);
-        // PlatformEffector2D 와 usedByEffector 배선은 OneWayPlatform 이 잡아 준다. 다만 에디터에서
-        // 붙이는 시점에는 Awake 가 돌지 않으므로, 프리팹에 값이 저장되도록 여기서 직접 한 번 적용한다.
-        obj.AddComponent<OneWayPlatform>().Apply();
-        return obj;
+    // 밟고 올라서는 가로 지형. 공중에 뜬 것만 통과형(OneWayPlatform)이 되고, 방 바닥에 붙은 것은
+    // 막힘 지형으로 내려간다. 아래에서 올라올 일이 없는 지형까지 통과형으로 두면 옆에서 걸어 들어갈 때
+    // 그대로 뚫려 버리고, 접지 판정도 통과형 분기를 타 점프가 죽는다.
+    static void Platform(GameObject root, string name, Vector3 center, Vector2 size) {
+        Paint(root, name, center, size, passThrough: true);
     }
 
     // 발판을 "밟는 면의 높이(topY)" 기준으로 놓는다. 코스를 짤 때는 단차를 눈으로 세면서 배치하게 되는데,
     // 중심 좌표로 적으면 두께의 절반을 매번 빼야 해서 숫자만 봐서는 단차가 맞는지 알 수 없다.
-    static GameObject Ledge(GameObject root, string name, float centerX, float topY, float width, float thickness) {
-        return Platform(root, name, new Vector3(centerX, topY - thickness / 2f, 0f), new Vector2(width, thickness));
+    static void Ledge(GameObject root, string name, float centerX, float topY, float width, float thickness) {
+        Platform(root, name, new Vector3(centerX, topY - thickness / 2f, 0f), new Vector2(width, thickness));
+    }
+
+    // 방 정의에 적힌 사각형을 격자에 반올림해 타일로 칠한다. 이름은 칸을 하나도 못 채웠을 때 어느 지형이
+    // 사라졌는지 알리기 위해 받는다 — 칠하고 나면 오브젝트가 남지 않아 씬 뷰에서 되짚을 수가 없다.
+    static void Paint(GameObject root, string name, Vector3 center, Vector2 size, bool passThrough) {
+        Tilemap solid = TilemapGridBuilder.Layer(root, TilemapGridBuilder.SolidLayerName);
+        Tilemap platform = TilemapGridBuilder.Layer(root, TilemapGridBuilder.PlatformLayerName);
+
+        var rect = new Rect(center.x - size.x / 2f, center.y - size.y / 2f, size.x, size.y);
+        RectInt cells = TilemapGridBuilder.ToCells(rect);
+
+        bool oneWay = passThrough && rect.yMin > RoomGround(root) + 0.01f;
+        int painted = oneWay
+            ? TilemapGridBuilder.Paint(platform, TilemapGridBuilder.PlatformTile, cells, solid)
+            : TilemapGridBuilder.Paint(solid, TilemapGridBuilder.SolidTile, cells, platform);
+
+        if (painted == 0) Debug.LogWarning($"[Dungeon] '{name}' 지형이 칸을 하나도 채우지 못했습니다. 위치·크기를 확인하세요.");
+    }
+
+    // 방 바닥면의 높이. GroundY 를 인자로 또 물려받는 대신 방 트리거 크기에서 되짚어, 지형을 칠하는 쪽이
+    // 방 크기를 따로 들고 다니지 않게 한다(NewRoom 이 트리거를 방 크기 그대로 만들어 둔다).
+    static float RoomGround(GameObject root) {
+        BoxCollider2D trigger = root.GetComponent<BoxCollider2D>();
+        return trigger != null ? trigger.offset.y - trigger.size.y / 2f + 1f : 0f;
     }
 
     // 왕복 이동 발판. 통과 발판 성질은 그대로 두고 이동만 얹는다.
     // offset 은 시작 위치 기준 상대 이동량이라, 방이 어디에 배치되든 같은 궤적을 그린다.
     static void Mover(GameObject root, string name, float centerX, float topY, float width,
         Vector2 offset, float speed, float startDelay = 0f) {
-        GameObject obj = Ledge(root, name, centerX, topY, width, PlatThick);
+        GameObject obj = GimmickLedge(root, name, centerX, topY, width, UiTheme.TextBody); // 눈에 띄어야 타이밍을 잰다.
 
         // MovingPlatform 이 RequireComponent 로 알아서 붙이긴 하지만, 그 경우 기본값이 Dynamic 이라
         // 프리팹에 중력에 떨어지는 발판으로 저장된다. 여기서 먼저 붙여 Kinematic 으로 확정한다.
@@ -918,7 +963,7 @@ public static class DungeonRoomPrefabBuilder {
     // 밟으면 잠시 뒤 무너졌다가 되살아나는 발판. 기본값(0.4초)보다 넉넉히 잡는 이유는, 오비에서
     // 떨어지면 방 처음으로 되돌아가기 때문에 반응할 틈이 너무 짧으면 금세 지치기 때문이다.
     static void Crumble(GameObject root, string name, float centerX, float topY, float width, float fallDelay = 0.8f) {
-        GameObject obj = Ledge(root, name, centerX, topY, width, PlatThick);
+        GameObject obj = GimmickLedge(root, name, centerX, topY, width, UiTheme.TextMuted); // 바랜 색 = 곧 무너질 것.
 
         CrumblingPlatform crumble = obj.AddComponent<CrumblingPlatform>();
         crumble.fallDelay = fallDelay;
@@ -928,7 +973,8 @@ public static class DungeonRoomPrefabBuilder {
     // 가시밭. 낙사와 달리 즉시 방을 다시 시작시키지 않고 자아 게이지만 깎아, "실수해도 계속 갈 수는 있는"
     // 실패를 만든다. 피격 무적(0.9초)이 걸리므로 밭을 가로질러도 한 번에 녹지는 않는다.
     static void Spikes(GameObject root, string name, float centerX, float topY, float width, int damage) {
-        GameObject obj = Block(root, name, new Vector3(centerX, topY - SpikeThick / 2f, 0f), new Vector2(width, SpikeThick));
+        GameObject obj = Block(root, name, new Vector3(centerX, topY - SpikeThick / 2f, 0f),
+            new Vector2(width, SpikeThick), UiTheme.AccentBright); // 위험은 포인트 컬러로.
 
         // 지형 레이어에서 빼 둔다. 트리거라 접지 판정에는 어차피 안 걸리지만, 지형 취급으로 남겨 두면
         // 나중에 레이어로 지형을 훑는 코드가 가시를 바닥으로 세게 된다.
@@ -941,16 +987,34 @@ public static class DungeonRoomPrefabBuilder {
         obj.AddComponent<DamageZone>().damage = damage;
     }
 
-    static GameObject Block(GameObject parent, string name, Vector3 center, Vector2 size) {
-        GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Quad);
-        obj.name = name;
+    // 특수 발판 하나. 지형과 달리 오브젝트로 남으므로 밟는 면 높이(topY)로 놓는 것까지 여기서 맞춘다.
+    static GameObject GimmickLedge(GameObject root, string name, float centerX, float topY, float width, Color color) {
+        GameObject obj = Block(root, name, new Vector3(centerX, topY - PlatThick / 2f, 0f),
+            new Vector2(width, PlatThick), color);
+
+        // PlatformEffector2D 와 usedByEffector 배선은 OneWayPlatform 이 잡아 준다. 다만 에디터에서
+        // 붙이는 시점에는 Awake 가 돌지 않으므로, 프리팹에 값이 저장되도록 여기서 직접 한 번 적용한다.
+        obj.AddComponent<OneWayPlatform>().Apply();
+        return obj;
+    }
+
+    // 스케일로 크기를 잡는 사각 스프라이트 판. BoxCollider2D 는 붙는 순간 그림 크기(1×1)를 따라가므로
+    // 스케일을 그대로 물려받아 보이는 것과 부딪히는 것이 정확히 같아진다.
+    static GameObject Block(GameObject parent, string name, Vector3 center, Vector2 size, Color color) {
+        GameObject obj = new(name);
         obj.layer = groundLayer;
         obj.transform.SetParent(parent.transform, false);
         obj.transform.localPosition = center;
         obj.transform.localScale = new Vector3(size.x, size.y, 1f);
 
-        Object.DestroyImmediate(obj.GetComponent<Collider>()); // 3D 콜라이더는 2D 물리에서 안 쓰인다.
-        obj.AddComponent<BoxCollider2D>();
+        SpriteRenderer renderer = obj.AddComponent<SpriteRenderer>();
+        renderer.sprite = blockSprite;
+        renderer.color = color;
+        renderer.sortingOrder = GimmickOrder;
+
+        // 크기를 붙는 순간의 그림 크기에 맡기지 않는다. 그림을 못 찾으면 0×0 콜라이더가 되어
+        // "보이지도 밟히지도 않는" 발판이 조용히 만들어진다.
+        obj.AddComponent<BoxCollider2D>().size = Vector2.one;
         return obj;
     }
 

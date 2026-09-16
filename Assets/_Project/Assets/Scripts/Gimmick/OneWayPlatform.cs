@@ -19,6 +19,13 @@ public class OneWayPlatform : MonoBehaviour {
     public float surfaceArc = 170f; // 떠받쳐 주는 각도. 180 으로 두면 옆면까지 막혀서 아래에서 뚫고 올라갈 때 모서리에 걸린다.
     public float rotationalOffset = 0f; // 발판의 "윗면" 방향을 돌린다. 기울어진 지형이나 천장형 발판에 사용.
 
+    [Header("접촉 묶음")]
+    // 발판이 여러 콜라이더로 쪼개져 있을 때 이음매에 걸리지 않도록, 한 군데라도 통과 판정이면 전부 통과로 본다.
+    // **타일맵 층에서는 반드시 꺼야 합니다.** 층 전체가 CompositeCollider2D 하나로 합쳐지는 탓에 방 안의
+    // 모든 발판이 한 덩어리가 되는데, 그 상태로 묶으면 위 발판의 아랫면에 몸이 닿는 순간 지금 밟고 있는
+    // 발판의 접촉까지 함께 무시되어 발밑이 꺼진다. 쪼개진 이음매가 애초에 없으니 묶을 이유도 없다.
+    public bool groupContacts = true;
+
     #endregion
     #region 컴포넌트 변수
 
@@ -44,7 +51,7 @@ public class OneWayPlatform : MonoBehaviour {
         if (effector == null) return;
 
         effector.useOneWay = true;
-        effector.useOneWayGrouping = true; // 발판이 여러 콜라이더로 쪼개져 있어도 통과 판정을 한 덩어리로 본다.
+        effector.useOneWayGrouping = groupContacts;
         effector.useColliderMask = false;  // 플레이어·몬스터·투사체 구분 없이 같은 규칙을 적용한다.
         effector.surfaceArc = surfaceArc;
         effector.rotationalOffset = rotationalOffset;
