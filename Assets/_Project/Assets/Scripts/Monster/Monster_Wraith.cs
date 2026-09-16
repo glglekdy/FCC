@@ -12,7 +12,8 @@ public class Monster_Wraith : MonoBehaviour {
     public Transform visual; // 반투명·페이드 처리할 스프라이트 자식. **몬스터 밑의 Renderer 오브젝트를 연결하세요.**
     public Collider2D hurtboxCollider; // 사라진 동안 비활성화할 피격 콜라이더. **Hurtbox가 붙은 콜라이더를 연결하세요.**
     public SkillProjectile projectilePrefab; // 발사할 투사체 프리팹. **Is Trigger 콜라이더 하나만 있으면 됩니다.**
-    public SpriteStateAnimator spriteAnimator; // 상태별 스프라이트 전환 담당. **visual과 같은 Renderer 오브젝트에 붙이고 연결하세요.**
+    public Animator animator; // 상태별 프레임 애니메이션. **visual과 같은 Renderer 오브젝트의 Animator를 연결하세요.** 스테이트 이름은 Idle · Aim · Attack 이어야 한다.
+    public SpriteStateAnimator spriteAnimator; // (구) 상태별 정지 이미지 한 장. animator를 연결하면 쓰이지 않는다.
 
     [Header("레이어")]
     public LayerMask playerLayer; // 플레이어 레이어. **Player(3) 를 지정하세요.**
@@ -85,6 +86,7 @@ public class Monster_Wraith : MonoBehaviour {
     Health targetHealth;
 
     bool attackInterrupted; // 조준 중(또는 재등장 직후) 플레이어에게 맞으면 켜진다. 이번 공격 턴을 취소하고 바로 사라지게 만든다.
+    string currentStateName; // 같은 상태를 다시 요청했을 때 재생 중인 모션을 처음으로 되감지 않기 위한 기록.
 
     #endregion
 
@@ -357,6 +359,7 @@ public class Monster_Wraith : MonoBehaviour {
         if (!HasTarget() || attackInterrupted) yield break;
 
         SetStateSprite("Aim");
+        SetFacing(target.position.x >= transform.position.x ? 1f : -1f); // 지팡이를 휘두르는 쪽과 투사체가 날아가는 쪽이 어긋나면 엉뚱한 데 시전하는 것처럼 보인다.
         ShowAimLine();
         float elapsed = 0f;
         while (elapsed < duration) {
@@ -410,7 +413,21 @@ public class Monster_Wraith : MonoBehaviour {
         if (hurtboxCollider != null) hurtboxCollider.enabled = value;
     }
 
+    // 상태 이름 하나로 연출을 고르는 창구. 예전 정지 이미지 방식(SpriteStateAnimator)과 이름 규칙이 같아
+    // 호출부는 그대로 두고 Animator 로만 갈아끼웠다.
     void SetStateSprite(string stateName) {
+        if (stateName == currentStateName) return;
+        currentStateName = stateName;
+
+        if (animator != null) {
+            int hash = Animator.StringToHash(stateName);
+            // 스테이트 이름은 코드에 문자열로 박혀 있고 컨트롤러는 손으로 만드는 것이라, 이름이 어긋나면
+            // Animator.Play 가 조용히 아무것도 안 한다. 그 연출이 통째로 사라진 걸 모르고 넘어가지 않도록 알린다.
+            if (animator.HasState(0, hash)) animator.Play(hash, 0, 0f);
+            else Debug.LogWarning($"[Monster_Wraith] '{name}' — Animator 에 스테이트 '{stateName}' 가 없습니다. 컨트롤러의 스테이트 이름을 맞추세요.", this);
+            return;
+        }
+
         if (spriteAnimator != null) spriteAnimator.Play(stateName);
     }
 

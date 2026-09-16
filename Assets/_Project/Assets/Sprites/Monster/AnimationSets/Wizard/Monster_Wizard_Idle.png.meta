@@ -32,6 +32,18 @@ TextureImporter:
   - first:
       213: 6645356649502103245
     second: Monster_Fly_Move_9
+  - first:
+      213: -3567151065186396170
+    second: Monster_Wizard_Idle_0
+  - first:
+      213: 5852986793291253402
+    second: Monster_Wizard_Idle_1
+  - first:
+      213: -3216673569657095486
+    second: Monster_Wizard_Idle_2
+  - first:
+      213: -7644982273330548654
+    second: Monster_Wizard_Idle_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -78,7 +90,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 240
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -123,93 +135,106 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Monster_Fly_Move_0
+      name: Monster_Wizard_Idle_0
       rect:
         serializedVersion: 2
-        x: 24
-        y: 634
-        width: 588
-        height: 548
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 118
+        y: 709
+        width: 463
+        height: 457
+      alignment: 9
+      pivot: {x: 0.42224622, y: 0.50656456}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c1c6a947a8e21f8f0800000000000000
-      internalID: -508574110719513572
+      spriteID: 6f7986b710fee7ec0800000000000000
+      internalID: -3567151065186396170
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Monster_Fly_Move_2
-      rect:
-        serializedVersion: 2
-        x: 647
-        y: 688
-        width: 586
-        height: 532
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: ee6a3c034d6fac120800000000000000
-      internalID: 2435029939758802670
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Monster_Fly_Move_3
-      rect:
-        serializedVersion: 2
-        x: 48
-        y: 77
-        width: 576
-        height: 490
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 91431ed1963c807c0800000000000000
-      internalID: -4104816204107926503
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Monster_Fly_Move_5
+      name: Monster_Wizard_Idle_1
       rect:
         serializedVersion: 2
         x: 720
-        y: 57
-        width: 505
-        height: 554
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        y: 691
+        width: 457
+        height: 451
+      alignment: 9
+      pivot: {x: 0.48249453, y: 0.5532151}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0245199437b590370800000000000000
-      internalID: 8289257139865736224
+      spriteID: a968d216a7cf93150800000000000000
+      internalID: 5852986793291253402
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster_Wizard_Idle_2
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 81
+        width: 469
+        height: 449
+      alignment: 9
+      pivot: {x: 0.41897655, y: 0.5178174}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2ca733a5e641c53d0800000000000000
+      internalID: -3216673569657095486
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster_Wizard_Idle_3
+      rect:
+        serializedVersion: 2
+        x: 723
+        y: 104
+        width: 469
+        height: 461
+      alignment: 9
+      pivot: {x: 0.46375266, y: 0.45444685}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 25079f3902197e590800000000000000
+      internalID: -7644982273330548654
       vertices: []
       indices: 
       edges: []
@@ -238,6 +263,10 @@ TextureImporter:
       Monster_Fly_Move_7: -3731995194764157465
       Monster_Fly_Move_8: -4328725209293133480
       Monster_Fly_Move_9: 6645356649502103245
+      Monster_Wizard_Idle_0: -3567151065186396170
+      Monster_Wizard_Idle_1: 5852986793291253402
+      Monster_Wizard_Idle_2: -3216673569657095486
+      Monster_Wizard_Idle_3: -7644982273330548654
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

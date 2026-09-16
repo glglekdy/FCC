@@ -172,6 +172,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HitReactor
   knockbackForce: 6
   knockbackLockDuration: 0.15
+  deathCorpsePrefab: {fileID: 6831543836841500882, guid: 4774e465ef937c24187563620d7ddaae, type: 3}
   hitPointOffset: {x: 0, y: 0}
   hitPointPullIn: 0.35
 --- !u!114 &3343702247469739990
@@ -239,7 +240,8 @@ MonoBehaviour:
   visual: {fileID: 8222119742764655833}
   hurtboxCollider: {fileID: 0}
   projectilePrefab: {fileID: 2048856885348808225, guid: 5c3c3386acb01aa4baed86b73582493e, type: 3}
-  spriteAnimator: {fileID: 4358818964530676513}
+  animator: {fileID: 2760848994662108061}
+  spriteAnimator: {fileID: 0}
   playerLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -289,7 +291,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8222119742764655833}
   - component: {fileID: 4345619430860141723}
-  - component: {fileID: 4358818964530676513}
+  - component: {fileID: 2760848994662108061}
   m_Layer: 8
   m_Name: Renderer
   m_TagString: Untagged
@@ -361,7 +363,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
+  m_Sprite: {fileID: -3567151065186396170, guid: 31aaa840559a259419e7537ab68f5a23, type: 3}
   m_Color: {r: 0.75, g: 0.65, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -371,22 +373,25 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!114 &4358818964530676513
-MonoBehaviour:
+--- !u!95 &2760848994662108061
+Animator:
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1903290560226324842}
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32997f29ca0172e4badb2f50605a686f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SpriteStateAnimator
-  states:
-  - name: Idle
-    sprite: {fileID: 1284999022211760314, guid: 50758f370213bc5488ac5637bece8e7e, type: 3}
-  - name: Aim
-    sprite: {fileID: -3350081135437128187, guid: 915cbb7fffdd4244ebd43ac0c7175a00, type: 3}
-  - name: Attack
-    sprite: {fileID: -6699168914914943213, guid: 2659162f07e4d294c89f9b2266a3a781, type: 3}
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 52b6234cf2798064b9f36babdc71441c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

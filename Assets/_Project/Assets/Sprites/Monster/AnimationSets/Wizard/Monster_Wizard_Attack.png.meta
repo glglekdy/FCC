@@ -1,70 +1,70 @@
 fileFormatVersion: 2
-guid: b65e1ccb4ddae554a820689f397a89bc
+guid: e80d7b7bea11e9448b6e1712cba10bc2
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5064045412535441029
-    second: Monster_Ground_Move_0
+      213: 2843661689465305235
+    second: Monster_Wizard_Attack_0
   - first:
-      213: 7545066762124452954
-    second: Monster_Ground_Move_1
+      213: -3782000546777380795
+    second: Monster_Wizard_Attack_1
   - first:
-      213: 2301873074267559735
-    second: Monster_Ground_Move_2
+      213: 1528065083874639151
+    second: Monster_Wizard_Attack_2
   - first:
-      213: -96134019473977051
-    second: Monster_Ground_Move_3
+      213: -7328397821949456345
+    second: Monster_Wizard_Attack_3
   - first:
-      213: 7182009291635263660
-    second: Monster_Ground_Move_4
+      213: 1212628754483462385
+    second: Monster_Wizard_Attack_4
   - first:
-      213: 1760991004304342568
-    second: Monster_Ground_Move_5
+      213: 4738473018096030226
+    second: Monster_Wizard_Attack_5
   - first:
-      213: 6011699295289417459
-    second: Monster_Ground_Move_6
+      213: -7071196881125455542
+    second: Monster_Wizard_Attack_6
   - first:
-      213: -7232740263417930391
-    second: Monster_Ground_Move_7
+      213: -4653657503126593478
+    second: Monster_Wizard_Attack_7
   - first:
-      213: 3641032236055141541
-    second: Monster_Ground_Move_8
+      213: 2838996373078799478
+    second: Monster_Wizard_Attack_8
   - first:
-      213: 2223223830537790227
-    second: Monster_Ground_Move_9
+      213: -2008748702118772507
+    second: Monster_Wizard_Attack_9
   - first:
-      213: 4724308816173161873
-    second: Monster_Ground_Move_10
+      213: -6498470368617976357
+    second: Monster_Wizard_Attack_10
   - first:
-      213: -4567047319687017105
-    second: Monster_Ground_Move_11
+      213: 64442590078638994
+    second: Monster_Wizard_Attack_11
   - first:
-      213: 640945638227670464
-    second: Monster_Ground_Move_12
+      213: 846051355220485114
+    second: Monster_Wizard_Attack_12
   - first:
-      213: -8859506032813044611
-    second: Monster_Ground_Move_13
+      213: 6820486751720117371
+    second: Monster_Wizard_Attack_13
   - first:
-      213: 6163103372238186256
-    second: Monster_Ground_Move_14
+      213: 2511319252184932138
+    second: Monster_Wizard_Attack_14
   - first:
-      213: 314749233458874126
-    second: Monster_Ground_Move_15
+      213: 523948818382799914
+    second: Monster_Wizard_Attack_15
   - first:
-      213: -2668180236707820819
-    second: Monster_Ground_Move_16
+      213: 2573193209395260460
+    second: Monster_Wizard_Attack_16
   - first:
-      213: 8562508243358505672
-    second: Monster_Ground_Move_17
+      213: 6193206046371677273
+    second: Monster_Wizard_Attack_17
   - first:
-      213: 6945595104947919198
-    second: Monster_Ground_Move_18
+      213: 362347731036913009
+    second: Monster_Wizard_Attack_18
   - first:
-      213: 7900698298403598489
-    second: Monster_Ground_Move_19
+      213: -5276668763764235191
+    second: Monster_Wizard_Attack_19
   - first:
-      213: -6024669331602979271
-    second: Monster_Ground_Move_20
+      213: 8292265650037409597
+    second: Monster_Wizard_Attack_20
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -111,7 +111,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 300
+  spritePixelsToUnits: 240
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -173,89 +173,89 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Monster_Ground_Move_0
+      name: Monster_Wizard_Attack_0
       rect:
         serializedVersion: 2
-        x: 73
-        y: 656
-        width: 495
-        height: 575
+        x: 162
+        y: 703
+        width: 402
+        height: 421
       alignment: 9
-      pivot: {x: 0.4858586, y: 0}
+      pivot: {x: 0.37686568, y: 0.564133}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b79e06b1785e8b9b0800000000000000
-      internalID: -5064045412535441029
+      spriteID: 39877fd7d37b67720800000000000000
+      internalID: 2843661689465305235
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Monster_Ground_Move_1
+      name: Monster_Wizard_Attack_1
       rect:
         serializedVersion: 2
-        x: 679
-        y: 659
-        width: 464
-        height: 569
+        x: 725
+        y: 708
+        width: 417
+        height: 384
       alignment: 9
-      pivot: {x: 0.5635776, y: 0}
+      pivot: {x: 0.5167866, y: 0.60546875}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a54e803ae3675b860800000000000000
-      internalID: 7545066762124452954
+      spriteID: 54840056a82a38bc0800000000000000
+      internalID: -3782000546777380795
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Monster_Ground_Move_2
+      name: Monster_Wizard_Attack_2
       rect:
         serializedVersion: 2
-        x: 66
-        y: 34
-        width: 502
-        height: 561
+        x: 140
+        y: 120
+        width: 602
+        height: 386
       alignment: 9
-      pivot: {x: 0.4930279, y: 0}
+      pivot: {x: 0.28820598, y: 0.5012953}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 73711cd7d55e1ff10800000000000000
-      internalID: 2301873074267559735
+      spriteID: f2d76060917c43510800000000000000
+      internalID: 1528065083874639151
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Monster_Ground_Move_3
+      name: Monster_Wizard_Attack_3
       rect:
         serializedVersion: 2
-        x: 694
-        y: 29
-        width: 437
-        height: 564
+        x: 781
+        y: 91
+        width: 354
+        height: 424
       alignment: 9
-      pivot: {x: 0.5640732, y: 0}
+      pivot: {x: 0.45056498, y: 0.5247642}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5215c6e5e967aaef0800000000000000
-      internalID: -96134019473977051
+      spriteID: 720d4f9220d4c4a90800000000000000
+      internalID: -7328397821949456345
       vertices: []
       indices: 
       edges: []
@@ -264,7 +264,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 08aefc9bcec8e34439a50cbd4f59e89e
+    spriteID: 735cbb381f7ba2b459a15b841d0b0876
     internalID: 0
     vertices: []
     indices: 
@@ -274,27 +274,27 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Monster_Ground_Move_0: -5064045412535441029
-      Monster_Ground_Move_1: 7545066762124452954
-      Monster_Ground_Move_10: 4724308816173161873
-      Monster_Ground_Move_11: -4567047319687017105
-      Monster_Ground_Move_12: 640945638227670464
-      Monster_Ground_Move_13: -8859506032813044611
-      Monster_Ground_Move_14: 6163103372238186256
-      Monster_Ground_Move_15: 314749233458874126
-      Monster_Ground_Move_16: -2668180236707820819
-      Monster_Ground_Move_17: 8562508243358505672
-      Monster_Ground_Move_18: 6945595104947919198
-      Monster_Ground_Move_19: 7900698298403598489
-      Monster_Ground_Move_2: 2301873074267559735
-      Monster_Ground_Move_20: -6024669331602979271
-      Monster_Ground_Move_3: -96134019473977051
-      Monster_Ground_Move_4: 7182009291635263660
-      Monster_Ground_Move_5: 1760991004304342568
-      Monster_Ground_Move_6: 6011699295289417459
-      Monster_Ground_Move_7: -7232740263417930391
-      Monster_Ground_Move_8: 3641032236055141541
-      Monster_Ground_Move_9: 2223223830537790227
+      Monster_Wizard_Attack_0: 2843661689465305235
+      Monster_Wizard_Attack_1: -3782000546777380795
+      Monster_Wizard_Attack_10: -6498470368617976357
+      Monster_Wizard_Attack_11: 64442590078638994
+      Monster_Wizard_Attack_12: 846051355220485114
+      Monster_Wizard_Attack_13: 6820486751720117371
+      Monster_Wizard_Attack_14: 2511319252184932138
+      Monster_Wizard_Attack_15: 523948818382799914
+      Monster_Wizard_Attack_16: 2573193209395260460
+      Monster_Wizard_Attack_17: 6193206046371677273
+      Monster_Wizard_Attack_18: 362347731036913009
+      Monster_Wizard_Attack_19: -5276668763764235191
+      Monster_Wizard_Attack_2: 1528065083874639151
+      Monster_Wizard_Attack_20: 8292265650037409597
+      Monster_Wizard_Attack_3: -7328397821949456345
+      Monster_Wizard_Attack_4: 1212628754483462385
+      Monster_Wizard_Attack_5: 4738473018096030226
+      Monster_Wizard_Attack_6: -7071196881125455542
+      Monster_Wizard_Attack_7: -4653657503126593478
+      Monster_Wizard_Attack_8: 2838996373078799478
+      Monster_Wizard_Attack_9: -2008748702118772507
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

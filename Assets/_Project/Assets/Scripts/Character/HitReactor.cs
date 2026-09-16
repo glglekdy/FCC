@@ -15,6 +15,11 @@ public class HitReactor : MonoBehaviour {
     // 않아 한 곳만 고치면 플레이어와 몬스터의 넉백 감각이 조용히 어긋났다. 값을 여기 하나로 모은다.
     public float knockbackLockDuration = 0.15f;
 
+    [Header("사망 잔해")]
+    // **사망한 자리에 남을 시체 프리팹을 넣으세요. 비워두면 아무것도 남지 않습니다.**
+    // Health.Die() 가 본체를 곧바로 Destroy 하므로 쓰러지는 모션은 이 프리팹이 대신 재생한다.
+    public GameObject deathCorpsePrefab;
+
     [Header("이펙트 위치")]
     public Vector2 hitPointOffset = Vector2.zero; // 캐릭터 기준으로 이펙트 위치를 미세 조정.
     public float hitPointPullIn = 0.35f; // 공격이 들어온 쪽으로 얼마나 당겨서 띄울지. 0이면 캐릭터 중심에서 터진다.
@@ -26,6 +31,7 @@ public class HitReactor : MonoBehaviour {
     GroundMoveSystem groundMove;
     FlyMoveSystem flyMove;
     Player_move playerMove;
+    SpriteRenderer visualRenderer; // 시체가 어느 쪽을 보고 남을지 판단할 기준. 아래 SpawnCorpse 주석 참고.
 
     #endregion
     #region 유니티 라이프 사이클
@@ -35,6 +41,7 @@ public class HitReactor : MonoBehaviour {
         groundMove = GetComponent<GroundMoveSystem>();
         flyMove = GetComponent<FlyMoveSystem>();
         playerMove = GetComponent<Player_move>();
+        visualRenderer = GetComponentInChildren<SpriteRenderer>(true);
     }
 
     void OnEnable() {
@@ -73,6 +80,27 @@ public class HitReactor : MonoBehaviour {
 
         if (HitFeedback.Instance != null) HitFeedback.Instance.PlayHit(position, hitDir, 0, true);
         if (HitVfx.Instance != null) HitVfx.Instance.PlayDeath(position);
+
+        SpawnCorpse();
+    }
+
+    void SpawnCorpse() {
+        if (deathCorpsePrefab == null) return;
+
+        GameObject corpse = Instantiate(deathCorpsePrefab, transform.position, Quaternion.identity);
+
+        // 크기는 루트에서, 좌우는 실제로 그림이 걸린 렌더러에서 가져온다.
+        // 크기를 루트에서 보는 것은 씬에서 이 몬스터만 키워 놨을 때 시체도 같은 덩치로 남기기 위해서다.
+        // 시체 프리팹은 몬스터 프리팹과 같은 1 배율 기준으로 만들어져 있어 그대로 곱하면 맞는다.
+        // 좌우를 렌더러에서 보는 것은 뒤집는 자리가 몬스터마다 다르기 때문이다 — GroundMoveSystem 은 루트
+        // 스케일을, Monster_Wraith 는 Renderer 자식 스케일을 뒤집는다. 렌더러의 lossyScale 을 보면 어느
+        // 쪽이든 최종적으로 바라보던 방향이 나온다.
+        float facing = visualRenderer != null && visualRenderer.transform.lossyScale.x < 0f ? -1f : 1f;
+
+        Vector3 scale = corpse.transform.localScale;
+        scale.x = Mathf.Abs(scale.x) * Mathf.Abs(transform.localScale.x) * facing;
+        scale.y = Mathf.Abs(scale.y) * Mathf.Abs(transform.localScale.y);
+        corpse.transform.localScale = scale;
     }
 
     void ApplyKnockback(Vector2 hitDir) {

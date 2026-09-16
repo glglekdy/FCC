@@ -33,6 +33,11 @@ public class GroundMoveSystem : MonoBehaviour {
     public Transform ledgeCheck; // **몬스터 발밑 앞쪽에 빈 오브젝트를 만드세요.**
     public float ledgeCheckDistance = 0.5f;
 
+    [Header("애니메이션")]
+    // 걷기·정지 모션 전환용. **비워두면 같은 오브젝트에서 찾습니다.**
+    // 넘기는 값은 Speed(float) 하나뿐이고, 몇부터 걷기로 볼지는 Animator Controller 의 전이 조건이 정한다.
+    public Animator animator;
+
     #endregion
     #region 외부 제어용 변수
 
@@ -62,9 +67,15 @@ public class GroundMoveSystem : MonoBehaviour {
 
     Transform playerTransform;
 
+    // Animator 에 Speed 파라미터가 있는 컨트롤러에서만 값을 넘긴다. 없는 컨트롤러에 SetFloat 를 하면
+    // 매 프레임 경고가 쌓여 콘솔이 묻히기 때문에 Awake 에서 한 번만 확인해 둔다.
+    bool hasSpeedParameter;
+
     #endregion
 
     enum MoveState { Patrol, Chase }
+
+    static readonly int SpeedParameter = Animator.StringToHash("Speed"); // Animator Controller 의 파라미터와 이름을 맞춰야 한다.
 
     #region 유니티 라이프 사이클
 
@@ -77,6 +88,9 @@ public class GroundMoveSystem : MonoBehaviour {
 
         allyFilter.useTriggers = false; // Renderer 에 달린 트리거 캡슐까지 잡히면 노이즈라 몸통 콜라이더만 본다.
         allyFilter.SetLayerMask(allyLayer);
+
+        if (animator == null) animator = GetComponent<Animator>();
+        hasSpeedParameter = HasParameter(SpeedParameter);
     }
 
     void Update() {
@@ -91,6 +105,8 @@ public class GroundMoveSystem : MonoBehaviour {
         if (state == MoveState.Patrol && (isFacingWall || isFacingLedge || (IsAllyAhead() && !IsAllyBehind()))) {
             Flip();
         }
+
+        UpdateAnimator();
     }
 
     void FixedUpdate() {
@@ -145,6 +161,24 @@ public class GroundMoveSystem : MonoBehaviour {
         if (Mathf.Abs(rigid.linearVelocityX) > maxSpeed) {
             rigid.linearVelocityX = Mathf.Sign(rigid.linearVelocityX) * maxSpeed;
         }
+    }
+
+    // 실제로 깔린 거리만큼만 걷기 모션을 돌린다. 벽·동족·플레이어 앞에서 멈췄을 때 제자리걸음이 나오지 않게
+    // 의도한 방향(facingDirection)이 아니라 리지드바디의 실제 속도를 본다.
+    void UpdateAnimator() {
+        if (!hasSpeedParameter) return;
+
+        animator.SetFloat(SpeedParameter, Mathf.Abs(rigid.linearVelocityX));
+    }
+
+    bool HasParameter(int nameHash) {
+        if (animator == null || animator.runtimeAnimatorController == null) return false;
+
+        AnimatorControllerParameter[] parameters = animator.parameters;
+        for (int i = 0; i < parameters.Length; i++) {
+            if (parameters[i].nameHash == nameHash) return true;
+        }
+        return false;
     }
 
     public void ApplyKnockback(Vector2 force, float duration = 0.15f) {

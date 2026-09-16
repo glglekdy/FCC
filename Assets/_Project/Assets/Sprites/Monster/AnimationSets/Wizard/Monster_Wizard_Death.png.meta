@@ -1,0 +1,350 @@
+fileFormatVersion: 2
+guid: 8fea15d545ee24442bd6514b80f11e78
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 5194600929242868968
+    second: Monster_Wizard_Death_0
+  - first:
+      213: 2990482887871432688
+    second: Monster_Wizard_Death_1
+  - first:
+      213: 1382598649428868909
+    second: Monster_Wizard_Death_2
+  - first:
+      213: 2091177563072078076
+    second: Monster_Wizard_Death_3
+  - first:
+      213: -3555618952535360889
+    second: Monster_Wizard_Death_4
+  - first:
+      213: 9206500221050109672
+    second: Monster_Wizard_Death_5
+  - first:
+      213: 1858153783241157028
+    second: Monster_Wizard_Death_6
+  - first:
+      213: 1195971335145277419
+    second: Monster_Wizard_Death_7
+  - first:
+      213: 3417890504529492087
+    second: Monster_Wizard_Death_8
+  - first:
+      213: -5341136435784417250
+    second: Monster_Wizard_Death_9
+  - first:
+      213: 1842788062965748364
+    second: Monster_Wizard_Death_10
+  - first:
+      213: 1464532963264606018
+    second: Monster_Wizard_Death_11
+  - first:
+      213: 3663055730138635393
+    second: Monster_Wizard_Death_12
+  - first:
+      213: 4256190338658873225
+    second: Monster_Wizard_Death_13
+  - first:
+      213: 7769841863880325356
+    second: Monster_Wizard_Death_14
+  - first:
+      213: -4478760667680236940
+    second: Monster_Wizard_Death_15
+  - first:
+      213: 6406340720428200296
+    second: Monster_Wizard_Death_16
+  - first:
+      213: -5240679562898029671
+    second: Monster_Wizard_Death_17
+  - first:
+      213: -8564908235387587554
+    second: Monster_Wizard_Death_18
+  - first:
+      213: -5709073518493438407
+    second: Monster_Wizard_Death_19
+  - first:
+      213: 8400944684126517481
+    second: Monster_Wizard_Death_20
+  - first:
+      213: 3457924671666798310
+    second: Monster_Wizard_Death_21
+  - first:
+      213: 4918861218596635157
+    second: Monster_Wizard_Death_22
+  - first:
+      213: -801460349104659003
+    second: Monster_Wizard_Death_23
+  - first:
+      213: 4050047125997701526
+    second: Monster_Wizard_Death_24
+  - first:
+      213: 6503439984467257181
+    second: Monster_Wizard_Death_25
+  - first:
+      213: 8778378854171135077
+    second: Monster_Wizard_Death_26
+  - first:
+      213: -7246304424553840191
+    second: Monster_Wizard_Death_27
+  - first:
+      213: 4379926472683679126
+    second: Monster_Wizard_Death_28
+  - first:
+      213: -891142754503571277
+    second: Monster_Wizard_Death_29
+  - first:
+      213: 6878855054175031283
+    second: Monster_Wizard_Death_30
+  - first:
+      213: 2373233081231707198
+    second: Monster_Wizard_Death_31
+  - first:
+      213: -339708864115690778
+    second: Monster_Wizard_Death_32
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 240
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Monster_Wizard_Death_0
+      rect:
+        serializedVersion: 2
+        x: 134
+        y: 682
+        width: 419
+        height: 454
+      alignment: 9
+      pivot: {x: 0.42840096, y: 0.56938326}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8ec6f61e50ee61840800000000000000
+      internalID: 5194600929242868968
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster_Wizard_Death_1
+      rect:
+        serializedVersion: 2
+        x: 748
+        y: 646
+        width: 428
+        height: 461
+      alignment: 9
+      pivot: {x: 0.44976637, y: 0.63882864}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0f7067e9754508920800000000000000
+      internalID: 2990482887871432688
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster_Wizard_Death_2
+      rect:
+        serializedVersion: 2
+        x: 146
+        y: 50
+        width: 387
+        height: 346
+      alignment: 9
+      pivot: {x: 0.43281654, y: 0.7615607}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d2f7426752aff2310800000000000000
+      internalID: 1382598649428868909
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster_Wizard_Death_3
+      rect:
+        serializedVersion: 2
+        x: 793
+        y: 50
+        width: 370
+        height: 273
+      alignment: 9
+      pivot: {x: 0.39864865, y: 0.96520144}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cf0ad210aea550d10800000000000000
+      internalID: 2091177563072078076
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 6b0147a8f61d61c4ba77cc00afd6a2d7
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Monster_Wizard_Death_0: 5194600929242868968
+      Monster_Wizard_Death_1: 2990482887871432688
+      Monster_Wizard_Death_10: 1842788062965748364
+      Monster_Wizard_Death_11: 1464532963264606018
+      Monster_Wizard_Death_12: 3663055730138635393
+      Monster_Wizard_Death_13: 4256190338658873225
+      Monster_Wizard_Death_14: 7769841863880325356
+      Monster_Wizard_Death_15: -4478760667680236940
+      Monster_Wizard_Death_16: 6406340720428200296
+      Monster_Wizard_Death_17: -5240679562898029671
+      Monster_Wizard_Death_18: -8564908235387587554
+      Monster_Wizard_Death_19: -5709073518493438407
+      Monster_Wizard_Death_2: 1382598649428868909
+      Monster_Wizard_Death_20: 8400944684126517481
+      Monster_Wizard_Death_21: 3457924671666798310
+      Monster_Wizard_Death_22: 4918861218596635157
+      Monster_Wizard_Death_23: -801460349104659003
+      Monster_Wizard_Death_24: 4050047125997701526
+      Monster_Wizard_Death_25: 6503439984467257181
+      Monster_Wizard_Death_26: 8778378854171135077
+      Monster_Wizard_Death_27: -7246304424553840191
+      Monster_Wizard_Death_28: 4379926472683679126
+      Monster_Wizard_Death_29: -891142754503571277
+      Monster_Wizard_Death_3: 2091177563072078076
+      Monster_Wizard_Death_30: 6878855054175031283
+      Monster_Wizard_Death_31: 2373233081231707198
+      Monster_Wizard_Death_32: -339708864115690778
+      Monster_Wizard_Death_4: -3555618952535360889
+      Monster_Wizard_Death_5: 9206500221050109672
+      Monster_Wizard_Death_6: 1858153783241157028
+      Monster_Wizard_Death_7: 1195971335145277419
+      Monster_Wizard_Death_8: 3417890504529492087
+      Monster_Wizard_Death_9: -5341136435784417250
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

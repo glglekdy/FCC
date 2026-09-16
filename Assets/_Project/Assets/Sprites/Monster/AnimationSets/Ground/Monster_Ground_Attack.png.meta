@@ -5,6 +5,48 @@ TextureImporter:
   - first:
       213: 6085106920122463514
     second: Monster_Ground_Attack_0
+  - first:
+      213: -4350443677593006232
+    second: Monster_Ground_Attack_1
+  - first:
+      213: -3600958160467911024
+    second: Monster_Ground_Attack_2
+  - first:
+      213: -3858128524343143523
+    second: Monster_Ground_Attack_3
+  - first:
+      213: 4462490782564476956
+    second: Monster_Ground_Attack_4
+  - first:
+      213: 4053684834901141272
+    second: Monster_Ground_Attack_5
+  - first:
+      213: -7672153690060759562
+    second: Monster_Ground_Attack_6
+  - first:
+      213: -3050950307719740581
+    second: Monster_Ground_Attack_7
+  - first:
+      213: -6039317711308488100
+    second: Monster_Ground_Attack_8
+  - first:
+      213: -6299313099973441730
+    second: Monster_Ground_Attack_9
+  - first:
+      213: 4657030484859108054
+    second: Monster_Ground_Attack_10
+  - first:
+      213: 6297971248200558953
+    second: Monster_Ground_Attack_11
+  - first:
+      213: -4268576175672396843
+    second: Monster_Ground_Attack_12
+  - first:
+      213: -2659318510154129055
+    second: Monster_Ground_Attack_13
+  - first:
+      213: 7523289492339502394
+    second: Monster_Ground_Attack_14
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -51,7 +93,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 300
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -96,6 +138,19 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -103,12 +158,12 @@ TextureImporter:
       name: Monster_Ground_Attack_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 26
-        width: 471
-        height: 571
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 57
+        y: 632
+        width: 580
+        height: 529
+      alignment: 9
+      pivot: {x: 0.44224137, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -121,11 +176,77 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Monster_Ground_Attack_1
+      rect:
+        serializedVersion: 2
+        x: 716
+        y: 631
+        width: 487
+        height: 590
+      alignment: 9
+      pivot: {x: 0.46098563, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 86f89bd568e10a3c0800000000000000
+      internalID: -4350443677593006232
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster_Ground_Attack_2
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 36
+        width: 637
+        height: 509
+      alignment: 9
+      pivot: {x: 0.44505495, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 09e144ab1a3d60ec0800000000000000
+      internalID: -3600958160467911024
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Monster_Ground_Attack_3
+      rect:
+        serializedVersion: 2
+        x: 684
+        y: 24
+        width: 559
+        height: 461
+      alignment: 9
+      pivot: {x: 0.4588551, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d9399b06c8c257ac0800000000000000
+      internalID: -3858128524343143523
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 4b7f8baaae3eddc42b8a11ee920c5df1
     internalID: 0
     vertices: []
     indices: 
@@ -136,6 +257,20 @@ TextureImporter:
       entries: []
     nameFileIdTable:
       Monster_Ground_Attack_0: 6085106920122463514
+      Monster_Ground_Attack_1: -4350443677593006232
+      Monster_Ground_Attack_10: 4657030484859108054
+      Monster_Ground_Attack_11: 6297971248200558953
+      Monster_Ground_Attack_12: -4268576175672396843
+      Monster_Ground_Attack_13: -2659318510154129055
+      Monster_Ground_Attack_14: 7523289492339502394
+      Monster_Ground_Attack_2: -3600958160467911024
+      Monster_Ground_Attack_3: -3858128524343143523
+      Monster_Ground_Attack_4: 4462490782564476956
+      Monster_Ground_Attack_5: 4053684834901141272
+      Monster_Ground_Attack_6: -7672153690060759562
+      Monster_Ground_Attack_7: -3050950307719740581
+      Monster_Ground_Attack_8: -6039317711308488100
+      Monster_Ground_Attack_9: -6299313099973441730
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
