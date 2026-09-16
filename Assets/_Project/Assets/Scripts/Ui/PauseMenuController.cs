@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+// **레거시 — 새 일시정지 메뉴는 PauseMenuView(Prefabs/UI/PauseMenu.prefab) 입니다.**
+// 게임 씬에는 PauseMenuController_Legacy 라는 이름으로 꺼진 채 남아 있습니다. 둘을 함께 켜면 ESC 를 서로 먹어 timeScale 이 엉킵니다.
 public class PauseMenuController : MonoBehaviour {
     #region 인스펙터 변수
 

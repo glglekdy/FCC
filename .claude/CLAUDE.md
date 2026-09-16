@@ -209,6 +209,20 @@ GameSettings        Draft / Current · PlayerPrefs 저장 · 시스템 반영  (
 - 감각을 건드리는 항목은 원본 수치를 덮어쓰지 않고 **배율**로 곱합니다 — `HitFeedback.ShakeScale`. 인스펙터에서 맞춰둔 값을 설정이 지워버리면 되돌릴 수 없기 때문입니다.
 - **아직 값만 보관하는 항목**: 배경음·효과음 볼륨(`AudioMixer` 미존재 — 마스터만 `AudioListener.volume` 로 동작), 데미지 수치 표시(`DamagePopup` 미존재), 키 리바인딩(Input System 인터랙티브 리바인딩 미구현). 각각 붙일 자리에 `**` 주석으로 표시해 두었습니다.
 
+### 일시정지 메뉴
+
+Figma 「FCC_UI」의 `일시중단 메뉴` · `메인메뉴로 나가기` 두 안을 옮긴 화면입니다. 프리팹은 `Prefabs/UI/PauseMenu.prefab`(`Tools ▸ FCC ▸ Build Pause Menu Prefab`), 스크립트는 `PauseMenuView`(선택 · 입력 · 시간 정지 · 나가기 전 저장) + `PauseMenuItemView`(줄 하나의 표시)입니다. 게임 씬(First · CoreScene · Play_First · Second)의 루트에 놓여 있고 `settingsPanel` 칸에 씬의 `SettingsPanel` 이 연결되어 있습니다.
+
+- **가운데 영역 안쪽(머리 · 메뉴 · 꼬리)은 Figma 수치의 80%입니다**(`PauseMenuPrefabBuilder.UiScale`). 그대로 옮기니 화면이 꽉 차 보여 비율은 두고 크기만 줄였습니다. 글자는 16px 밑으로 내려가지 않고(`MinFontSize`), 확인 창은 기억 선택 화면의 확인 창과 크기를 맞추려고 줄이지 않았습니다.
+- **프리팹 루트는 켜 둔 채로 둡니다.** 닫혀 있을 때는 `windowRoot` 만 끕니다 — 루트를 끄면 `Update` 가 돌지 않아 ESC 로 열 수 없습니다(정비 화면과 같은 이유).
+- ESC 로 열고 닫습니다. **플레이어 이동이 잠긴 동안(대사 · 컷씬 · 깨어나기 · 정비 화면)과 씬 전환 중에는 열리지 않습니다.** 대사 넘김(Space · 좌클릭)이 메뉴 조작과 겹쳐 뒤에서 대사가 넘어가 버리기 때문입니다.
+- 열려 있는 동안 플레이어의 `PlayerInput` 을 통째로 끕니다(`DeactivateInput`). 시간이 멈춰도 입력 콜백은 돌아, 메뉴를 고르던 Space 의 점프 힘이 닫는 순간 튀어 오르기 때문입니다.
+- 히트스톱이 실시간으로 기다렸다가 `timeScale` 을 되돌리므로, 열려 있는 동안은 `LateUpdate` 에서 매 프레임 0으로 다시 멈춥니다. 닫을 때는 연 순간의 배속이 아니라 **1로** 되돌립니다(히트스톱 도중에 열면 0.02가 저장되기 때문입니다).
+- 정비 화면(`SkillLoadoutView`)은 열려 있는 동안 이 컴포넌트를 꺼 둡니다. ESC 를 둘이 같이 먹으면 `timeScale` 이 엉킵니다. 그래서 다시 켜진 프레임과 설정창이 닫힌 프레임의 입력은 넘깁니다(`ignoreInputFrame`).
+- [메뉴로 돌아가기]는 확인 창(「취소」 포커스로 열림)을 거쳐 **현재 기억 자리에 저장한 뒤** `ScreenFader.LoadScene` 으로 나갑니다. 복귀 지점은 `keepLastRespawn`(기본 켬)에 따라 **같은 씬에 마지막으로 저장한 곳(보통 거울)을 유지**하고 진행(체력 · 조각 · 스킬 · 목표)만 새로 적습니다. 같은 씬의 기록이 없으면 지금 자리를 적되, **던전 안(`DungeonRespawnController.Instance`)이면 저장하지 않습니다** — 방을 만들었다 지우는 구조라 불러오면 허공에 섭니다. `SaveManager` 가 없거나 플레이어가 없을 때도 저장하지 않고, 확인 창 문구가 "메인메뉴로 나가시겠습니까?" 로 바뀝니다.
+- 마우스는 **실제로 움직였을 때만** 줄을 따라갑니다. 메뉴가 뜨는 순간 가만히 있던 커서 밑의 줄이 골라진 채로 열리면 ESC → Enter 가 엉뚱한 줄을 실행합니다.
+- 구버전 `PauseMenuController` 는 씬에서 `PauseMenuController_Legacy` 로 이름을 바꿔 꺼 두었습니다(옛 `PausePanel` 도 그대로 꺼져 있습니다).
+
 ### 입력
 
 `Assets/_Project/Assets/Input/Client.inputactions` 를 사용합니다 (루트의 `InputSystem_Actions.inputactions` 는 Unity 기본 템플릿으로 미사용됩니다).

@@ -78,7 +78,7 @@ public class SkillLoadoutView : MonoBehaviour {
 
     SkillManager manager;
     Player_move playerMove;
-    PauseMenuController pauseMenu; // 열려 있는 동안 꺼둔다. ESC를 서로 먹으면 timeScale이 엉키기 때문.
+    PauseMenuView pauseMenu; // 열려 있는 동안 꺼둔다. ESC를 서로 먹으면 timeScale이 엉키기 때문.
     Action onClosed; // 여는 쪽(거울)이 닫힌 뒤 할 일. 거울은 정비 결과를 한 번 더 저장한다.
 
     int selectedSlot; // 지금 고른 장착 슬롯 (0~2).
@@ -182,7 +182,7 @@ public class SkillLoadoutView : MonoBehaviour {
         if (playerMove != null) playerMove.isMovementLocked = true;
 
         // ESC를 서로 먹으면 한쪽은 정비 화면을 닫고 다른 쪽은 일시정지를 켜서 timeScale이 어긋난다.
-        pauseMenu = FindAnyObjectByType<PauseMenuController>();
+        pauseMenu = FindAnyObjectByType<PauseMenuView>();
         if (pauseMenu != null) pauseMenu.enabled = false;
 
         savedTimeScale = Time.timeScale;

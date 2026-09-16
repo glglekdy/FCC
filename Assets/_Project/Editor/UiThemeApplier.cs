@@ -46,6 +46,7 @@ public static class UiThemeApplier {
         touched += Apply("Settingpanel", font, flat, Settingpanel);
         touched += Apply("SaveSlotSelect", font, flat, SaveSlotSelect);
         touched += Apply("SaveSlotRow", font, flat, SaveSlotRow);
+        touched += Apply("PauseMenu", font, flat, PauseMenu);
 
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
@@ -282,6 +283,47 @@ public static class UiThemeApplier {
             row.focusedNumberColor = UiTheme.TextHigh;
             row.skillFilledColor = UiTheme.PanelRaised;
             row.skillEmptyColor = UiTheme.Panel;
+        }
+    }
+
+    static void PauseMenu(GameObject root) {
+        Img(root, "Column", UiTheme.With(UiTheme.Stage, 0.75f)); // 뒤의 게임 화면이 흐리게 비쳐야 멈춰 있다는 것이 보인다.
+
+        Txt(root, "Header/Title", UiTheme.TextHigh);
+        Txt(root, "Header/Subtitle", UiTheme.TextMuted);
+        Img(root, "Header/Divider", UiTheme.Line);
+
+        ImgTree(root, "FocusMarker", UiTheme.Accent);
+
+        Img(root, "Footer/Divider", UiTheme.Line);
+        Txt(root, "Footer/Hint", UiTheme.TextMuted);
+
+        Img(root, "ConfirmDim", UiTheme.Dim);
+        Img(root, "ConfirmWindow", UiTheme.Panel);
+        ImgTree(root, "ConfirmWindow/Border", UiTheme.Line);
+        Txt(root, "ConfirmWindow/Title", UiTheme.TextHigh);
+        Txt(root, "ConfirmWindow/Message", UiTheme.TextBody);
+        Img(root, "ConfirmWindow/Divider", UiTheme.Line);
+        ImgTree(root, "Btn_Cancel/Border", UiTheme.Line);
+        ImgTree(root, "Btn_Exit/Border", UiTheme.Line);
+        ImgTree(root, "Btn_Cancel/FocusBorder", UiTheme.Accent);
+        ImgTree(root, "Btn_Exit/FocusBorder", UiTheme.Accent);
+
+        // 줄의 면 · 글자와 확인 창 버튼은 선택에 따라 뷰가 칠한다. 프리팹 색이 아니라 뷰의 색 필드를 맞춰야 실행 중에 따라온다.
+        foreach (PauseMenuItemView item in root.GetComponentsInChildren<PauseMenuItemView>(true)) {
+            item.normalBackground = UiTheme.Transparent;
+            item.selectedBackground = UiTheme.With(UiTheme.PanelRaised, 0.75f);
+            item.labelColor = UiTheme.TextBody;
+            item.selectedLabelColor = UiTheme.TextHigh;
+            item.lockedColor = UiTheme.TextDim;
+        }
+
+        foreach (PauseMenuView view in root.GetComponentsInChildren<PauseMenuView>(true)) {
+            view.buttonColor = UiTheme.Panel;
+            view.focusedButtonColor = UiTheme.PanelRaised;
+            view.cancelLabelColor = UiTheme.TextBody;
+            view.focusedCancelLabelColor = UiTheme.TextHigh;
+            view.dangerLabelColor = UiTheme.AccentBright; // 되돌릴 수 없는 버튼. 면이 아니라 글자에만 포인트 컬러를 쓴다.
         }
     }
 
