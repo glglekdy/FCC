@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class GroundMoveSystem : MonoBehaviour, IRestrainable {
+public class GroundMoveSystem : MonoBehaviour, IRestrainable, IDormant {
     #region 인스펙터 변수
 
     [Header("무브먼트 설정")]
@@ -48,12 +48,17 @@ public class GroundMoveSystem : MonoBehaviour, IRestrainable {
     // 이동과 공격이 서로 다른 시간만큼 묶여 "움직이진 못하는데 때리긴 한다"는 식으로 어긋난다.
     public bool IsRestrained => restrainTimer > 0f;
 
+    // 던전 전투방을 앞 방에서 미리 보여 주는 동안 켜진다(IDormant). 구속과 같은 이유로 공격 컴포넌트도 이 값을 읽는다.
+    // IsRestrained 에 합치지 않은 이유는, 구속은 Close Call 이 건 효과라 나중에 스킬 쪽이 "묶였는가"를 물을 때 섞이면 안 되기 때문이다.
+    public bool IsDormant => isDormant;
+
     #endregion
     #region 컴포넌트 변수
 
     Rigidbody2D rigid;
     float knockbackTimer; // 0보다 크면 넉백 중 - 일반 이동 로직을 건너뛰어 물리 힘이 그대로 유지되게 한다.
     float restrainTimer; // 0보다 크면 구속 중(Close Call) - 넉백보다 우선해 제자리에 붙잡아 둔다.
+    bool isDormant; // 켜져 있으면 전투가 시작되기 전이라 제자리에서 기다린다. 넉백은 그대로 받는다.
     MoveState state;
     int facingDirection = 1; // 1: 오른쪽, -1: 왼쪽
 
@@ -105,7 +110,8 @@ public class GroundMoveSystem : MonoBehaviour, IRestrainable {
         CheckAlly();
 
         // 묶인 동안은 돌아서지도 않는다. 플레이어를 따라 몸을 돌리면 줄에 묶였다는 그림이 깨진다.
-        if (IsRestrained) {
+        // 대기 중에도 감지를 건너뛴다. 앞 방에서 다가오는 플레이어를 보고 돌아서면 이미 깨어난 것처럼 읽힌다.
+        if (IsRestrained || isDormant) {
             UpdateAnimator();
             return;
         }
@@ -140,6 +146,12 @@ public class GroundMoveSystem : MonoBehaviour, IRestrainable {
 
         if (knockbackTimer > 0f) {
             knockbackTimer -= Time.fixedDeltaTime;
+            return;
+        }
+
+        // 넉백 뒤에 본다. 대기 중에 맞으면 방 전체가 깨어나는데, 그 한 방의 넉백까지 지워지면 맞았다는 반응이 사라진다.
+        if (isDormant) {
+            rigid.linearVelocity = new Vector2(0f, rigid.linearVelocityY); // 스폰 지점이 공중이어도 바닥까지는 떨어져야 한다.
             return;
         }
 
@@ -212,6 +224,10 @@ public class GroundMoveSystem : MonoBehaviour, IRestrainable {
 
         restrainTimer = Mathf.Max(restrainTimer, duration);
         rigid.linearVelocity = new Vector2(0f, rigid.linearVelocityY);
+    }
+
+    public void SetDormant(bool dormant) {
+        isDormant = dormant;
     }
 
     void CheckGrounded() {

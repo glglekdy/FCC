@@ -101,8 +101,9 @@ public class Monster_Bomber : MonoBehaviour {
         if (health.IsDead) return;
 
         // 묶여 있으면 불을 붙이지 못한다. 이미 붙은 도화선은 구속과 무관하게 계속 탄다 — 꺼지지 않는다는 규칙은 그대로다.
+        // 대기(던전 전투방 미리 보기) 중에도 붙이지 못한다. 앞 방 경계까지 다가간 플레이어에게 반응하면 안 된다.
         if (!fuseLit) {
-            if (!moveSystem.IsRestrained) CheckTrigger();
+            if (!moveSystem.IsRestrained && !moveSystem.IsDormant) CheckTrigger();
         }
         else {
             TickFuse(Time.deltaTime);

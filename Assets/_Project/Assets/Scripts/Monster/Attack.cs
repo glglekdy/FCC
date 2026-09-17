@@ -42,7 +42,8 @@ public class Attack : MonoBehaviour {
     void Update() {
         // 묶인 동안은 공격 타이머를 멈춘다. 선딜레이를 취소하지 않고 멈추는 이유는, 준비 모션을 되돌리는
         // 애니메이션이 없어 취소하면 준비 자세로 굳은 채 서 있게 되기 때문이다.
-        if (moveSystem.IsRestrained) return;
+        // 대기(던전 전투방 미리 보기) 중에도 멈춘다. 이동만 멈추고 공격을 두면 방 경계에 선 플레이어를 때린다.
+        if (moveSystem.IsRestrained || moveSystem.IsDormant) return;
 
         switch (state) {
             case AttackState.Idle:

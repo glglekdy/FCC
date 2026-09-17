@@ -47,6 +47,10 @@ public class Health : MonoBehaviour
     public int CurrentHealth => currentHealth;
     public bool IsDead => isDead;
 
+    // 받는 피해에 곱하는 일시 배율. 뒷세계 상점의 한정 강화(받는 피해 감소)가 플레이어에게만 건다.
+    // 기본값 1 이라 몬스터와 평소의 플레이어는 지금까지와 똑같이 맞는다. 직렬화되지 않아 씬을 다시 열면 1로 돌아온다.
+    public float DamageTakenMultiplier { get; set; } = 1f;
+
     // 지금 무적인지. 피격 무적뿐 아니라 낙사 복귀 무적·연출용 무적까지 전부 이 하나로 모으므로,
     // 무적을 봐야 하는 쪽(연출·AI·기믹)은 어디서 걸린 무적인지 신경 쓰지 않고 이 값만 읽으면 된다.
     public bool IsInvincible => isInvincible;
@@ -73,6 +77,10 @@ public class Health : MonoBehaviour
 
     public void TakeDamage(int damage, Vector2 sourcePosition) {
         if (isDead || isInvincible) return;
+
+        // 배율이 붙어도 최소 1은 깎는다. 0이 되면 피격 연출과 무적만 걸리고 체력은 그대로인 "맞았는데 안 맞은" 상태가 된다.
+        // 배율을 거친 값을 OnDamaged 에도 넘겨야 데미지 숫자와 실제로 깎인 양이 어긋나지 않는다.
+        if (DamageTakenMultiplier != 1f) damage = Mathf.Max(1, Mathf.RoundToInt(damage * DamageTakenMultiplier));
 
         currentHealth = Mathf.Max(0, currentHealth - damage);
 

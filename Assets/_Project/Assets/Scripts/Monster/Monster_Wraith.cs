@@ -5,7 +5,7 @@ using UnityEngine;
 // 위쪽 어딘가에 다시 나타나 투사체 한 발을 던지는 텔레포트형 원거리 몬스터.
 // 근접형(GroundMoveSystem/FlyMoveSystem)과 짝을 이루는 챕터1 원거리 잡몹.
 [RequireComponent(typeof(Health))]
-public class Monster_Wraith : MonoBehaviour, IRestrainable {
+public class Monster_Wraith : MonoBehaviour, IRestrainable, IDormant {
     #region 인스펙터 변수
 
     [Header("연결")]
@@ -87,6 +87,7 @@ public class Monster_Wraith : MonoBehaviour, IRestrainable {
 
     bool attackInterrupted; // 조준 중(또는 재등장 직후) 플레이어에게 맞으면 켜진다. 이번 공격 턴을 취소하고 바로 사라지게 만든다.
     float restrainTimer; // 0보다 크면 구속 중(Close Call) - 사라지지도, 조준하지도 못하고 그 자리에 붙잡힌다.
+    bool isDormant; // 켜져 있으면 전투가 시작되기 전이라 반투명한 채 제자리에 떠 있기만 한다(IDormant).
     string currentStateName; // 같은 상태를 다시 요청했을 때 재생 중인 모션을 처음으로 되감지 않기 위한 기록.
 
     #endregion
@@ -120,7 +121,8 @@ public class Monster_Wraith : MonoBehaviour, IRestrainable {
 
         if (restrainTimer > 0f) restrainTimer -= Time.deltaTime;
 
-        if (state == WraithState.Patrol && restrainTimer <= 0f) {
+        // 대기 중에는 감지하지 않는다. 감지 반경이 넓어 앞 방 경계에 선 플레이어에게 텔레포트해 오면 미리 보여 주는 의미가 없다.
+        if (state == WraithState.Patrol && restrainTimer <= 0f && !isDormant) {
             DetectTarget();
             if (HasTarget()) EnterCombat();
             else TickPatrol(Time.deltaTime);
@@ -160,6 +162,10 @@ public class Monster_Wraith : MonoBehaviour, IRestrainable {
 
         restrainTimer = Mathf.Max(restrainTimer, duration);
         attackInterrupted = true;
+    }
+
+    public void SetDormant(bool dormant) {
+        isDormant = dormant;
     }
 
     void AcquireTargetUnconditionally() {
@@ -256,7 +262,8 @@ public class Monster_Wraith : MonoBehaviour, IRestrainable {
     IEnumerator CombatLoop() {
         while (true) {
             // 묶여 있으면 사라지지 못한다. 사라지는 순간 Hurtbox 가 꺼져 줄로 묶어 둔 의미가 없어지기 때문이다.
-            while (restrainTimer > 0f) yield return null;
+            // 대기 중에 선공을 맞아 전투에 들어온 경우도 같은 자리에서 기다린다. 방이 깨어나는 것은 같은 피해 이벤트 안이라 곧 풀린다.
+            while (restrainTimer > 0f || isDormant) yield return null;
 
             if (!StillHasTarget()) break;
 

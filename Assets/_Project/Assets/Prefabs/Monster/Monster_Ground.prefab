@@ -377,6 +377,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Health
   maxHealth: 100
   invincibleTime: 0
+  executionImmune: 0
   currentHealth: 100
 --- !u!114 &7159184414531258908
 MonoBehaviour:

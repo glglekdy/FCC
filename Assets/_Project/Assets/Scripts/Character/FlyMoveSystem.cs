@@ -7,7 +7,7 @@ using UnityEngine;
 // 돌진 자체가 공격이라 분리하면 상태·조준 스냅샷·스윕 시작 위치를 매 프레임 두 컴포넌트가 주고받아야 한다.
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Health))]
-public class FlyMoveSystem : MonoBehaviour, IRestrainable {
+public class FlyMoveSystem : MonoBehaviour, IRestrainable, IDormant {
     #region 인스펙터 변수
 
     [Header("연결")]
@@ -92,6 +92,7 @@ public class FlyMoveSystem : MonoBehaviour, IRestrainable {
     float stateTimer; // 현재 상태에 머문 시간.
     float knockbackTimer; // 0보다 크면 넉백 중 - 추력을 넣지 않아 물리 힘이 그대로 유지된다.
     float restrainTimer; // 0보다 크면 구속 중(Close Call) - 허공에 멈춰 선다.
+    bool isDormant; // 켜져 있으면 전투가 시작되기 전이라 순찰도 감지도 하지 않고 떠 있기만 한다(IDormant).
     float wallStunTimer;
     float wallHitTimer;
     float lostSightTimer;
@@ -167,6 +168,14 @@ public class FlyMoveSystem : MonoBehaviour, IRestrainable {
 
         if (knockbackTimer > 0f) {
             // 속도를 직접 대입하는 방식이라 한 스텝만 개입해도 넉백이 통째로 사라진다.
+            lastCheckPosition = rigid.position;
+            return;
+        }
+
+        // 넉백 뒤에 본다. 대기 중에 맞으면 방 전체가 깨어나는데, 그 한 방의 넉백까지 지워지면 맞았다는 반응이 사라진다.
+        // 감지보다 앞이라 앞 방의 플레이어를 발견하고 조준에 들어가는 일도 없다.
+        if (isDormant) {
+            rigid.linearVelocity = Vector2.zero;
             lastCheckPosition = rigid.position;
             return;
         }
@@ -572,6 +581,10 @@ public class FlyMoveSystem : MonoBehaviour, IRestrainable {
         rigid.linearVelocity = Vector2.zero;
         hasHitThisCharge = false;
         if (state != FlyState.Drift) EnterDrift();
+    }
+
+    public void SetDormant(bool dormant) {
+        isDormant = dormant;
     }
 
     #endregion

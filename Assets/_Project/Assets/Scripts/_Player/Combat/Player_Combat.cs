@@ -19,6 +19,14 @@ public class Player_Combat : MonoBehaviour {
     public int attackDamage = 10;
 
     #endregion
+    #region 일시 배율
+
+    // 뒷세계 상점의 한정 강화처럼 잠깐만 걸리는 기본 공격 피해 배율. 1 이면 그대로다.
+    // attackDamage 를 직접 올리지 않는 이유는, 강화를 걷어낼 때 원래 값을 따로 기억해 두지 않으면 인스펙터에서
+    // 맞춰 둔 수치로 되돌아갈 길이 없기 때문이다. 직렬화되지 않는 프로퍼티라 씬을 다시 열면 1로 돌아온다.
+    public float DamageMultiplier { get; set; } = 1f;
+
+    #endregion
     #region 이벤트
 
     // 공격이 받아들여진 순간 (공격 원점, 바라보는 방향 +1/-1) 전달. Player_AttackSlash 가 구독해 휘두르는 궤적을 그린다.
@@ -90,6 +98,9 @@ public class Player_Combat : MonoBehaviour {
         Collider2D[] hits = Physics2D.OverlapCircleAll(currentAttackWorldPos, attackRange, enemyLayer);
         if (hits.Length == 0) return;
 
+        // 배율이 붙어도 최소 1은 들어가야 한다. 0으로 내려가면 맞아도 반응만 있고 체력이 안 깎인다.
+        int damage = Mathf.Max(1, Mathf.RoundToInt(attackDamage * DamageMultiplier));
+
         hitTargets.Clear();
         foreach (Collider2D hit in hits) {
             // Hurtbox 가 없는 콜라이더(몬스터 이동용 몸통 콜라이더 등)는 판정에서 제외한다.
@@ -98,7 +109,7 @@ public class Player_Combat : MonoBehaviour {
             // 한 대상에 콜라이더가 여러 개 붙어 있어도 한 번만 때린다.
             if (!hitTargets.Add(hurtbox.OwnerHealth)) continue;
 
-            hurtbox.OwnerHealth.TakeDamage(attackDamage, currentAttackWorldPos);
+            hurtbox.OwnerHealth.TakeDamage(damage, currentAttackWorldPos);
         }
     }
 
