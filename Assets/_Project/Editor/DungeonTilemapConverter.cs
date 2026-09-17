@@ -48,7 +48,7 @@ public static class DungeonTilemapConverter {
         TileBase solidTile = TilemapGridBuilder.SolidTile;
         TileBase platformTile = TilemapGridBuilder.PlatformTile;
         if (solidTile == null || platformTile == null) {
-            Debug.LogError("[Dungeon] 지형 타일을 찾지 못했습니다. 먼저 Tools ▸ FCC ▸ Tilemap ▸ Build King And Pig Rule Tiles 를 실행하세요.");
+            Debug.LogError("[Dungeon] 지형 타일을 찾지 못했습니다. 먼저 Tools ▸ FCC ▸ Tilemap ▸ Build King And Pig Rule Tiles 를, 이어서 Weather Tileset ▸ Back World (사본) 을 실행하세요.");
             return;
         }
 

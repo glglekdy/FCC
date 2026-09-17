@@ -258,7 +258,7 @@ public static class KingAndPigTileBuilder {
         EditorUtility.SetDirty(tile);
     }
 
-    static Dictionary<Vector3Int, int> ParseMask(string top, string mid, string bottom) {
+    internal static Dictionary<Vector3Int, int> ParseMask(string top, string mid, string bottom) {
         var map = new Dictionary<Vector3Int, int>();
         AddNeighbor(map, top[0], -1, 1);
         AddNeighbor(map, top[1], 0, 1);

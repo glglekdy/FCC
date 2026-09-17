@@ -33,10 +33,12 @@ public static class TilemapGridBuilder {
     public const string PlatformLayerName = "Tilemap_Platform";
     public const string BackgroundLayerName = "Tilemap_Background";
 
-    // 지형에 쓰는 타일 에셋. 막힘 지형은 CoreScene 본편이 이미 장밋빛으로 칠해져 있어 그쪽에 맞추고,
-    // 통과 발판만 황금빛으로 갈라 둔다. "밟고 올라설 수 있는 면"이 색으로 구분돼야 방을 읽기 쉽다.
-    const string SolidTilePath = TileDir + "/Tile_KingAndPig_Rose.asset";
-    const string PlatformTilePath = TileDir + "/Tile_KingAndPig_Gold.asset";
+    // 던전 방(뒷세계)에 칠하는 타일 에셋. 본편의 장밋빛 · 황금빛 타일을 차가운 청회색으로 구운 사본이다
+    // (Tools ▸ FCC ▸ Tilemap ▸ Weather Tileset ▸ Back World). 본편과 같은 타일을 쓰면 뒷세계에 들어온 것이
+    // 화면에서 읽히지 않는다. 막힘 지형(Rose)과 통과 발판(Gold)은 사본에서도 밝기가 갈려 "밟고 올라설 수 있는 면"이 구분된다.
+    // **방 빌더 · 변환기만 이 값을 쓴다. 본편 씬의 타일맵은 원본 타일로 손으로 칠해 둔 것이라 여기와 무관하다.**
+    const string SolidTilePath = TileDir + "/Tile_KingAndPig_Rose_BackWorld.asset";
+    const string PlatformTilePath = TileDir + "/Tile_KingAndPig_Gold_BackWorld.asset";
 
     // 32px = 1유닛. 방 빌더가 1유닛 격자(폭 38 · 높이 18 등 정수)로 방을 짜 두었으므로 타일 한 칸을 1유닛에 맞춘다.
     const int TilePixels = 32;

@@ -1,0 +1,1268 @@
+fileFormatVersion: 2
+guid: 11930673bb4139e459000d6fc9843466
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -5308466690467063142
+    second: Mossy - TileSet_Baked_0
+  - first:
+      213: 4153373521224492731
+    second: Mossy - TileSet_Baked_1
+  - first:
+      213: -7198905209394457198
+    second: Mossy - TileSet_Baked_2
+  - first:
+      213: -6968328390400461181
+    second: Mossy - TileSet_Baked_3
+  - first:
+      213: -1765882972515933603
+    second: Mossy - TileSet_Baked_4
+  - first:
+      213: 8872048924455982137
+    second: Mossy - TileSet_Baked_5
+  - first:
+      213: -2018910213862576842
+    second: Mossy - TileSet_Baked_6
+  - first:
+      213: -2606720084532315252
+    second: Mossy - TileSet_Baked_7
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 512
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Mossy_Inner
+      rect:
+        serializedVersion: 2
+        x: 560
+        y: 3024
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e3eed8dd8f3c87a45b9f9b976ef98441
+      internalID: -1963575503
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_Inner_DR
+      rect:
+        serializedVersion: 2
+        x: 2192
+        y: 3568
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 061be0a301118db468506b0161fe692f
+      internalID: 938391592
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_Inner_DL
+      rect:
+        serializedVersion: 2
+        x: 2736
+        y: 3568
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f74164d3e2e448547ab000c6669bc317
+      internalID: -347363104
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_Inner_UR
+      rect:
+        serializedVersion: 2
+        x: 2192
+        y: 3024
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bf2b6896d17111d45af683682190e871
+      internalID: 897211905
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_Inner_UL
+      rect:
+        serializedVersion: 2
+        x: 2736
+        y: 3024
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3a6bff9a61ea57a47878f375383b7957
+      internalID: 391823953
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_Inner_UL_DL
+      rect:
+        serializedVersion: 2
+        x: 3280
+        y: 3024
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5fdd610fe299a1840afd17fd49e24af8
+      internalID: 1996400067
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_Inner_UL_UR
+      rect:
+        serializedVersion: 2
+        x: 3280
+        y: 3568
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: accf95a86f924f24dbd2f6513805ff81
+      internalID: -419822650
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_Inner_DL_DR
+      rect:
+        serializedVersion: 2
+        x: 3280
+        y: 1936
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a358d19261e9d384c8d6a11a97ec48f5
+      internalID: -1916570815
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_Inner_UR_DR
+      rect:
+        serializedVersion: 2
+        x: 3280
+        y: 2480
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2ddbaa9ca3904c64592a19575c191524
+      internalID: -838997948
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_Inner_UR_DL
+      rect:
+        serializedVersion: 2
+        x: 1104
+        y: 304
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c921320b57e83b74c997cca49cc4e85b
+      internalID: -1214011572
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_Inner_UL_DR
+      rect:
+        serializedVersion: 2
+        x: 1648
+        y: 304
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b2f1616f701e6884294bfe7367156cdc
+      internalID: -174897884
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_Inner_UR_DL_DR
+      rect:
+        serializedVersion: 2
+        x: 2192
+        y: 1936
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c2ee5aa503f52454195205a60119c476
+      internalID: -644611271
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_Inner_UL_DL_DR
+      rect:
+        serializedVersion: 2
+        x: 2736
+        y: 2480
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 132cca872c8cc354083ee3d6e09b010b
+      internalID: 1038417177
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_Inner_UL_UR_DR
+      rect:
+        serializedVersion: 2
+        x: 2192
+        y: 2480
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bafd22855bef51842b36b2ca7986540b
+      internalID: -1579873417
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_Inner_UL_UR_DL
+      rect:
+        serializedVersion: 2
+        x: 2736
+        y: 1936
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 64f96c825f34feb4ca4878985e39e842
+      internalID: 2043478162
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_Inner_NoDiagonals
+      rect:
+        serializedVersion: 2
+        x: 2736
+        y: 848
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7186bd644530504479b510354e7d4bae
+      internalID: 347774576
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_Top
+      rect:
+        serializedVersion: 2
+        x: 560
+        y: 3568
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b54752027470ade40b7ba49b11ff7a61
+      internalID: -690303943
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_Top_DR
+      rect:
+        serializedVersion: 2
+        x: 1104
+        y: 1392
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c042f87098b00ef42866a74dac458414
+      internalID: -1039633219
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_Top_DL
+      rect:
+        serializedVersion: 2
+        x: 1648
+        y: 1392
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9ad903326f49d87438efb8e8e3d97215
+      internalID: -207203190
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_Top_DL_DR
+      rect:
+        serializedVersion: 2
+        x: 2736
+        y: 1392
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bede81de33a9b1c409a7bc2484f41416
+      internalID: 1180853060
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_Bottom
+      rect:
+        serializedVersion: 2
+        x: 560
+        y: 2480
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: edf10af5284edb546b8c82bc8e27f221
+      internalID: 143338162
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_Bottom_UR
+      rect:
+        serializedVersion: 2
+        x: 1104
+        y: 848
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6d9437f4d0f57cb4785a18a49c0bb509
+      internalID: -1155337415
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_Bottom_UL
+      rect:
+        serializedVersion: 2
+        x: 1648
+        y: 848
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c43b239fce1c1a346b9b0c0e2c84e277
+      internalID: 214465996
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_Bottom_UL_UR
+      rect:
+        serializedVersion: 2
+        x: 2736
+        y: 304
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2a8396e766d54b34b82a702a6644f6e8
+      internalID: 251276829
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_Left
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 3024
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ed42c18f99729624a978e619d4ce37ac
+      internalID: 855701624
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_Left_DR
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 1392
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4a44c43b533e2cd41a3f9cf456afafc4
+      internalID: -1517730247
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_Left_UR
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 848
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ec5249b37cd8d4c489889cb7cd458234
+      internalID: -1200730371
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_Left_UR_DR
+      rect:
+        serializedVersion: 2
+        x: 2192
+        y: 848
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1205666e08abf7f4ca96e53f03253345
+      internalID: 934840593
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_Right
+      rect:
+        serializedVersion: 2
+        x: 1104
+        y: 3024
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0806891d8ea1f0746ae51a27d9e3b981
+      internalID: 622720651
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_Right_DL
+      rect:
+        serializedVersion: 2
+        x: 560
+        y: 1392
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 49c8979ac4310d74d8d98dc4669ba7e9
+      internalID: -387669625
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_Right_UL
+      rect:
+        serializedVersion: 2
+        x: 560
+        y: 848
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a93c9dd0c75593746992bf43accdf725
+      internalID: -894768246
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_Right_UL_DL
+      rect:
+        serializedVersion: 2
+        x: 3280
+        y: 848
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b477049ff6dcd7447872ae6f1fded937
+      internalID: -1147419254
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_CornerTL
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 3568
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 66061b8b7c75c0a4ca2979d943256280
+      internalID: -2073842671
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_CornerTL_DR
+      rect:
+        serializedVersion: 2
+        x: 2192
+        y: 1392
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 991d24fc7500d0c49829beb63281cc03
+      internalID: -783432540
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_CornerTR
+      rect:
+        serializedVersion: 2
+        x: 1104
+        y: 3568
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5a889d5943c3e8247a28eab66f076335
+      internalID: -1817895800
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_CornerTR_DL
+      rect:
+        serializedVersion: 2
+        x: 3280
+        y: 1392
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4c092397831c88643956012208e0c527
+      internalID: -283929981
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_CornerBL
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 2480
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e41e3ddb21b16ec4db7667342add2501
+      internalID: -155024841
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_CornerBL_UR
+      rect:
+        serializedVersion: 2
+        x: 2192
+        y: 304
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d35c1333d5baca942ad0c943782af9e6
+      internalID: 754559449
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_CornerBR
+      rect:
+        serializedVersion: 2
+        x: 1104
+        y: 2480
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5394bd15c7ad4d9469d6e08d52c8b542
+      internalID: -1023293354
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_CornerBR_UL
+      rect:
+        serializedVersion: 2
+        x: 3280
+        y: 304
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 10b958e204ad53442a9f41f7cd2cd7d6
+      internalID: 422514835
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_ColumnMid
+      rect:
+        serializedVersion: 2
+        x: 1648
+        y: 3024
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 39627a2e6bb608e40b8f957f08ef2a50
+      internalID: -1987974823
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_ColumnTop
+      rect:
+        serializedVersion: 2
+        x: 1648
+        y: 3568
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 969e8343fcea32a4c82ae19a2efac42b
+      internalID: 1358804132
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_ColumnBottom
+      rect:
+        serializedVersion: 2
+        x: 1648
+        y: 2480
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 916a3d268f09cc74fba8f5d968a52f3f
+      internalID: 866396264
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_RowMid
+      rect:
+        serializedVersion: 2
+        x: 560
+        y: 1936
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 48240c5986c124944a52abae576d06af
+      internalID: 1933974173
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_RowLeft
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 1936
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 88a83d02f70d38e43a5514e7aa58eba2
+      internalID: 1316987970
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_RowRight
+      rect:
+        serializedVersion: 2
+        x: 1104
+        y: 1936
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d02c52cced6f337468049279c78df302
+      internalID: 144653781
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_Single
+      rect:
+        serializedVersion: 2
+        x: 1648
+        y: 1936
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e928f7ded4e6c90499d80c30b7ba70a6
+      internalID: -1556681563
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_Inner_HoleA
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 304
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b0f7301c7e2a5554c8057d98b1dee174
+      internalID: -39827601
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mossy_Inner_HoleB
+      rect:
+        serializedVersion: 2
+        x: 560
+        y: 304
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 06a856ab19c7f4b4084227e819c59f10
+      internalID: -1494250872
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 268b72d4636046a4dbeb16b9def5acd2
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Mossy_Bottom: 143338162
+      Mossy_Bottom_UL: 214465996
+      Mossy_Bottom_UL_UR: 251276829
+      Mossy_Bottom_UR: -1155337415
+      Mossy_ColumnBottom: 866396264
+      Mossy_ColumnMid: -1987974823
+      Mossy_ColumnTop: 1358804132
+      Mossy_CornerBL: -155024841
+      Mossy_CornerBL_UR: 754559449
+      Mossy_CornerBR: -1023293354
+      Mossy_CornerBR_UL: 422514835
+      Mossy_CornerTL: -2073842671
+      Mossy_CornerTL_DR: -783432540
+      Mossy_CornerTR: -1817895800
+      Mossy_CornerTR_DL: -283929981
+      Mossy_Inner: -1963575503
+      Mossy_Inner_DL: -347363104
+      Mossy_Inner_DL_DR: -1916570815
+      Mossy_Inner_DR: 938391592
+      Mossy_Inner_HoleA: -39827601
+      Mossy_Inner_HoleB: -1494250872
+      Mossy_Inner_NoDiagonals: 347774576
+      Mossy_Inner_UL: 391823953
+      Mossy_Inner_UL_DL: 1996400067
+      Mossy_Inner_UL_DL_DR: 1038417177
+      Mossy_Inner_UL_DR: -174897884
+      Mossy_Inner_UL_UR: -419822650
+      Mossy_Inner_UL_UR_DL: 2043478162
+      Mossy_Inner_UL_UR_DR: -1579873417
+      Mossy_Inner_UR: 897211905
+      Mossy_Inner_UR_DL: -1214011572
+      Mossy_Inner_UR_DL_DR: -644611271
+      Mossy_Inner_UR_DR: -838997948
+      Mossy_Left: 855701624
+      Mossy_Left_DR: -1517730247
+      Mossy_Left_UR: -1200730371
+      Mossy_Left_UR_DR: 934840593
+      Mossy_Right: 622720651
+      Mossy_Right_DL: -387669625
+      Mossy_Right_UL: -894768246
+      Mossy_Right_UL_DL: -1147419254
+      Mossy_RowLeft: 1316987970
+      Mossy_RowMid: 1933974173
+      Mossy_RowRight: 144653781
+      Mossy_Single: -1556681563
+      Mossy_Top: -690303943
+      Mossy_Top_DL: -207203190
+      Mossy_Top_DL_DR: 1180853060
+      Mossy_Top_DR: -1039633219
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
