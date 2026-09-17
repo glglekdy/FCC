@@ -99,6 +99,8 @@ public static class UiThemeApplier {
 
         Txt(root, "Shard_Label", UiTheme.TextMuted);
         Txt(root, "Shard_Value", UiTheme.TextHigh);
+        Txt(root, "Coin_Label", UiTheme.TextMuted);
+        Txt(root, "Coin_Value", UiTheme.TextHigh);
 
         foreach (HudSkillSlotView slot in root.GetComponentsInChildren<HudSkillSlotView>(true)) {
             slot.monogramColor = UiTheme.TextHigh;

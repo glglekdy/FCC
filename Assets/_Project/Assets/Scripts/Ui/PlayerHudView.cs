@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-// 인게임 화면에 상시 노출되는 플레이어 HUD. 자아 게이지(체력) · 기억 조각 수는 왼쪽 위에, 장착 스킬 3칸과 쿨타임은 오른쪽 아래에 그린다.
+// 인게임 화면에 상시 노출되는 플레이어 HUD. 자아 게이지(체력) · 기억 조각 수 · 뒷세계 코인 수는 왼쪽 위에, 장착 스킬 3칸과 쿨타임은 오른쪽 아래에 그린다.
 //
 // 생김새는 전부 프리팹 Prefabs/UI/PlayerHud.prefab 에 있고 이 스크립트는 값 갱신만 한다.
 // 처음부터 다시 찍어내려면 에디터 메뉴 Tools ▸ FCC ▸ Build Player HUD Prefab.
@@ -20,11 +20,12 @@ public class PlayerHudView : MonoBehaviour {
     public Image delayedFillImage; // 깎인 양을 잠깐 남기며 뒤따라 줄어드는 잔상 바. 비워도 된다.
     public TMP_Text valueLabel;    // "72 / 100" 표기. 비워도 된다.
 
-    [Header("연결 — 스킬 · 기억 조각 (비워도 된다)")]
+    [Header("연결 — 스킬 · 기억 조각 · 뒷세계 코인 (비워도 된다)")]
     // 슬롯 0·1·2 순서. **배열 순서가 그대로 스킬 슬롯 1 · 2 · 3 입니다** (기본 키 Q · W · E).
     // 칸에 적히는 키 이름은 설정의 키 재지정을 따라간다 (InputBindings).
     public HudSkillSlotView[] skillSlots;
     public TMP_Text shardValueLabel; // 보유한 기억 조각 수.
+    public TMP_Text coinValueLabel;  // 보유한 뒷세계 코인 수.
 
     [Header("대상 — 비우면 Player 태그로 찾습니다")]
     // 특정 Health 를 강제하고 싶을 때만 채운다. 평소에는 비워 두면 씬의 플레이어를 자동으로 문다.
@@ -42,6 +43,8 @@ public class PlayerHudView : MonoBehaviour {
     SkillManager skills;   // 장착 스킬과 쿨타임을 읽는 대상. 플레이어와 함께 찾는다.
     Player_MemoryShardInventory shards;
     int shownShards = -1;  // 마지막으로 적은 조각 수. 같으면 문자열을 다시 만들지 않는다.
+    Player_DungeonCoinInventory coins;
+    int shownCoins = -1;   // 마지막으로 적은 코인 수. 조각과 같은 이유로 둔다.
     bool keyLabelsDirty = true; // 스킬 칸에 적는 키 이름을 다시 적어야 하는지. 키 재지정과 대상 변경 때만 선다.
     float delayedRatio = 1f;
     float drainTimer;
@@ -84,6 +87,7 @@ public class PlayerHudView : MonoBehaviour {
         UpdateLabel();
         UpdateSkills();
         UpdateShards();
+        UpdateCoins();
     }
 
     #endregion
@@ -107,6 +111,9 @@ public class PlayerHudView : MonoBehaviour {
         shards = health != null ? health.GetComponentInParent<Player_MemoryShardInventory>() : null;
         if (shards == null && health != null) shards = health.GetComponentInChildren<Player_MemoryShardInventory>();
         shownShards = -1;
+        coins = health != null ? health.GetComponentInParent<Player_DungeonCoinInventory>() : null;
+        if (coins == null && health != null) coins = health.GetComponentInChildren<Player_DungeonCoinInventory>();
+        shownCoins = -1;
         keyLabelsDirty = true; // 대상이 바뀌면 슬롯 입력 액션도 다시 물어야 한다.
     }
 
@@ -191,6 +198,14 @@ public class PlayerHudView : MonoBehaviour {
 
         shownShards = shards.Count;
         shardValueLabel.text = shownShards.ToString();
+    }
+
+    void UpdateCoins() {
+        if (coinValueLabel == null || coins == null) return;
+        if (coins.Count == shownCoins) return;
+
+        shownCoins = coins.Count;
+        coinValueLabel.text = shownCoins.ToString();
     }
 
     #endregion

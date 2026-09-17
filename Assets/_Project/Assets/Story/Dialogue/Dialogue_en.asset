@@ -23,23 +23,26 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 15616805875748864
-    m_Localized: "??"
+    m_Localized: ??
     m_Metadata:
       m_Items: []
   - m_Id: 15616805875752960
-    m_Localized: "???"
+    m_Localized: ???
     m_Metadata:
       m_Items: []
   - m_Id: 57814286336
-    m_Localized: "<speed=60>Ah, welcome, traveler!</speed> <bold>You've arrived</bold> at this old circus theater."
+    m_Localized: <speed=60>Ah, welcome, traveler!</speed> <bold>You've arrived</bold>
+      at this old circus theater.
     m_Metadata:
       m_Items: []
   - m_Id: 57826869248
-    m_Localized: "<shake a=6 s=40>Careful now!</shake> Something <wave>stirs</wave> beneath this stage."
+    m_Localized: <shake a=6 s=40>Careful now!</shake> Something <wave>stirs</wave>
+      beneath this stage.
     m_Metadata:
       m_Items: []
   - m_Id: 57843646464
-    m_Localized: "Beneath the <rainbow s=2>dazzling lights</rainbow>, your fate will spin like a <round r=4 s=5>trapeze</round>."
+    m_Localized: Beneath the <rainbow s=2>dazzling lights</rainbow>, your fate will
+      spin like a <round r=4 s=5>trapeze</round>.
     m_Metadata:
       m_Items: []
   - m_Id: 15614216484421632
@@ -47,19 +50,20 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 15614806379724800
-    m_Localized: "Ladies and gentlemen, <round>welcome</round> to the Circus of the Underworld!"
+    m_Localized: Ladies and gentlemen, <round>welcome</round> to the Circus of the
+      Underworld!
     m_Metadata:
       m_Items: []
   - m_Id: 15615341296091136
-    m_Localized: "What delightful show awaits us tonight?"
+    m_Localized: What delightful show awaits us tonight?
     m_Metadata:
       m_Items: []
   - m_Id: 15615405926121472
-    m_Localized: "Well then, let's go and see for ourselves!"
+    m_Localized: Well then, let's go and see for ourselves!
     m_Metadata:
       m_Items: []
   - m_Id: 15615554589032448
-    m_Localized: "(Cheerful yet unsettling circus music begins to play)"
+    m_Localized: (Cheerful yet unsettling circus music begins to play)
     m_Metadata:
       m_Items: []
   - m_Id: 15616805875757056
@@ -67,35 +71,73 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 15615680212631552
-    m_Localized: "<shake>I can't remember anything after I crawled out of the mirror\u2026</shake>"
+    m_Localized: "<shake>Why\u2026 did I come out of a mirror\u2026?</shake>"
     m_Metadata:
       m_Items: []
   - m_Id: 15616805875761152
-    m_Localized: "What's going on over there\u2026."
+    m_Localized: "What's happening over there\u2026."
     m_Metadata:
       m_Items: []
   - m_Id: 15615758281211904
-    m_Localized: "(The curtain is drawn, so it's hard to see, but from behind it comes the endless laughter and singing of the audience, and the sounds of the troupe performing.)"
+    m_Localized: (The curtain is drawn, so it's hard to see, but from behind it comes
+      the endless laughter and singing of the audience, and the sounds of the troupe
+      performing.)
     m_Metadata:
       m_Items: []
   - m_Id: 15615827193626624
-    m_Localized: "<shake>What is this place\u2026. I'm scared\u2026.</shake>"
+    m_Localized: "<shake>What on earth\u2026. is this place\u2026.?</shake>"
     m_Metadata:
       m_Items: []
   - m_Id: 15615916209340416
-    m_Localized: "(Just then, a loud <shake a=2>BANG!</shake> rings out from the stage, followed by someone's scream. Yet the audience pays the scream no mind at all. All that can be heard is jeering, laughter, and applause.)"
+    m_Localized: (Just then, a loud <shake a=2>BANG!</shake> rings out from the stage
+      beyond the curtain, followed by someone's scream. Yet not a single gasp comes
+      from the audience. All that can be heard is jeering, roaring laughter, and
+      applause.)
     m_Metadata:
       m_Items: []
   - m_Id: 15616729136758784
-    m_Localized: "(And so, the show seemed to end without a hitch.)"
+    m_Localized: "(And so, the show seemed to end\u2026 without a hitch?)"
     m_Metadata:
       m_Items: []
   - m_Id: 15616758543024128
-    m_Localized: "(I had no idea, not until the performers came backstage.)"
+    m_Localized: (I had no idea, not until the performers came backstage.)
     m_Metadata:
       m_Items: []
   - m_Id: 15616805875744768
-    m_Localized: "(I never imagined someone who looked like the \u201CMaster\u201D would suddenly do that to the performer who had slipped up\u2026.)"
+    m_Localized: (Then a hulking man came backstage. The moment he entered, every
+      performer's eyes filled with fear. He dragged the performer who seemed to have
+      slipped up into the darkness and vanished. Only a dying scream came drifting
+      out.)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17483213807026176
+    m_Localized: (A pain as if my head would split open came rushing in.)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17483213853163520
+    m_Localized: (When I opened my eyes, I was lying face down in an unfamiliar place.)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17483213890912256
+    m_Localized: (Just then, a voice came from behind the curtain.)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17483213916078080
+    m_Localized: (Then came a roar of cheers like thunder.)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17483213953826816
+    m_Localized: (The mirror was cracked and shattered, as if struck with a blunt
+      weapon.)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17483213995769856
+    m_Localized: (I had no memory of why I came out of the mirror, or of what happened
+      before I did.)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17483214029324288
+    m_Localized: (As if it had never existed in the first place.)
     m_Metadata:
       m_Items: []
   references:

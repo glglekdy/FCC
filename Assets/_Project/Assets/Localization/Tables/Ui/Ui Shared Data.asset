@@ -860,6 +860,66 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 5254442198914826665
+  - m_Id: 187069896851456
+    m_Key: dungeon_shop.price_format
+    m_Metadata:
+      m_Items:
+      - rid: 5254442213871714431
+  - m_Id: 187071071256576
+    m_Key: dungeon_shop.lacking_format
+    m_Metadata:
+      m_Items:
+      - rid: 5254442213871714432
+  - m_Id: 187071096422400
+    m_Key: dungeon_shop.not_needed_format
+    m_Metadata:
+      m_Items:
+      - rid: 5254442213871714433
+  - m_Id: 187071121588224
+    m_Key: common.dungeon_coins
+    m_Metadata:
+      m_Items:
+      - rid: 5254442213871714434
+  - m_Id: 187071830425600
+    m_Key: dungeon_shop.heal_small.name
+    m_Metadata:
+      m_Items:
+      - rid: 5254442213871714435
+  - m_Id: 187071855591424
+    m_Key: dungeon_shop.heal_small.desc
+    m_Metadata:
+      m_Items:
+      - rid: 5254442213871714436
+  - m_Id: 187072732200960
+    m_Key: dungeon_shop.attack_up.name
+    m_Metadata:
+      m_Items:
+      - rid: 5254442213871714437
+  - m_Id: 187072748978176
+    m_Key: dungeon_shop.attack_up.desc
+    m_Metadata:
+      m_Items:
+      - rid: 5254442213871714438
+  - m_Id: 187073415872512
+    m_Key: dungeon_shop.defense_up.name
+    m_Metadata:
+      m_Items:
+      - rid: 5254442213871714439
+  - m_Id: 187073441038336
+    m_Key: dungeon_shop.defense_up.desc
+    m_Metadata:
+      m_Items:
+      - rid: 5254442213871714440
+  - m_Id: 187074200207360
+    m_Key: dungeon_shop.heal_full.name
+    m_Metadata:
+      m_Items:
+      - rid: 5254442213871714441
+  - m_Id: 187074225373184
+    m_Key: dungeon_shop.heal_full.desc
+    m_Metadata:
+      m_Items:
+      - rid: 5254442213871714442
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
@@ -1578,3 +1638,63 @@ MonoBehaviour:
       type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
         m_CommentText: "InputBindings \uD0A4 \uC774\uB984"
+    - rid: 5254442213871714431
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "Prefabs/Dungeon/Room_Shop \xB7 DungeonShopPedestal \uD504\uB86C\uD504\uD2B8
+          ({0} \uBB3C\uAC74 \uC774\uB984 \xB7 {1} \uAC00\uACA9)"
+    - rid: 5254442213871714432
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "Prefabs/Dungeon/Room_Shop \xB7 DungeonShopPedestal \uD504\uB86C\uD504\uD2B8
+          ({0} \uBB3C\uAC74 \uC774\uB984 \xB7 {1} \uAC00\uACA9)"
+    - rid: 5254442213871714433
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "Prefabs/Dungeon/Room_Shop \xB7 DungeonShopPedestal \uD504\uB86C\uD504\uD2B8
+          ({0} \uBB3C\uAC74 \uC774\uB984 \xB7 {1} \uAC00\uACA9)"
+    - rid: 5254442213871714434
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "PlayerHud Coin_Label (\uC544\uC9C1 TMP \uC5D0 \uC9C1\uC811
+          \uC785\uB825\uB41C \uC0C1\uD0DC)"
+    - rid: 5254442213871714435
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "Assets/Dungeon/ShopItem_HealSmall \xB7 displayName (\uC9C4\uC5F4\uB300
+          \uD504\uB86C\uD504\uD2B8 \xB7 \uAD6C\uB9E4 \uC54C\uB9BC \uC81C\uBAA9)"
+    - rid: 5254442213871714436
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "Assets/Dungeon/ShopItem_HealSmall \xB7 description (\uAD6C\uB9E4
+          \uC54C\uB9BC \uC544\uB798 \uC904)"
+    - rid: 5254442213871714437
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "Assets/Dungeon/ShopItem_AttackUp \xB7 displayName (\uC9C4\uC5F4\uB300
+          \uD504\uB86C\uD504\uD2B8 \xB7 \uAD6C\uB9E4 \uC54C\uB9BC \uC81C\uBAA9)"
+    - rid: 5254442213871714438
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "Assets/Dungeon/ShopItem_AttackUp \xB7 description (\uAD6C\uB9E4
+          \uC54C\uB9BC \uC544\uB798 \uC904)"
+    - rid: 5254442213871714439
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "Assets/Dungeon/ShopItem_DefenseUp \xB7 displayName (\uC9C4\uC5F4\uB300
+          \uD504\uB86C\uD504\uD2B8 \xB7 \uAD6C\uB9E4 \uC54C\uB9BC \uC81C\uBAA9)"
+    - rid: 5254442213871714440
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "Assets/Dungeon/ShopItem_DefenseUp \xB7 description (\uAD6C\uB9E4
+          \uC54C\uB9BC \uC544\uB798 \uC904)"
+    - rid: 5254442213871714441
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "Assets/Dungeon/ShopItem_HealFull \xB7 displayName (\uC9C4\uC5F4\uB300
+          \uD504\uB86C\uD504\uD2B8 \xB7 \uAD6C\uB9E4 \uC54C\uB9BC \uC81C\uBAA9)"
+    - rid: 5254442213871714442
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "Assets/Dungeon/ShopItem_HealFull \xB7 description (\uAD6C\uB9E4
+          \uC54C\uB9BC \uC544\uB798 \uC904)"

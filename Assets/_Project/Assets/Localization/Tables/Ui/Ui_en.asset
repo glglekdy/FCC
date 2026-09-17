@@ -705,6 +705,54 @@ MonoBehaviour:
     m_Localized: L Stick Right
     m_Metadata:
       m_Items: []
+  - m_Id: 187069896851456
+    m_Localized: "{0} \xB7 {1} coins"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 187071071256576
+    m_Localized: "{0} \xB7 {1} coins (not enough)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 187071096422400
+    m_Localized: "{0} \xB7 Ego is already full"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 187071121588224
+    m_Localized: Back World Coins
+    m_Metadata:
+      m_Items: []
+  - m_Id: 187071830425600
+    m_Localized: Ego +30
+    m_Metadata:
+      m_Items: []
+  - m_Id: 187071855591424
+    m_Localized: Restored 30 Ego.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 187072732200960
+    m_Localized: Attack +30%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 187072748978176
+    m_Localized: Basic attacks deal more damage while in the Back World.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 187073415872512
+    m_Localized: Damage Taken -25%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 187073441038336
+    m_Localized: You take less damage while in the Back World.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 187074200207360
+    m_Localized: Full Ego Restore
+    m_Metadata:
+      m_Items: []
+  - m_Id: 187074225373184
+    m_Localized: Ego fully restored.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
