@@ -717,6 +717,8 @@ MonoBehaviour:
   deathHealthRestoreRatio: 1
   fallDamage: 10
   fallInvincibleTime: 3
+  combatRoomCoins: 3
+  courseRoomCoins: 1
   mirror: {fileID: 205381965}
   areaTitle: "\uB4B7\uC138\uACC4"
   areaSubtitle: 
@@ -903,7 +905,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 840639206569172082, guid: cf72bcb111a109c40a5cf64ca2796cf8, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf72bcb111a109c40a5cf64ca2796cf8, type: 3}
@@ -3976,18 +3979,25 @@ MonoBehaviour:
   - {fileID: 8100431435434129132, guid: 93b6eb03b4e9b054d90a44a7a8f5321d, type: 3}
   - {fileID: 6086952435578259005, guid: 253032b9365b2614186a7b365c43599d, type: 3}
   - {fileID: 3489314595285940284, guid: 269b9e1a2bba4324999aa273417c1bbf, type: 3}
+  - {fileID: 6274323960186190004, guid: 97ad5cf22fdba6344b3ffd982aebae31, type: 3}
+  - {fileID: 2418208461583837780, guid: d20fc054f203d3742b6f34d965e674ba, type: 3}
   verticalRoomPrefabs:
   - {fileID: 4650319921055490116, guid: 43a83cb08abc3c248b2b82595db1f74f, type: 3}
   - {fileID: 4650319921055490116, guid: faed4bd35868de14099d0ff73665c56e, type: 3}
+  - {fileID: 678035659966306103, guid: f7a82dc3ab9180e4d80493d2f1dac2bc, type: 3}
   combatRoomPrefabs:
   - {fileID: 4650319921055490116, guid: 2cc751f4f14c24e428b1e5d9c3bba7f8, type: 3}
   - {fileID: 4650319921055490116, guid: 92491aac8f1a368448a05db11c6e90ac, type: 3}
   - {fileID: 4650319921055490116, guid: a650fb2ad5cfbad45bb571db6ae06c1d, type: 3}
   - {fileID: 4650319921055490116, guid: 5a9e2c21288f9b74483f87fa5f4cb9b9, type: 3}
   - {fileID: 4650319921055490116, guid: a7b30d812c23e0b48bced7af23da37fd, type: 3}
+  - {fileID: 6037784636906791235, guid: fae26daebf055a346bf80ee0bff1565c, type: 3}
+  - {fileID: 7281263883429125527, guid: 6bf48df257c251b40a73b4cd5d02e4cb, type: 3}
   secretRoomPrefabs: []
   exitRoomPrefabs:
   - {fileID: 4650319921055490116, guid: 9a8dc41cfe9f8f643bfdf1cf935d4ed7, type: 3}
+  shopRoomPrefabs:
+  - {fileID: 8946645901119937376, guid: ac2484c33733c404da1a4633f62c8af1, type: 3}
   sequence: []
   monsterCountMultiplier: 1
   maxMonstersPerRoom: 10
@@ -4895,7 +4905,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -12139,7 +12149,8 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3925894805103924815, guid: cabab95ff4eda1949993ac056ea25c50, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8576524948119994719, guid: cabab95ff4eda1949993ac056ea25c50, type: 3}
