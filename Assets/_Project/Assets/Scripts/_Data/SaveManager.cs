@@ -146,6 +146,10 @@ public class SaveManager : MonoBehaviour {
             data.memoryShardCount = shards.Count;
         }
 
+        if (player != null && player.TryGetComponent(out Player_DungeonCoinInventory coins)) {
+            data.dungeonCoinCount = coins.Count;
+        }
+
         if (player != null && player.TryGetComponent(out Player_move move)) {
             data.abilitiesSaved = true;
             data.hasDoubleJump = move.HasAbility(Player_Ability.DoubleJump);
@@ -214,6 +218,7 @@ public class SaveManager : MonoBehaviour {
             if (data.maxHealth > 0 && player.TryGetComponent(out Health health)) health.SetHealth(data.currentHealth);
 
             if (player.TryGetComponent(out Player_MemoryShardInventory shards)) shards.SetCount(data.memoryShardCount);
+            if (player.TryGetComponent(out Player_DungeonCoinInventory coins)) coins.SetCount(data.dungeonCoinCount);
 
             // 기술 상태를 적지 않던 구버전 세이브면 인스펙터 상태를 그대로 둔다(SaveData.abilitiesSaved 주석 참고).
             if (data.abilitiesSaved && player.TryGetComponent(out Player_move move)) {

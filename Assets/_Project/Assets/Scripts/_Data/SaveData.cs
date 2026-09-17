@@ -26,6 +26,7 @@ public class SaveData {
     public string savedAt;      // 표시용 저장 시각. 나중에 불러오기 슬롯 UI에서 쓴다.
 
     public int memoryShardCount; // 보유한 기억 조각 수.
+    public int dungeonCoinCount; // 보유한 뒷세계 코인 수. 이 필드가 없던 구버전 세이브는 0 으로 읽힌다(코인이 생기기 전이라 원래 0 이다).
     public List<string> clearedDungeonIds = new List<string>(); // 뒷세계 등 1회성 몬스터 구역 중 이미 클리어한 dungeonId 목록.
     public List<NpcDialogueSaveEntry> npcDialogueCounts = new List<NpcDialogueSaveEntry>(); // NPC별로 지금까지 대화를 건 횟수.
 
