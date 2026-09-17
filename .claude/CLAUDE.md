@@ -25,6 +25,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 - **자아 게이지** = 체력입니다. 0이 되면 게임오버 처리됩니다. 코드상으로는 `Health` 컴포넌트입니다.
 - **기억 조각** = 핵심 수집 재화입니다. 회복 아이템 겸 스킬 강화 재료로 사용됩니다. 챕터1 10개 / 챕터2 20개 / 챕터4 큰 조각 1개입니다. 코드상으로는 `Player_MemoryShardInventory` 이며 **소비(스킬 강화·되돌리기)는 구현되어 있습니다.** 획득 경로는 던전 보상(`DungeonBonusPickup` · `DungeonGate`)뿐이고 **본편 맵에 놓는 수집 오브젝트는 아직 없습니다** (개발 중에는 F6 키로 10개씩 넣을 수 있으며, 디버그 빌드에서만 동작합니다).
+- **뒷세계 코인** = 뒷세계(던전)에서 방을 클리어할 때마다 받는 상점 전용 재화입니다. 코드상으로는 `Player_DungeonCoinInventory` 이며 뒷세계를 나가도 유지됩니다. 아래 「뒷세계」 항목 참고.
 - **거울** = 세이브포인트 겸 스킬 "정비하기" 지점입니다. 코드상으로는 `SaveMirror` 입니다 (저장 + 자아 게이지 전량 회복 + 정비 화면 열기까지 구현되어 있습니다. 아래 「스킬」 항목 참고).
 - **오염도 게이지** (챕터2~) = 최대 100이며 시간당 누적되고, "팥" 섭취 시 0으로 초기화됩니다. 게이지가 다 차면 사망합니다. **아직 미구현 상태입니다.** 추가 시 `SaveData` 에 필드를 추가하는 방식으로 구현합니다 (구버전 세이브 호환은 아래 세이브 항목을 참고해 주시기 바랍니다).
 - **스킬 6종** — Pure Dream(주인공, 정화) / Broken Phantasm(칼잡이, 투사체) / Cycle of Fate(저글러, 스택 폭발) / Invisible Reality(마임, 투명 벽) / Bent Spirit(컨토셔니스트, 회피+은신) / Close Call(곡예사, 줄 던지기 → 구속 · 처형). 최대 3개 장착 가능하며, 기억 조각으로 업그레이드합니다. **Bent Spirit 을 뺀 5종은 에셋(`Assets/Skill/Skill_*.asset`)으로 구현되어 있고 발동 · 장착 · 강화 · 해금이 동작합니다.**
@@ -158,6 +159,8 @@ SaveMirror.Interact() → Health.RestoreFull() → SaveManager.SaveGame(...)
   `SkillUnlockZone`(영역에 들어가면), `SkillUnlockStep`(컷씬 단계), `DialogueTriggerZone.unlockSkill`(대사가 끝나면).
   **어느 장면에서 무엇이 열리는지는 아직 배치하지 않았습니다.**
 - **Close Call 의 구속은 `IRestrainable` 을 구현한 몬스터에만 걸립니다**(`GroundMoveSystem` · `FlyMoveSystem` · `Monster_Wraith`). 새 몬스터 AI를 만들면 이것을 구현하고, 같은 오브젝트의 공격 컴포넌트는 이동 컴포넌트의 `IsRestrained` 를 읽어 멈춥니다(`Attack` · `Monster_Bomber`). 처형(체력 비율 즉사)은 `Health.executionImmune` 을 켠 대상에게는 들어가지 않으므로 **보스 · 정예 몬스터는 반드시 켜야 합니다.** 줄을 타고 날아가는 동안은 `Player_move.isExternallyDriven` 이 켜져 이동 · 점프 · 대시 · 스킬 입력이 막힙니다.
+- 새 몬스터 AI는 **`IDormant` 도 함께 구현해야 합니다.** 뒷세계 전투방은 바로 앞 방에 들어선 순간 몬스터를 미리 세워 두고(`DungeonRoom.PrepareCombat` → `DungeonRoomSpawner.SpawnDormant`), 전투방에 들어오거나 대기 중인 몬스터가 맞으면 깨웁니다(`WakeAll`). 구현하지 않은 몬스터는 미리 보이는 동안에도 순찰 · 추격 · 공격을 합니다. 공격 컴포넌트는 이동 컴포넌트의 `IsDormant` 를 읽어 멈춥니다.
+- 뒷세계 전투방의 벽은 둘입니다 — 출구 쪽 `DungeonRoom.lockBarrier`(몬스터가 깨어나면 잠김)와 입구 쪽 `entryBarrier`(입구 소켓에서 `lockInDepth` 만큼 들어와야 잠김, 이때 몬스터도 깨어남). 전멸하면 둘 다 열립니다. 두 벽의 빛 연출은 `DungeonBarrierGlow` 가 콜라이더 켜짐 여부만 읽어 처리합니다. **전투방 프리팹을 새로 만들면 `Tools ▸ FCC ▸ Dungeon ▸ Patch Combat Room Barriers` 로 입구 쪽 벽과 빛을 채웁니다**(여러 번 눌러도 안전하며 칠해 둔 지형은 건드리지 않습니다).
 - 해금되면 `SkillManager.UnlockFromStory` 가 빈 슬롯에 자동 장착하고 `AreaTitleView` 로 이름을 띄웁니다
   (`autoEquipOnUnlock` · `announceUnlock` 으로 끕니다).
 - 아직 되찾지 못한 스킬도 정비 화면 목록에 **이름을 가린 줄**(`? ? ?`)로 보여 줍니다. 앞으로 무엇이 더 있는지는
@@ -173,6 +176,18 @@ SaveMirror.Interact() → Health.RestoreFull() → SaveManager.SaveGame(...)
 - 프리팹은 `Tools ▸ FCC ▸ Build Skill Loadout Prefab` 으로 다시 찍을 수 있습니다. **다시 찍으면 안쪽 오브젝트의
   fileID 가 전부 바뀌어 `InGameUi` 에 중첩된 인스턴스의 오버라이드가 엉뚱한 칸에 들러붙습니다** — 찍은 뒤에는
   중첩 인스턴스를 통째로 Revert 하고 다시 켜 주세요.
+
+### 뒷세계 (던전 · 상점 · 코인)
+
+`DungeonGate`(입구 거울) → `DungeonGenerator.Generate()` 가 역할별 방 프리팹(`Prefabs/Dungeon/Room_*`)을 소켓으로 이어 한 판을 만듭니다. 들어갈 때마다 새로 만들고 나갈 때 통째로 지웁니다.
+
+- **한 판은 방 14~17개**입니다(입구 · 출구 · 상점 포함, 전투방 3~4개). 씬의 `sequence` 가 비어 있으면 `DefaultSequence()` 를 씁니다(현재 세 씬 모두 비어 있음). 같은 풀에서 뽑는 방은 한 판 동안 뭉치를 이어 써서, 풀을 다 쓰기 전에는 같은 방이 다시 나오지 않습니다.
+- **상점 방은 한 판에 반드시 하나, 가운데에 나옵니다.** 구간을 다 짠 뒤 `EnsureShop` 이 방 목록 한가운데에 끼웁니다. `sequence` 에 상점 구간(`RoomRole.Shop`)을 직접 적으면 그 자리를 따릅니다. `shopRoomPrefabs` 가 비면 상점 없이 생성되고 에러가 뜹니다.
+- `RoomRole` 은 프리팹에 정수로 저장되므로 **새 역할은 맨 뒤에만 추가**합니다.
+- **이어 붙이는 소켓(`entryAnchor` · `exitAnchor`)은 방 트리거의 좌우 끝(= 타일 끝)에 둡니다.** 예전에는 끝에서 1.5(수직 갱도 입구는 3) 안쪽이라 앞뒤 방이 3유닛씩 겹쳐 이음매 타일이 이중으로 그려졌습니다. 높이는 바닥 윗면 + 1.1 입니다. 입구방의 `entryAnchor` 는 입장 지점이라 예외로 안쪽에 있습니다. 전투방 벽은 소켓보다 1.5 안쪽이고, 그래서 `lockInDepth` 는 4.5 입니다(벽에서 3).
+- **뒷세계 코인**(`Player_DungeonCoinInventory`, 세이브 `SaveData.dungeonCoinCount`)은 뒷세계 상점 전용 재화입니다. 전투방은 전멸한 순간(`combatRoomCoins`), 기믹 · 수직 갱도 방은 다음 방에 들어선 순간(`courseRoomCoins`) `DungeonGate` 가 지급합니다. 입구 · 상점 · 출구 · 곁가지는 주지 않습니다. **뒷세계를 나가도 유지됩니다.** 기억 조각과 합치지 않은 이유는 강화 비용이 조각 보유량 비율로 계산되기 때문입니다. **플레이어 오브젝트(`Health` 가 붙은 곳)에 컴포넌트가 있어야** 지급됩니다.
+- 상점은 진열대(`DungeonShopPedestal`, `IInteractable`)에서 F 로 바로 삽니다. 물건은 `Assets/Dungeon/ShopItem_*.asset`(`DungeonShopItem`)이며 가격은 **임시값**입니다. 한정 강화(`Player_Combat.DamageMultiplier` · `Health.DamageTakenMultiplier`)는 **뒷세계를 들어갈 때와 나올 때 `DungeonShopItem.ClearRunBuffs` 로 걷힙니다.** 프롬프트 · 물건 이름은 `Ui` 테이블의 `dungeon_shop.*` 키입니다.
+- **방을 추가할 때 `Build All Rooms` 를 돌리지 않습니다.** 기존 방은 타일을 손으로 칠하고 오비 방에는 카메라 구역을 넣어 두어 통째로 날아갑니다. 새 방은 없는 것만 찍는 메뉴(`Build Back World Pack (새 방 · 상점)` 등)를 쓰고, 풀은 `Place Dungeon Rig In Scene` 으로 채웁니다(역할로 분류하므로 이름을 나열할 필요가 없습니다).
 
 ### 세이브
 
