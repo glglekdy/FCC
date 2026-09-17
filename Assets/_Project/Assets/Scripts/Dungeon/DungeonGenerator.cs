@@ -27,6 +27,10 @@ public class DungeonSegment {
 // 이어지도록 보장하면서(순수 알고리즘 타일 생성과 달리 클리어 불가능한 배치가 나올 수 없다)
 // 챕터마다 다른 리듬(기믹을 더 길게 / 전투를 더 촘촘히)을 코드 수정 없이 줄 수 있기 때문이다.
 //
+// **상점 방은 한 판에 반드시 하나 나온다.** sequence 에 상점 구간을 직접 적으면 그 자리를 따르고,
+// 적지 않았으면 가운데 방 목록의 한가운데에 끼워 넣는다. 구간마다 방 개수가 무작위라 "몇 번째 구간 뒤"로
+// 정해 두면 판마다 앞쪽에 쏠리거나 출구 코앞에 붙기 때문에, 방 목록을 다 짠 뒤 개수로 자리를 잡는다.
+//
 // 방 프리팹은 "몬스터가 놓일 수 있는 자리 / 지형 / 리스폰" 을 정의하고, 이 생성기는 "그중 얼마를 실제로
 // 쓸지(몬스터 배율)" 와 "던전 밖 경계 · 낙사 높이" 같은 던전 단위 값을 정한다.
 public class DungeonGenerator : MonoBehaviour {
@@ -39,6 +43,7 @@ public class DungeonGenerator : MonoBehaviour {
     public List<GameObject> combatRoomPrefabs = new();
     public List<GameObject> secretRoomPrefabs = new();
     public List<GameObject> exitRoomPrefabs = new();
+    public List<GameObject> shopRoomPrefabs = new(); // **비워 두면 상점이 빠진 채 생성되고 에러가 뜹니다.**
 
     #endregion
     #region 인스펙터 변수 — 레이아웃 구간
@@ -98,19 +103,42 @@ public class DungeonGenerator : MonoBehaviour {
 
     Transform generatedRoot;
 
+    // 풀마다 아직 안 뽑힌 방 뭉치. 한 판 동안 유지해, 구간이 바뀌어도 풀을 다 쓰기 전에는 같은 방이 다시 나오지 않게 한다.
+    // 구간마다 새로 섞으면 기믹 구간이 네 번 나오는 긴 판에서 같은 방을 금세 또 만난다.
+    readonly Dictionary<List<GameObject>, List<GameObject>> pickBuckets = new();
+
+    // 방을 실제로 놓기 전에 짜 두는 계획 한 줄.
+    readonly struct PlannedRoom {
+        public readonly GameObject Prefab;
+        public readonly DungeonRoom.RoomRole Role;
+        public readonly float SecretBranchChance;
+
+        public PlannedRoom(GameObject prefab, DungeonRoom.RoomRole role, float secretBranchChance) {
+            Prefab = prefab;
+            Role = role;
+            SecretBranchChance = secretBranchChance;
+        }
+    }
+
     #endregion
     #region 기본 리듬
 
-    // 인스펙터 sequence 가 비었을 때 쓰는 기본 구간 배열.
-    // 기믹과 전투를 번갈아 끼워 "기믹 다 하고 전투 다 하는" 밋밋한 직선 구조를 피한다.
+    // 인스펙터 sequence 가 비었을 때 쓰는 기본 구간 배열. 가운데 방 11~14개 + 입구 · 상점 · 출구 = 한 판 14~17개.
+    // 기믹과 전투를 번갈아 끼워 "기믹 다 하고 전투 다 하는" 밋밋한 직선 구조를 피하고, 수직 갱도를 앞뒤 반에
+    // 하나씩 나눠 둔다. 상점은 여기 적지 않는다 — Generate 가 목록 한가운데에 끼운다(맨 위 설명 참고).
+    // 전투방은 3~4개다. 전부 클리어해야 보상이 나오므로 더 늘리면 한 판이 전투에 끌려다니게 된다.
     static List<DungeonSegment> DefaultSequence() {
         return new List<DungeonSegment> {
-            new() { label = "도입 기믹",   category = DungeonRoom.RoomRole.PlatformingHazard, minRooms = 1, maxRooms = 1, secretBranchChance = 0.35f },
-            new() { label = "첫 교전",     category = DungeonRoom.RoomRole.CombatArena,      minRooms = 1, maxRooms = 1 },
-            new() { label = "중반 기믹",   category = DungeonRoom.RoomRole.PlatformingHazard, minRooms = 1, maxRooms = 2, secretBranchChance = 0.5f },
-            new() { label = "중반 교전",   category = DungeonRoom.RoomRole.CombatArena,      minRooms = 1, maxRooms = 2 },
-            new() { label = "수직 갱도",   category = DungeonRoom.RoomRole.VerticalClimb,    minRooms = 1, maxRooms = 1, secretBranchChance = 0.6f },
-            new() { label = "마무리 기믹", category = DungeonRoom.RoomRole.PlatformingHazard, minRooms = 1, maxRooms = 1, secretBranchChance = 0.35f },
+            new() { label = "도입 기믹",     category = DungeonRoom.RoomRole.PlatformingHazard, minRooms = 1, maxRooms = 1, secretBranchChance = 0.35f },
+            new() { label = "첫 교전",       category = DungeonRoom.RoomRole.CombatArena,      minRooms = 1, maxRooms = 1 },
+            new() { label = "초반 기믹",     category = DungeonRoom.RoomRole.PlatformingHazard, minRooms = 2, maxRooms = 2, secretBranchChance = 0.4f },
+            new() { label = "첫 수직 갱도",  category = DungeonRoom.RoomRole.VerticalClimb,    minRooms = 1, maxRooms = 1, secretBranchChance = 0.6f },
+            new() { label = "중반 기믹",     category = DungeonRoom.RoomRole.PlatformingHazard, minRooms = 1, maxRooms = 2, secretBranchChance = 0.5f },
+            new() { label = "중반 교전",     category = DungeonRoom.RoomRole.CombatArena,      minRooms = 1, maxRooms = 2 },
+            new() { label = "후반 기믹",     category = DungeonRoom.RoomRole.PlatformingHazard, minRooms = 1, maxRooms = 2, secretBranchChance = 0.5f },
+            new() { label = "둘째 수직 갱도", category = DungeonRoom.RoomRole.VerticalClimb,    minRooms = 1, maxRooms = 1, secretBranchChance = 0.6f },
+            new() { label = "마무리 기믹",   category = DungeonRoom.RoomRole.PlatformingHazard, minRooms = 1, maxRooms = 1, secretBranchChance = 0.35f },
+            new() { label = "마지막 교전",   category = DungeonRoom.RoomRole.CombatArena,      minRooms = 1, maxRooms = 1 },
         };
     }
 
@@ -119,6 +147,7 @@ public class DungeonGenerator : MonoBehaviour {
 
     public List<DungeonRoom> Generate() {
         Teardown(); // 이전 잔여 인스턴스가 있으면 먼저 정리한다.
+        pickBuckets.Clear();
 
         generatedRoot = new GameObject("GeneratedDungeon").transform;
         generatedRoot.position = dungeonOrigin != null ? dungeonOrigin.position : Vector3.zero;
@@ -126,33 +155,34 @@ public class DungeonGenerator : MonoBehaviour {
         var rooms = new List<DungeonRoom>();
         var branchParents = new List<DungeonRoom>(); // 곁가지가 뽑힌 방. 본 동선이 다 놓인 뒤에 한꺼번에 배치한다.
 
-        // 1. 입구 — 항상 맨 앞.
+        // 1. 가운데 방 목록을 먼저 짠다. 상점 자리를 전체 개수로 정해야 해서, 놓으면서 정할 수가 없다.
+        List<PlannedRoom> plan = PlanMiddleRooms();
+        EnsureShop(plan);
+
+        // 2. 입구 — 항상 맨 앞.
         DungeonRoom current = SpawnRoom(PickPrefab(entryRoomPrefabs), null);
         if (current != null) rooms.Add(current);
 
-        // 2. 가운데 구간 펼치기.
-        List<DungeonSegment> steps = (sequence != null && sequence.Count > 0) ? sequence : DefaultSequence();
-        foreach (DungeonSegment step in steps) {
-            if (step == null) continue;
-            if (step.category == DungeonRoom.RoomRole.Entry || step.category == DungeonRoom.RoomRole.Exit) continue; // 입·출구는 여기서 만들지 않는다.
+        // 3. 가운데 방을 순서대로 잇는다. 하나를 못 만들어도 직전 방에 다음 방을 이어야 하므로,
+        //    실패한 결과로 current 를 덮어쓰지 않는다(덮어쓰면 다음 방이 던전 원점에 겹쳐 놓인다).
+        foreach (PlannedRoom planned in plan) {
+            DungeonRoom room = SpawnRoom(planned.Prefab, current);
+            if (room == null) continue;
 
-            int lo = Mathf.Max(1, Mathf.Min(step.minRooms, step.maxRooms));
-            int hi = Mathf.Max(lo, Mathf.Max(step.minRooms, step.maxRooms));
-            int count = UnityEngine.Random.Range(lo, hi + 1);
-
-            foreach (GameObject prefab in PickPrefabs(PoolFor(step.category), count)) {
-                current = SpawnRoom(prefab, current);
-                if (current == null) continue;
-                rooms.Add(current);
-                if (RollSecretBranch(current, step.secretBranchChance)) branchParents.Add(current);
-            }
+            current = room;
+            rooms.Add(room);
+            if (RollSecretBranch(room, planned.SecretBranchChance)) branchParents.Add(room);
         }
 
-        // 3. 출구 — 항상 맨 뒤.
+        // 4. 출구 — 항상 맨 뒤.
         current = SpawnRoom(PickPrefab(exitRoomPrefabs), current);
         if (current != null) rooms.Add(current);
 
-        // 4. 곁가지 — 본 동선의 높이가 전부 정해져야 그 위의 빈 줄을 잡을 수 있다(수직 갱도가 뒤에 오면 던전 꼭대기가 높아진다).
+        // 본 동선의 앞뒤를 잇는다. 방은 다음 방이 전투방이면 들어서는 순간 그 방 몬스터를 미리 세워 둔다(DungeonRoom.PrepareCombat).
+        // 곁가지는 rooms 에 들지 않으므로 끼어들지 않는다 — 곁가지에서 돌아오면 부모 방 트리거를 다시 밟아 똑같이 처리된다.
+        for (int i = 0; i + 1 < rooms.Count; i++) rooms[i].nextRoom = rooms[i + 1];
+
+        // 5. 곁가지 — 본 동선의 높이가 전부 정해져야 그 위의 빈 줄을 잡을 수 있다(수직 갱도가 뒤에 오면 던전 꼭대기가 높아진다).
         SpawnSecretBranches(rooms, branchParents);
 
         InjectRoomConfig();
@@ -174,7 +204,7 @@ public class DungeonGenerator : MonoBehaviour {
         generatedRoot = null;
     }
 
-    // 입구/출구 이탈 트리거가 호출한다.
+    // 입구방 이탈 트리거(DungeonExitZone)와 출구방 거울(DungeonExitMirror)이 호출한다.
     //
     // 해체를 여기서 하지 않고 게이트에 넘기는 이유: 게이트는 퇴장 연출(암전)이 끝난 뒤에 Teardown 을 부른다.
     // 여기서 바로 치워 버리면 플레이어 눈앞에서 방이 통째로 사라진 다음에야 화면이 어두워진다.
@@ -205,6 +235,10 @@ public class DungeonGenerator : MonoBehaviour {
         foreach (DungeonExitZone zone in generatedRoot.GetComponentsInChildren<DungeonExitZone>(true)) {
             zone.Configure(this);
         }
+
+        foreach (DungeonExitMirror exitMirror in generatedRoot.GetComponentsInChildren<DungeonExitMirror>(true)) {
+            exitMirror.Configure(this);
+        }
     }
 
     #endregion
@@ -218,8 +252,47 @@ public class DungeonGenerator : MonoBehaviour {
             DungeonRoom.RoomRole.VerticalClimb => verticalRoomPrefabs,
             DungeonRoom.RoomRole.SecretBranch => secretRoomPrefabs,
             DungeonRoom.RoomRole.Exit => exitRoomPrefabs,
+            DungeonRoom.RoomRole.Shop => shopRoomPrefabs,
             _ => hazardRoomPrefabs,
         };
+    }
+
+    // 구간을 펼쳐 가운데 방 목록을 짠다. 입구 · 출구 구간은 Generate 가 따로 붙이므로 건너뛴다.
+    List<PlannedRoom> PlanMiddleRooms() {
+        var plan = new List<PlannedRoom>();
+
+        List<DungeonSegment> steps = (sequence != null && sequence.Count > 0) ? sequence : DefaultSequence();
+        foreach (DungeonSegment step in steps) {
+            if (step == null) continue;
+            if (step.category == DungeonRoom.RoomRole.Entry || step.category == DungeonRoom.RoomRole.Exit) continue;
+
+            int lo = Mathf.Max(1, Mathf.Min(step.minRooms, step.maxRooms));
+            int hi = Mathf.Max(lo, Mathf.Max(step.minRooms, step.maxRooms));
+            int count = UnityEngine.Random.Range(lo, hi + 1);
+
+            foreach (GameObject prefab in PickPrefabs(PoolFor(step.category), count)) {
+                plan.Add(new PlannedRoom(prefab, step.category, step.secretBranchChance));
+            }
+        }
+
+        return plan;
+    }
+
+    // 상점이 계획에 없으면 가운데에 하나 끼운다. 구간에 상점을 직접 적었다면 그 자리를 존중하고 더 끼우지 않는다.
+    // 짝수 개일 때 뒤쪽 가운데로 들어가는 이유: 앞쪽에 서면 코인이 덜 모인 채로 상점을 만나 살 것이 없다.
+    void EnsureShop(List<PlannedRoom> plan) {
+        foreach (PlannedRoom planned in plan) {
+            if (planned.Role == DungeonRoom.RoomRole.Shop) return;
+        }
+
+        GameObject shop = PickPrefab(shopRoomPrefabs);
+        if (shop == null) {
+            Debug.LogError("[DungeonGenerator] shopRoomPrefabs 가 비어 있어 상점 방 없이 생성합니다. " +
+                           "Tools ▸ FCC ▸ Dungeon ▸ Place Dungeon Rig In Scene 으로 풀을 다시 채우세요.", this);
+            return;
+        }
+
+        plan.Insert((plan.Count + 1) / 2, new PlannedRoom(shop, DungeonRoom.RoomRole.Shop, 0f));
     }
 
     // previous 가 있으면 새 방의 entryAnchor 를 previous 의 exitAnchor 위치에 맞춰 통째로 옮긴다.
@@ -354,19 +427,30 @@ public class DungeonGenerator : MonoBehaviour {
         return pool[UnityEngine.Random.Range(0, pool.Count)];
     }
 
-    // count 만큼 뽑는다. 셔플 뭉치 방식이라 풀을 다 쓰기 전까지는 같은 방이 연속으로 나오지 않는다.
+    // count 만큼 뽑는다. 셔플 뭉치 방식이라 풀을 다 쓰기 전까지는 같은 방이 다시 나오지 않는다.
+    // 뭉치는 풀마다 한 판 동안 이어 쓴다(pickBuckets). 구간이 달라도 같은 풀에서 뽑으면 앞 구간에서 나온 방은 빠져 있다.
     List<GameObject> PickPrefabs(List<GameObject> pool, int count) {
         var result = new List<GameObject>(Mathf.Max(0, count));
         if (pool == null || pool.Count == 0 || count <= 0) return result;
 
-        var bucket = new List<GameObject>();
+        if (!pickBuckets.TryGetValue(pool, out List<GameObject> bucket)) {
+            bucket = new List<GameObject>();
+            pickBuckets[pool] = bucket;
+        }
+
+        GameObject previous = null;
         while (result.Count < count) {
             if (bucket.Count == 0) {
                 bucket.AddRange(pool);
                 Shuffle(bucket);
+
+                // 뭉치를 새로 섞은 첫 방이 방금 뽑은 방과 같으면 같은 방이 연달아 붙는다. 한 칸 뒤와 바꿔 피한다.
+                int top = bucket.Count - 1;
+                if (top > 0 && bucket[top] == previous) (bucket[top], bucket[top - 1]) = (bucket[top - 1], bucket[top]);
             }
             int last = bucket.Count - 1;
-            result.Add(bucket[last]);
+            previous = bucket[last];
+            result.Add(previous);
             bucket.RemoveAt(last);
         }
         return result;

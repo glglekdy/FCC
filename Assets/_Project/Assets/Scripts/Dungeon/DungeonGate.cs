@@ -48,6 +48,14 @@ public class DungeonGate : MonoBehaviour, IInteractable {
     [Tooltip("낙사로 복귀한 직후 무적으로 버틸 시간(초). 복귀 지점 근처의 몬스터에게 연달아 맞는 것을 막는다.")]
     public float fallInvincibleTime = 3f;
 
+    [Header("뒷세계 코인 (방 클리어 보상)")]
+    // 코인은 뒷세계 상점에서만 쓰고, 나가도 플레이어가 계속 들고 있다(Player_DungeonCoinInventory).
+    [Tooltip("전투방의 몬스터를 전멸시키면 주는 코인.")]
+    [Min(0)] public int combatRoomCoins = 3;
+
+    [Tooltip("기믹 · 수직 갱도 방을 끝까지 지나 다음 방에 들어서면 주는 코인. 싸움이 없는 만큼 전투방보다 적게 준다.")]
+    [Min(0)] public int courseRoomCoins = 1;
+
     [Header("거울 연출")]
     // 진입할 때 빛나고, 클리어하고 나온 순간 부서지는 전신 거울. 비우면 이 오브젝트와 자식에서 찾는다.
     public DungeonGateMirror mirror;
@@ -87,6 +95,10 @@ public class DungeonGate : MonoBehaviour, IInteractable {
     Coroutine pushRoutine;
     float pushBaseSize;       // 밀어 넣기 전의 시야 크기. 되돌릴 때 쓴다.
     bool pushedIn;
+
+    List<DungeonRoom> mainRooms = new();              // 이번 판 본 동선의 방(입구 → 출구 순). 코인 지급 판정에 쓴다.
+    readonly HashSet<DungeonRoom> rewardedRooms = new(); // 이미 코인을 준 방. 되돌아갔다 와도 두 번 주지 않는다.
+    bool coinWarned;
 
     #endregion
     #region IInteractable
@@ -182,6 +194,20 @@ public class DungeonGate : MonoBehaviour, IInteractable {
             room.spawner.OnAllMonstersDefeated += HandleCombatRoomCleared;
         }
 
+        // 뒷세계 코인. 전투방은 전멸한 순간, 나머지 방은 다음 방에 들어선 순간 지급한다(HandleRoomEntered 참고).
+        // 방은 퇴장할 때 통째로 파괴되므로 구독을 따로 풀지 않는다.
+        mainRooms = new List<DungeonRoom>(rooms);
+        rewardedRooms.Clear();
+        foreach (DungeonRoom room in rooms) {
+            room.OnPlayerEntered += HandleRoomEntered;
+            if (room.role == DungeonRoom.RoomRole.CombatArena && room.spawner != null) {
+                room.spawner.OnAllMonstersDefeated += () => RewardRoom(room, combatRoomCoins);
+            }
+        }
+
+        // 지난 판의 한정 강화가 어떤 경로로든 남아 있으면 여기서 걷는다. 이번 판은 맨몸으로 시작해야 한다.
+        DungeonShopItem.ClearRunBuffs(cachedPlayer);
+
         // 걸어 나가기 처리. 중복 구독 방지.
         generator.OnDungeonExited -= HandleWalkOut;
         generator.OnDungeonExited += HandleWalkOut;
@@ -230,6 +256,35 @@ public class DungeonGate : MonoBehaviour, IInteractable {
         }
     }
 
+    // 기믹 · 수직 갱도 방은 "끝까지 지나왔는가"가 곧 클리어다. 그 방 안에서는 알 수 없고 다음 방에 발을 들인 순간에야
+    // 확정되므로, 들어선 방보다 앞에 있는 방을 훑어 아직 안 준 곳에 준다. 입구 · 상점 · 출구는 넘어야 할 것이 없어 주지 않는다.
+    // 곁가지 방은 본 동선 목록에 없어 여기서 걸러진다(곁가지의 보상은 방 안의 기억 조각이 맡는다).
+    void HandleRoomEntered(DungeonRoom entered) {
+        int index = mainRooms.IndexOf(entered);
+        for (int i = 0; i < index; i++) {
+            DungeonRoom passed = mainRooms[i];
+            if (passed.role != DungeonRoom.RoomRole.PlatformingHazard && passed.role != DungeonRoom.RoomRole.VerticalClimb) continue;
+
+            RewardRoom(passed, courseRoomCoins);
+        }
+    }
+
+    void RewardRoom(DungeonRoom room, int amount) {
+        if (room == null || amount <= 0 || !inDungeon) return;
+        if (!rewardedRooms.Add(room)) return;
+
+        if (cachedPlayer != null && cachedPlayer.TryGetComponent(out Player_DungeonCoinInventory coins)) {
+            coins.Add(amount);
+            return;
+        }
+
+        // 컴포넌트가 빠진 씬에서는 조용히 코인이 사라진다. 원인을 찾기 어려우니 한 번은 크게 알린다.
+        if (coinWarned) return;
+        coinWarned = true;
+        Debug.LogWarning($"[DungeonGate] 플레이어에 Player_DungeonCoinInventory 가 없어 뒷세계 코인을 지급하지 못했습니다. " +
+                         "**씬의 플레이어에 컴포넌트를 붙이세요.**", this);
+    }
+
     #endregion
     #region 이탈 처리
 
@@ -263,6 +318,10 @@ public class DungeonGate : MonoBehaviour, IInteractable {
         // 해체도 암전 뒤에서 한다. 눈앞에서 방이 사라지면 던전이 무너진 것처럼 보인다.
         if (generator != null) generator.Teardown();
         if (DungeonRespawnController.Instance != null) DungeonRespawnController.Instance.Dispose();
+
+        // 상점에서 산 한정 강화는 뒷세계 안에서만 유효하다. 코인은 플레이어 컴포넌트에 남으므로 건드리지 않는다.
+        DungeonShopItem.ClearRunBuffs(cachedPlayer);
+        mainRooms.Clear();
 
         Vector3 pos = outsideReturnPoint != null ? outsideReturnPoint.position : transform.position;
         WarpTo(cachedPlayer, pos);

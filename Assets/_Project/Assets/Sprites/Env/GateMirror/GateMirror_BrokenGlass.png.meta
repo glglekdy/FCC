@@ -1,0 +1,377 @@
+fileFormatVersion: 2
+guid: a5cd15406d6bf134b81e4d1f29261f44
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -7688468362827125696
+    second: GateMirror_BrokenGlass_0
+  - first:
+      213: 8363193559822313732
+    second: GateMirror_BrokenGlass_1
+  - first:
+      213: 2305770422053297849
+    second: GateMirror_BrokenGlass_2
+  - first:
+      213: -5839353292760916510
+    second: GateMirror_BrokenGlass_3
+  - first:
+      213: 3405943893369808155
+    second: GateMirror_BrokenGlass_4
+  - first:
+      213: 2521859546550697451
+    second: GateMirror_BrokenGlass_5
+  - first:
+      213: -3354449019669462980
+    second: GateMirror_BrokenGlass_6
+  - first:
+      213: 8235484445152072229
+    second: GateMirror_BrokenGlass_7
+  - first:
+      213: -2398166439720591395
+    second: GateMirror_BrokenGlass_8
+  - first:
+      213: -8865057758120038723
+    second: GateMirror_BrokenGlass_9
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 500
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: GateMirror_BrokenGlass_0
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 103
+        width: 821
+        height: 1415
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 04c2cde52c21d4590800000000000000
+      internalID: -7688468362827125696
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GateMirror_BrokenGlass_1
+      rect:
+        serializedVersion: 2
+        x: 886
+        y: 1255
+        width: 43
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4092b098b38001470800000000000000
+      internalID: 8363193559822313732
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GateMirror_BrokenGlass_2
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 919
+        width: 7
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9bed61c7bfdbfff10800000000000000
+      internalID: 2305770422053297849
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GateMirror_BrokenGlass_3
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 911
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2ed5af25e1376fea0800000000000000
+      internalID: -5839353292760916510
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GateMirror_BrokenGlass_4
+      rect:
+        serializedVersion: 2
+        x: 920
+        y: 319
+        width: 29
+        height: 203
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b15e731fce7544f20800000000000000
+      internalID: 3405943893369808155
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GateMirror_BrokenGlass_5
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 63
+        width: 121
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bedf49d65e17ff220800000000000000
+      internalID: 2521859546550697451
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GateMirror_BrokenGlass_6
+      rect:
+        serializedVersion: 2
+        x: 389
+        y: 99
+        width: 77
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c30c175a36a9271d0800000000000000
+      internalID: -3354449019669462980
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GateMirror_BrokenGlass_7
+      rect:
+        serializedVersion: 2
+        x: 607
+        y: 81
+        width: 46
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5225b8a28715a4270800000000000000
+      internalID: 8235484445152072229
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GateMirror_BrokenGlass_8
+      rect:
+        serializedVersion: 2
+        x: 663
+        y: 71
+        width: 108
+        height: 90
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ddfd030445008bed0800000000000000
+      internalID: -2398166439720591395
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GateMirror_BrokenGlass_9
+      rect:
+        serializedVersion: 2
+        x: 730
+        y: 16
+        width: 45
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dbe2fe520fcf8f480800000000000000
+      internalID: -8865057758120038723
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      GateMirror_BrokenGlass_0: -7688468362827125696
+      GateMirror_BrokenGlass_1: 8363193559822313732
+      GateMirror_BrokenGlass_2: 2305770422053297849
+      GateMirror_BrokenGlass_3: -5839353292760916510
+      GateMirror_BrokenGlass_4: 3405943893369808155
+      GateMirror_BrokenGlass_5: 2521859546550697451
+      GateMirror_BrokenGlass_6: -3354449019669462980
+      GateMirror_BrokenGlass_7: 8235484445152072229
+      GateMirror_BrokenGlass_8: -2398166439720591395
+      GateMirror_BrokenGlass_9: -8865057758120038723
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
