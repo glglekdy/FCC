@@ -500,7 +500,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &250495759
 Transform:
   m_ObjectHideFlags: 0
@@ -530,6 +530,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MainMenuController
   settingsPanel: {fileID: 1491199800}
   startSceneName: First
+  debugSkipToCoreSceneKey: 30
+  debugCoreSceneName: CoreScene
 --- !u!1001 &266119634
 PrefabInstance:
   m_ObjectHideFlags: 0
