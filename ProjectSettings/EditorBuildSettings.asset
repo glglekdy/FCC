@@ -12,8 +12,17 @@ EditorBuildSettings:
     path: Assets/_Project/Assets/Scenes/_Scenes/Chapter0/CutScenePage/First.unity
     guid: 5062540fa793b324ab79c5f50b1b9fa2
   - enabled: 1
+    path: Assets/_Project/Assets/Scenes/_Scenes/Chapter0/CutScenePage/Second.unity
+    guid: b7276e59a34087248836344e6b82a3ca
+  - enabled: 1
+    path: Assets/_Project/Assets/Scenes/_Scenes/Chapter0/PlayScene/Play_InCircus.unity
+    guid: b87b7e553bb3c7442a4d3ee2d270fce6
+  - enabled: 1
+    path: Assets/_Project/Assets/Scenes/_Scenes/Chapter0/PlayScene/Play_Outdoor.unity
+    guid: b1a1ce795f57e44449e6f06898648b3c
+  - enabled: 1
     path: Assets/_Project/Assets/Scenes/_Scenes/CoreScene.unity
-    guid: e01b4659d73a91e45a0391ee0b220355
+    guid: 00000000000000000000000000000000
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: dfdb181d6fec4e5448b1c2d9b07b1912, type: 2}
     com.unity.dt.app-ui: {fileID: 11400000, guid: 1b1c20d82303e4b5781c3ef50ac1449f, type: 2}
