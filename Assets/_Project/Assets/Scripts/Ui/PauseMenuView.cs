@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -94,6 +95,11 @@ public class PauseMenuView : MonoBehaviour {
 
     PlayerInput pausedPlayerInput; // 열 때 꺼 둔 플레이어 입력. 닫을 때 이것만 다시 켠다.
 
+    // 확인 창 버튼에 프리팹으로 적혀 있던 원래 문구. 번역이 비어 있을 때 쓸 대체 문구다.
+    // 번역으로 덮어쓰고 나면 원문을 읽을 곳이 없어서 따로 붙잡아 둔다.
+    string defaultCancelLabel;
+    string defaultAcceptLabel;
+
     bool isReady; // 프리팹 연결이 온전한지. 어긋난 채로 두면 NullReference 가 쏟아지므로 Awake 에서 한 번만 검사한다.
     bool isLeaving; // 메인메뉴로 넘어가기 시작한 뒤. 전환 중의 입력과 시간 정지 강제를 멈춘다.
 
@@ -113,9 +119,15 @@ public class PauseMenuView : MonoBehaviour {
         confirmCancelButton.onClick.AddListener(CloseConfirm);
         confirmAcceptButton.onClick.AddListener(AcceptConfirm);
 
-        // 취소·나가기 버튼 글자는 색만 코드가 바꾸고 문구는 프리팹에 직접 적혀 있었다. 여기서 한 번만 덮어쓴다.
-        confirmCancelLabel.text = LocalizationText.Resolve(cancelLabelText, confirmCancelLabel.text);
-        confirmAcceptLabel.text = LocalizationText.Resolve(acceptLabelText, confirmAcceptLabel.text);
+        // 취소·나가기 버튼 글자는 색만 코드가 바꾸고 문구는 프리팹에 직접 적혀 있었다. 프리팹의 문구를
+        // 대체용으로 붙잡아 둔 뒤 번역으로 덮어쓴다 — 덮어쓴 다음에는 원문을 읽을 곳이 없기 때문이다.
+        defaultCancelLabel = confirmCancelLabel.text;
+        defaultAcceptLabel = confirmAcceptLabel.text;
+        RefreshLocalizedLabels();
+
+        // 이 메뉴는 게임 중에 설정창을 열어 언어를 바꿀 수 있는 자리라, 바뀌면 코드가 적은 문구를 다시 적어야 한다.
+        // 프리팹의 LocalizeStringEvent 가 붙은 문구는 알아서 따라오지만 이쪽은 따라오지 않는다.
+        LocalizationSettings.SelectedLocaleChanged += HandleLocaleChanged;
 
         if (settingsPanel != null) {
             settingsPanel.OnClosed += HandleSettingsClosed;
@@ -127,6 +139,9 @@ public class PauseMenuView : MonoBehaviour {
     }
 
     void OnDestroy() {
+        // static 이벤트라 해제하지 않으면 씬이 내려간 뒤에도 죽은 오브젝트를 붙잡는다.
+        LocalizationSettings.SelectedLocaleChanged -= HandleLocaleChanged;
+
         if (settingsPanel != null) settingsPanel.OnClosed -= HandleSettingsClosed;
 
         // 열린 채로 씬이 내려가면(에디터에서 씬을 바꾸는 경우 등) 멈춘 시간이 다음 씬까지 따라간다.
@@ -370,6 +385,20 @@ public class PauseMenuView : MonoBehaviour {
 
     bool IsSettingsOpen() {
         return settingsPanel != null && settingsPanel.gameObject.activeSelf;
+    }
+
+    // 코드가 적는 확인 창 버튼 문구를 지금 언어로 다시 적는다. 제목·본문은 확인 창을 열 때마다
+    // 새로 적으므로(OpenConfirm) 여기서 챙기지 않아도 된다.
+    void RefreshLocalizedLabels() {
+        confirmCancelLabel.text = LocalizationText.Resolve(cancelLabelText, defaultCancelLabel);
+        confirmAcceptLabel.text = LocalizationText.Resolve(acceptLabelText, defaultAcceptLabel);
+    }
+
+    void HandleLocaleChanged(Locale locale) {
+        if (!isReady) return;
+
+        foreach (PauseMenuItemView item in items) item.RefreshLabel();
+        RefreshLocalizedLabels();
     }
 
     // 설정창을 닫은 ESC 가 같은 프레임에 메뉴까지 닫지 않도록 그 프레임의 입력은 넘긴다.

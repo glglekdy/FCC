@@ -110,6 +110,10 @@ public class SaveSlotSelectView : MonoBehaviour {
     int openedFrame = -1;
 
     bool isBusy; // 새로 시작을 요청한 뒤. 씬이 넘어가는 동안 입력을 받지 않는다.
+
+    // 「취소」 버튼에 프리팹으로 적혀 있던 원래 문구. 번역이 비어 있을 때 쓸 대체 문구다.
+    // 번역으로 덮어쓰고 나면 원문을 읽을 곳이 없어서 따로 붙잡아 둔다.
+    string defaultCancelLabel;
     bool isReady;
 
     static bool warnedMissingManager; // SaveManager 가 없다는 경고를 한 번만 찍는다. 열 때마다 찍으면 콘솔이 덮인다.
@@ -134,8 +138,8 @@ public class SaveSlotSelectView : MonoBehaviour {
         confirmCancelButton.onClick.AddListener(CloseConfirm);
         confirmAcceptButton.onClick.AddListener(AcceptConfirm);
 
-        // 취소 버튼 글자는 색만 코드가 바꾸고 문구는 프리팹에 직접 적혀 있었다. 여기서 한 번만 덮어쓴다.
-        confirmCancelLabel.text = LocalizationText.Resolve(cancelLabelText, confirmCancelLabel.text);
+        // 취소 버튼 글자는 색만 코드가 바꾸고 문구는 프리팹에 직접 적혀 있었다.
+        defaultCancelLabel = confirmCancelLabel.text;
     }
 
     void OnEnable() {
@@ -143,6 +147,9 @@ public class SaveSlotSelectView : MonoBehaviour {
 
         openedFrame = Time.frameCount;
         isBusy = false;
+
+        // 화면을 열 때마다 다시 적는다. Awake 에서 한 번만 적으면 설정에서 언어를 바꾼 뒤에도 옛 언어로 남는다.
+        confirmCancelLabel.text = LocalizationText.Resolve(cancelLabelText, defaultCancelLabel);
 
         bool load = mode == Mode.Load;
         titleLabel.text = load ? LocalizationText.Resolve(loadTitle, "기억 불러오기") : LocalizationText.Resolve(newGameTitle, "기억 선택");

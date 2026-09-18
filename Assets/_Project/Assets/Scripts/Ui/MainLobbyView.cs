@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
 using UnityEngine.SceneManagement;
 
 // 메인 로비(커튼콜 정면) 화면. 타이틀과 메뉴 5개를 띄우고 ↑↓ 와 마우스로 항목을 고른다.
@@ -66,6 +67,12 @@ public class MainLobbyView : MonoBehaviour {
 
         if (settingsPanel != null) settingsPanel.SetActive(false);
 
+        // 설정에서 언어를 바꾸면 다시 적는다. 프리팹에 붙은 LocalizeStringEvent(부제 · 조작 안내)는 알아서
+        // 따라오지만, 메뉴 5줄과 [이어하기] 보조 표기는 코드가 적는 문구라 여기서 챙기지 않으면 옛 언어로 남는다.
+        // 부팅 직후에도 필요하다 — 저장된 언어를 반영하는 GameSettings.ApplyOnBoot 은 AfterSceneLoad 라,
+        // 이 Awake 보다 늦게 돌면 Awake 에서 적은 문구가 시작 언어(보통 한국어) 그대로 남는다.
+        LocalizationSettings.SelectedLocaleChanged += HandleLocaleChanged;
+
         if (saveSlotPanel != null) {
             saveSlotPanel.gameObject.SetActive(false);
             saveSlotPanel.OnNewGameRequested += HandleNewGameRequested;
@@ -75,6 +82,9 @@ public class MainLobbyView : MonoBehaviour {
     }
 
     void OnDestroy() {
+        // static 이벤트라 해제하지 않으면 씬이 내려간 뒤에도 죽은 오브젝트를 붙잡는다.
+        LocalizationSettings.SelectedLocaleChanged -= HandleLocaleChanged;
+
         if (saveSlotPanel == null) return;
 
         saveSlotPanel.OnNewGameRequested -= HandleNewGameRequested;
@@ -84,6 +94,14 @@ public class MainLobbyView : MonoBehaviour {
 
     void OnEnable() { escapeAction.Enable(); }
     void OnDisable() { escapeAction.Disable(); }
+
+    // 설정에서 언어를 바꾸면 코드가 적은 문구를 다시 적는다(프리팹의 LocalizeStringEvent 는 스스로 따라온다).
+    void HandleLocaleChanged(Locale locale) {
+        if (!isReady) return;
+
+        foreach (MainLobbyItemView item in items) item.RefreshLabel();
+        RefreshContinue();
+    }
 
     void Start() {
         if (!isReady) return;

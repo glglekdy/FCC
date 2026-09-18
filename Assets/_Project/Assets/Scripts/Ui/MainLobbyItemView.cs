@@ -55,6 +55,10 @@ public class MainLobbyItemView : MonoBehaviour, IPointerEnterHandler, IPointerCl
     Action<MainLobbyItemView> onHovered;
     Action<MainLobbyItemView> onClicked;
 
+    // 프리팹에 적혀 있던 원래 문구. 번역이 비어 있을 때 쓸 대체 문구다.
+    // RefreshLabel 이 label.text 를 덮어쓰므로, 여기에 붙잡아 두지 않으면 두 번째 호출부터 대체 문구가 사라진다.
+    string defaultLabel;
+
     // 잠긴 줄은 커서가 지나가도 골라지지 않고 클릭도 먹지 않는다.
     public bool IsUnlocked { get; private set; } = true;
 
@@ -69,7 +73,19 @@ public class MainLobbyItemView : MonoBehaviour, IPointerEnterHandler, IPointerCl
 
         // 항목 이름은 프리팹에 한국어로 직접 적혀 있었다. action이 곧 어느 줄인지를 정하므로
         // 여기서 키를 골라 덮어써야 새 프리팹을 만들지 않고도 번역이 붙는다.
-        if (label != null) label.text = LocalizationText.Resolve(LabelKeyFor(action), label.text);
+        if (label != null) defaultLabel = label.text;
+        RefreshLabel();
+    }
+
+    // 항목 이름을 지금 언어로 다시 적는다. 언어가 바뀌면 MainLobbyView 가 다시 부른다.
+    //
+    // Bind 에서 한 번만 적으면 설정에서 언어를 바꿔도 이 줄들만 옛 언어로 남는다(프리팹에 붙은
+    // LocalizeStringEvent 는 알아서 따라오지만, 코드가 적는 문구는 다시 적어주지 않으면 그대로다).
+    // 부팅 직후에도 필요하다 — 저장된 언어를 반영하는 GameSettings.ApplyOnBoot 은 AfterSceneLoad 라,
+    // 이 Awake 보다 늦게 돌면 Bind 에서 적은 문구가 시작 언어(보통 한국어) 그대로 남는다.
+    public void RefreshLabel() {
+        if (label == null) return;
+        label.text = LocalizationText.Resolve(LabelKeyFor(action), defaultLabel);
     }
 
     static LocalizedString LabelKeyFor(MainLobbyAction action) {
