@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.Localization;
 using UnityEngine.UI;
 
 // 기록 선택 화면. 메인 로비의 [새로 시작]과 [이어하기]가 같은 화면을 모드만 바꿔 연다.
@@ -67,21 +68,22 @@ public class SaveSlotSelectView : MonoBehaviour {
     public DisplayName[] checkpointNames = new DisplayName[0]; // **거울을 새로 놓으면 그 id 와 이름을 여기에 추가하세요.**
 
     [Header("문구 — 모드")]
-    public string newGameTitle = "기억 선택";
-    public string newGameSubtitle = "새로 시작할 자리를 고르세요. 기억이 있는 자리를 고르면 덮어씁니다.";
-    public string loadTitle = "기억 불러오기";
-    public string loadSubtitle = "이어서 할 기억을 고르세요.";
+    public LocalizedString newGameTitle = new("Ui", "saveslot.new_game_title");
+    public LocalizedString newGameSubtitle = new("Ui", "saveslot.new_game_subtitle");
+    public LocalizedString loadTitle = new("Ui", "saveslot.load_title");
+    public LocalizedString loadSubtitle = new("Ui", "saveslot.load_subtitle");
 
     [Header("문구")]
-    public string unknownRegionText = "알 수 없는 장소"; // sceneNames 에 없는 씬.
-    public string checkpointFormat = "{0}에서 저장"; // {0} = 거울 이름.
-    public string unnamedCheckpointText = "거울"; // checkpointNames 에 없는 거울.
-    public string quickSaveText = "빠른 저장"; // 거울이 아닌 개발용 F5 저장(checkpointId 가 비어 있다).
-    public string overwriteTitleFormat = "기억 {0:00}을 덮어쓸까요?"; // {0} = 화면에 보이는 번호.
-    public string deleteTitleFormat = "기억 {0:00}을 지울까요?";
-    public string overwriteAcceptText = "덮어쓰기";
-    public string deleteAcceptText = "지우기";
-    public string summaryFormat = "{0}   |   자아 {1} / {2}   |   기억 조각 {3}"; // {0} 지역 {1} 현재 {2} 최대 {3} 조각.
+    public LocalizedString unknownRegionText = new("Ui", "saveslot.unknown_region"); // sceneNames 에 없는 씬.
+    public LocalizedString checkpointFormat = new("Ui", "saveslot.checkpoint_format"); // {0} = 거울 이름.
+    public LocalizedString unnamedCheckpointText = new("Ui", "saveslot.unnamed_checkpoint"); // checkpointNames 에 없는 거울.
+    public LocalizedString quickSaveText = new("Ui", "saveslot.quick_save"); // 거울이 아닌 개발용 F5 저장(checkpointId 가 비어 있다).
+    public LocalizedString overwriteTitleFormat = new("Ui", "saveslot.overwrite_title_format"); // {0} = 화면에 보이는 번호.
+    public LocalizedString deleteTitleFormat = new("Ui", "saveslot.delete_title_format");
+    public LocalizedString overwriteAcceptText = new("Ui", "saveslot.overwrite");
+    public LocalizedString deleteAcceptText = new("Ui", "saveslot.delete");
+    public LocalizedString summaryFormat = new("Ui", "saveslot.summary_format"); // {0} 지역 {1} 현재 {2} 최대 {3} 조각.
+    public LocalizedString cancelLabelText = new("Ui", "common.cancel");
 
     [Header("색상")]
     public Color buttonColor = UiTheme.Panel;
@@ -131,6 +133,9 @@ public class SaveSlotSelectView : MonoBehaviour {
         backButton.onClick.AddListener(Close);
         confirmCancelButton.onClick.AddListener(CloseConfirm);
         confirmAcceptButton.onClick.AddListener(AcceptConfirm);
+
+        // 취소 버튼 글자는 색만 코드가 바꾸고 문구는 프리팹에 직접 적혀 있었다. 여기서 한 번만 덮어쓴다.
+        confirmCancelLabel.text = LocalizationText.Resolve(cancelLabelText, confirmCancelLabel.text);
     }
 
     void OnEnable() {
@@ -140,8 +145,10 @@ public class SaveSlotSelectView : MonoBehaviour {
         isBusy = false;
 
         bool load = mode == Mode.Load;
-        titleLabel.text = load ? loadTitle : newGameTitle;
-        subtitleLabel.text = load ? loadSubtitle : newGameSubtitle;
+        titleLabel.text = load ? LocalizationText.Resolve(loadTitle, "기억 불러오기") : LocalizationText.Resolve(newGameTitle, "기억 선택");
+        subtitleLabel.text = load
+            ? LocalizationText.Resolve(loadSubtitle, "이어서 할 기억을 고르세요.")
+            : LocalizationText.Resolve(newGameSubtitle, "새로 시작할 자리를 고르세요. 기억이 있는 자리를 고르면 덮어씁니다.");
 
         RebuildRows();
         CloseConfirm();
@@ -326,11 +333,16 @@ public class SaveSlotSelectView : MonoBehaviour {
         openedFrame = Time.frameCount;
 
         bool delete = mode == ConfirmMode.Delete;
-        confirmTitle.text = string.Format(delete ? deleteTitleFormat : overwriteTitleFormat, row.SlotIndex + 1);
-        confirmAcceptLabel.text = delete ? deleteAcceptText : overwriteAcceptText;
+        string titleFormat = delete
+            ? LocalizationText.Resolve(deleteTitleFormat, "기억 {0:00}을 지울까요?")
+            : LocalizationText.Resolve(overwriteTitleFormat, "기억 {0:00}을 덮어쓸까요?");
+        confirmTitle.text = string.Format(titleFormat, row.SlotIndex + 1);
+        confirmAcceptLabel.text = delete
+            ? LocalizationText.Resolve(deleteAcceptText, "지우기")
+            : LocalizationText.Resolve(overwriteAcceptText, "덮어쓰기");
 
         bool knownEgo = data.maxHealth > 0;
-        confirmSummary.text = string.Format(summaryFormat, DescribeRegion(data),
+        confirmSummary.text = string.Format(LocalizationText.Resolve(summaryFormat, "{0}   |   자아 {1} / {2}   |   기억 조각 {3}"), DescribeRegion(data),
             knownEgo ? data.currentHealth.ToString() : "-",
             knownEgo ? data.maxHealth.ToString() : "-",
             data.memoryShardCount);
@@ -434,15 +446,27 @@ public class SaveSlotSelectView : MonoBehaviour {
     #region 이름 풀기
 
     // 로비의 [이어하기] 옆 표기도 같은 이름을 쓰도록 공개한다. 이름 대응표를 두 곳에 두면 한쪽만 고쳐진다.
+    // 고정된 두 씬(First·CoreScene)은 Ui 테이블 키로 먼저 찾는다. 그 외의 씬은 sceneNames 표를
+    // 그대로 쓴다 — 아직 번역 키가 없는 새 씬을 추가해도 표만 채우면 바로 보이게 하기 위함이다.
+    static readonly LocalizedString AreaPrologue = new("Ui", "area.prologue");
+    static readonly LocalizedString AreaCircusTheater = new("Ui", "area.circus_theater");
+
     public string DescribeRegion(SaveData data) {
         if (data == null) return "";
-        return Lookup(sceneNames, data.sceneName, unknownRegionText);
+
+        switch (data.sceneName) {
+            case "First": return LocalizationText.Resolve(AreaPrologue, "프롤로그");
+            case "CoreScene": return LocalizationText.Resolve(AreaCircusTheater, "서커스 극장");
+        }
+
+        return Lookup(sceneNames, data.sceneName, LocalizationText.Resolve(unknownRegionText, "알 수 없는 장소"));
     }
 
     string CheckpointName(SaveData data) {
         if (data == null) return "";
-        if (string.IsNullOrEmpty(data.checkpointId)) return quickSaveText;
-        return string.Format(checkpointFormat, Lookup(checkpointNames, data.checkpointId, unnamedCheckpointText));
+        if (string.IsNullOrEmpty(data.checkpointId)) return LocalizationText.Resolve(quickSaveText, "빠른 저장");
+        return string.Format(LocalizationText.Resolve(checkpointFormat, "{0}에서 저장"),
+            Lookup(checkpointNames, data.checkpointId, LocalizationText.Resolve(unnamedCheckpointText, "거울")));
     }
 
     static string Lookup(DisplayName[] table, string id, string fallback) {

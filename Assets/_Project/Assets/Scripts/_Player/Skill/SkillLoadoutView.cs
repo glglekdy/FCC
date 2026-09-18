@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.Localization;
 using UnityEngine.UI;
 
 // 거울(SaveMirror)에서 여는 스킬 정비 화면. 왼쪽은 장착 슬롯 3칸과 보유 스킬 목록, 오른쪽은 고른 스킬의
@@ -56,20 +57,20 @@ public class SkillLoadoutView : MonoBehaviour {
     public Color mutedTextColor = UiTheme.TextMuted; // 비용 근거처럼 한 단계 흐린 표기.
 
     [Header("문구")]
-    // 제목 · 도움말처럼 고정된 문구는 프리팹의 TMP에 직접 적는다. 여기 있는 것들은 상황에 따라 코드가 갈아끼운다.
-    public string emptySlotText = "비어 있음";
-    public string levelFormat = "Lv {0} / {1}"; // {0} 지금, {1} 최대.
-    public string levelMaxFormat = "Lv {0} · 완성";
-    public string upgradeText = "Lv {0} 로 강화"; // {0} = 올라갈 레벨.
-    public string shortOfShardsText = "조각 {0} 부족"; // {0} = 모자란 개수.
-    public string maxLevelText = "더 올릴 단계가 없습니다";
-    public string refundText = "되돌리기 · 조각 {0} 반환"; // {0} = 돌려받을 개수.
-    public string costFormat = "필요 {0}"; // {0} 비용. 근거와 보유량은 흐린 색으로 뒤에 붙인다.
-    public string costBasisFormat = "{0} · 보유 {1}"; // {0} 근거("최소 3" / "보유의 10%"), {1} 보유량.
-    public string minimumBasisFormat = "최소 {0}";
-    public string percentBasisFormat = "보유의 {0}%";
-    public string equippedFormat = "슬롯 {0} 에 장착 중"; // {0}은 1부터 세는 슬롯 번호.
-    public string notEquippedText = "장착되어 있지 않음 · Enter 로 고른 슬롯에 끼웁니다";
+    // 제목 · 도움말처럼 고정된 문구는 프리팹의 TMP에 직접 적는다(LocalizeStringEvent). 여기 있는 것들은 상황에 따라 코드가 갈아끼운다.
+    public LocalizedString emptySlotText = new("Ui", "common.empty");
+    public string levelFormat = "Lv {0} / {1}"; // {0} 지금, {1} 최대. Lv+숫자라 번역이 필요 없다.
+    public LocalizedString levelMaxFormat = new("Ui", "loadout.level_max_format");
+    public LocalizedString upgradeText = new("Ui", "loadout.upgrade_format"); // {0} = 올라갈 레벨.
+    public LocalizedString shortOfShardsText = new("Ui", "loadout.short_of_shards_format"); // {0} = 모자란 개수.
+    public LocalizedString maxLevelText = new("Ui", "loadout.max_level");
+    public LocalizedString refundText = new("Ui", "loadout.refund_format"); // {0} = 돌려받을 개수.
+    public LocalizedString costFormat = new("Ui", "loadout.cost_format"); // {0} 비용. 근거와 보유량은 흐린 색으로 뒤에 붙인다.
+    public LocalizedString costBasisFormat = new("Ui", "loadout.cost_basis_format"); // {0} 근거("최소 3" / "보유의 10%"), {1} 보유량.
+    public LocalizedString minimumBasisFormat = new("Ui", "loadout.cost_basis_minimum_format");
+    public LocalizedString percentBasisFormat = new("Ui", "loadout.cost_basis_percent_format");
+    public LocalizedString equippedFormat = new("Ui", "loadout.equipped_format"); // {0}은 1부터 세는 슬롯 번호.
+    public LocalizedString notEquippedText = new("Ui", "loadout.not_equipped");
 
     #endregion
     #region 컴포넌트 변수
@@ -287,9 +288,11 @@ public class SkillLoadoutView : MonoBehaviour {
         // 고른 슬롯에 이미 그 스킬이 들어있으면 해제로 동작한다. 같은 키로 넣고 빼는 편이 손에 익는다.
         if (manager.GetSkillInSlot(selectedSlot) == skill) {
             manager.UnequipSlot(selectedSlot);
+            UiAudio.PlayUnequip();
         }
         else {
             manager.EquipSkill(selectedSlot, skill);
+            UiAudio.PlayEquip();
         }
 
         Refresh();
@@ -299,6 +302,7 @@ public class SkillLoadoutView : MonoBehaviour {
         if (manager == null) return;
 
         manager.UnequipSlot(selectedSlot);
+        UiAudio.PlayUnequip();
         Refresh();
     }
 
@@ -388,7 +392,7 @@ public class SkillLoadoutView : MonoBehaviour {
     void RefreshSlots() {
         for (int i = 0; i < SkillManager.SlotCount; i++) {
             SkillBase skill = manager.GetSkillInSlot(i);
-            slotViews[i].Set(skill, skill != null ? manager.GetLevel(skill) : 0, emptySlotText);
+            slotViews[i].Set(skill, skill != null ? manager.GetLevel(skill) : 0, LocalizationText.Resolve(emptySlotText, "비어 있음"));
             slotViews[i].SetSelected(i == selectedSlot);
         }
     }
@@ -410,8 +414,8 @@ public class SkillLoadoutView : MonoBehaviour {
         if (skill == null) return;
 
         nameLabel.text = skill.DisplayName;
-        if (roleLabel != null) roleLabel.text = skill.roleLabel;
-        if (descriptionLabel != null) descriptionLabel.text = skill.description;
+        if (roleLabel != null) roleLabel.text = LocalizationText.Resolve(skill.roleLabel);
+        if (descriptionLabel != null) descriptionLabel.text = LocalizationText.Resolve(skill.description);
 
         RefreshEquipStatus(skill);
 
@@ -424,7 +428,11 @@ public class SkillLoadoutView : MonoBehaviour {
         bool atMax = manager.IsMaxLevel(skill);
 
         RefreshPips(level, maxLevel);
-        if (levelLabel != null) levelLabel.text = atMax ? string.Format(levelMaxFormat, level) : string.Format(levelFormat, level, maxLevel);
+        if (levelLabel != null) {
+            levelLabel.text = atMax
+                ? string.Format(LocalizationText.Resolve(levelMaxFormat, "Lv {0} · 완성"), level)
+                : string.Format(levelFormat, level, maxLevel);
+        }
         if (statsLabel != null) statsLabel.text = BuildStatTable(skill, level, atMax);
 
         RefreshCostLabel(skill, atMax);
@@ -436,7 +444,9 @@ public class SkillLoadoutView : MonoBehaviour {
         if (equipStatusLabel == null) return;
 
         int slot = manager.GetSlotOf(skill);
-        equipStatusLabel.text = slot >= 0 ? string.Format(equippedFormat, slot + 1) : notEquippedText;
+        equipStatusLabel.text = slot >= 0
+            ? string.Format(LocalizationText.Resolve(equippedFormat, "슬롯 {0} 에 장착 중"), slot + 1)
+            : LocalizationText.Resolve(notEquippedText, "장착되어 있지 않음 · Enter 로 고른 슬롯에 끼웁니다");
     }
 
     // 최대 레벨 수만큼만 칸을 켜고, 지금 레벨까지 채운다. 스킬마다 강화 단계 수(1 또는 2)가 달라서다.
@@ -482,19 +492,19 @@ public class SkillLoadoutView : MonoBehaviour {
         if (costLabel == null) return;
 
         if (atMax) {
-            costLabel.text = maxLevelText;
+            costLabel.text = LocalizationText.Resolve(maxLevelText, "더 올릴 단계가 없습니다");
             return;
         }
 
         // 하한이 걸렸는지 비율이 이겼는지를 그대로 적는다. 하한인데 "보유의 10%"라고 쓰면 숫자와 설명이 어긋난다.
         int cost = manager.GetUpgradeCost(skill);
         string basis = manager.IsUpgradeCostAtMinimum(skill)
-            ? string.Format(minimumBasisFormat, cost)
-            : string.Format(percentBasisFormat, Mathf.RoundToInt(manager.GetUpgradePercent(skill) * 100f));
+            ? string.Format(LocalizationText.Resolve(minimumBasisFormat, "최소 {0}"), cost)
+            : string.Format(LocalizationText.Resolve(percentBasisFormat, "보유의 {0}%"), Mathf.RoundToInt(manager.GetUpgradePercent(skill) * 100f));
 
         string muted = ColorUtility.ToHtmlStringRGB(mutedTextColor);
-        costLabel.text = string.Format(costFormat, cost) +
-            $"   <color=#{muted}>{string.Format(costBasisFormat, basis, manager.ShardCount)}</color>";
+        costLabel.text = string.Format(LocalizationText.Resolve(costFormat, "필요 {0}"), cost) +
+            $"   <color=#{muted}>{string.Format(LocalizationText.Resolve(costBasisFormat, "{0} · 보유 {1}"), basis, manager.ShardCount)}</color>";
     }
 
     void RefreshUpgradeButton(SkillBase skill, bool atMax) {
@@ -509,8 +519,8 @@ public class SkillLoadoutView : MonoBehaviour {
         if (upgradeButtonLabel == null) return;
 
         upgradeButtonLabel.text = can
-            ? string.Format(upgradeText, manager.GetLevel(skill) + 1)
-            : string.Format(shortOfShardsText, manager.GetUpgradeCost(skill) - manager.ShardCount);
+            ? string.Format(LocalizationText.Resolve(upgradeText, "Lv {0} 로 강화"), manager.GetLevel(skill) + 1)
+            : string.Format(LocalizationText.Resolve(shortOfShardsText, "조각 {0} 부족"), manager.GetUpgradeCost(skill) - manager.ShardCount);
     }
 
     // 산 적이 없는 단계(시작 레벨로 받은 것)는 돌려줄 것이 없으므로 버튼 자체를 감춘다.
@@ -521,7 +531,7 @@ public class SkillLoadoutView : MonoBehaviour {
         refundButton.gameObject.SetActive(can);
 
         if (can && refundButtonLabel != null) {
-            refundButtonLabel.text = string.Format(refundText, manager.GetRefundAmount(skill));
+            refundButtonLabel.text = string.Format(LocalizationText.Resolve(refundText, "되돌리기 · 조각 {0} 반환"), manager.GetRefundAmount(skill));
         }
     }
 

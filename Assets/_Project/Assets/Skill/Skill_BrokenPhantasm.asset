@@ -13,11 +13,33 @@ MonoBehaviour:
   m_Name: Skill_BrokenPhantasm
   m_EditorClassIdentifier: Assembly-CSharp::Skill_BrokenPhantasm
   skillID: broken_phantasm
-  skillName: Broken Phantasm
-  roleLabel: "\uCE7C\uC7A1\uC774 \xB7 \uD22C\uC0AC\uCCB4"
-  description: "\uCE7C\uC7A1\uC774\uC758 \uD22C\uC0AC\uCCB4 \uC2A4\uD0AC. \uC804\uBC29\uC73C\uB85C
-    \uCE7C\uC744 \uBD80\uCC44\uAF34\uB85C \uB358\uC838 \uB9DE\uC740 \uB300\uC0C1\uC5D0\uAC8C
-    \uD53C\uD574\uB97C \uC900\uB2E4."
+  skillName:
+    m_TableReference:
+      m_TableCollectionName: Ui
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: skill.broken_phantasm.name
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  roleLabel:
+    m_TableReference:
+      m_TableCollectionName: Ui
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: skill.broken_phantasm.role
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: Ui
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: skill.broken_phantasm.desc
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   icon: {fileID: 0}
   cooldown: 2.5
   startingLevel: 0
@@ -50,3 +72,7 @@ MonoBehaviour:
   heightOffset: 0.5
   aimLineColor: {r: 1, g: 1, b: 1, a: 0.5}
   aimLineWidth: 0.05
+  skillSoundEvent: event:/SFX/Skill/Broken phantasm
+  references:
+    version: 2
+    RefIds: []

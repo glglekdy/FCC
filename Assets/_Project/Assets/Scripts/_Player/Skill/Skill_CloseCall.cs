@@ -149,10 +149,12 @@ public class Skill_CloseCall : SkillBase, IAimableSkill {
 
         LevelData data = levels[Mathf.Clamp(level, 0, levels.Length - 1)];
         return new[] {
-            new SkillStat("처형 기준", $"체력 {Mathf.RoundToInt(data.executeThreshold * 100f)}% 이하"),
-            new SkillStat("구속", $"{data.restrainDuration:0.#}초"),
-            new SkillStat("피해", data.damage.ToString()),
-            new SkillStat("사거리", data.range.ToString("0.#")),
+            new SkillStat(LocalizationText.Resolve(StatExecuteThreshold, "처형 기준"),
+                string.Format(LocalizationText.Resolve(StatExecuteThresholdValueFormat, "체력 {0}% 이하"), Mathf.RoundToInt(data.executeThreshold * 100f))),
+            new SkillStat(LocalizationText.Resolve(StatRestrain, "구속"),
+                string.Format(LocalizationText.Resolve(StatSecondsFormat, "{0:0.#}초"), data.restrainDuration)),
+            new SkillStat(LocalizationText.Resolve(StatDamage, "피해"), data.damage.ToString()),
+            new SkillStat(LocalizationText.Resolve(StatRange, "사거리"), data.range.ToString("0.#")),
         };
     }
 

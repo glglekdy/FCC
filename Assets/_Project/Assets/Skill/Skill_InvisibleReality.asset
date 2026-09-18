@@ -13,11 +13,33 @@ MonoBehaviour:
   m_Name: Skill_InvisibleReality
   m_EditorClassIdentifier: Assembly-CSharp::Skill_InvisibleReality
   skillID: invisible_reality
-  skillName: Invisible Reality
-  roleLabel: "\uB9C8\uC784 \xB7 \uD22C\uBA85 \uBCBD"
-  description: "\uC77C\uC815 \uC2DC\uAC04 \uC720\uC9C0\uB418\uB294 \uD22C\uBA85 \uBCBD\uC744
-    \uC124\uCE58\uD574 \uBAAC\uC2A4\uD130\xB7\uD22C\uC0AC\uCCB4\xB7\uC774\uB3D9\uC744
-    \uB9C9\uC2B5\uB2C8\uB2E4."
+  skillName:
+    m_TableReference:
+      m_TableCollectionName: Ui
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: skill.invisible_reality.name
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  roleLabel:
+    m_TableReference:
+      m_TableCollectionName: Ui
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: skill.invisible_reality.role
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: Ui
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: skill.invisible_reality.desc
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   icon: {fileID: 0}
   cooldown: 4
   startingLevel: 0
@@ -37,3 +59,6 @@ MonoBehaviour:
   thickness: 0.3
   maxPlacementDistance: 10
   previewColor: {r: 0.8, g: 0.95, b: 1, a: 0.25}
+  references:
+    version: 2
+    RefIds: []

@@ -13,13 +13,33 @@ MonoBehaviour:
   m_Name: Skill_CycleOfFate
   m_EditorClassIdentifier: Assembly-CSharp::Skill_CycleOfFate
   skillID: cycle_of_fate
-  skillName: Cycle of Fate
-  roleLabel: "\uC800\uAE00\uB7EC \xB7 \uC2A4\uD0DD \uD3ED\uBC1C"
-  description: "\uC800\uAE00\uB7EC\uC758 \uAE30\uBCF8 \uACF5 \uC2A4\uD0AC. \uC804\uBC29\uC73C\uB85C
-    \uACF5\uC744 \uB358\uC9C4\uB2E4. \uB358\uC9C8 \uB54C\uB9C8\uB2E4 {\uD3ED\uBC1C\uD558\uB294
-    \uACF5} \uC2A4\uD0DD\uC774 \uC30A\uC774\uACE0, \uC2A4\uD0DD\uC774 \uB2E4 \uCC2C
-    \uC0C1\uD0DC\uC5D0\uC11C \uB2E4\uC2DC \uB358\uC9C0\uBA74 \uC774\uBC88 \uACF5\uC774
-    \uBA85\uC911 \uC2DC \uD3ED\uBC1C\uD55C\uB2E4."
+  skillName:
+    m_TableReference:
+      m_TableCollectionName: Ui
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: skill.cycle_of_fate.name
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  roleLabel:
+    m_TableReference:
+      m_TableCollectionName: Ui
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: skill.cycle_of_fate.role
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: Ui
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: skill.cycle_of_fate.desc
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   icon: {fileID: 0}
   cooldown: 3
   startingLevel: 0
@@ -60,3 +80,6 @@ MonoBehaviour:
   trajectoryColor: {r: 1, g: 1, b: 1, a: 0.5}
   trajectoryWidth: 0.05
   trajectoryPointCount: 20
+  references:
+    version: 2
+    RefIds: []

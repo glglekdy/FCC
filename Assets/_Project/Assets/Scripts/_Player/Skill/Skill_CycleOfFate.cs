@@ -183,11 +183,11 @@ public class Skill_CycleOfFate : SkillBase, IAimableSkill {
 
         LevelData data = levels[Mathf.Clamp(level, 0, levels.Length - 1)];
         return new[] {
-            new SkillStat("공 개수", data.ballCount.ToString()),
-            new SkillStat("공 크기", data.ballScale.ToString("0.0")),
-            new SkillStat("피해", data.damage.ToString()),
-            new SkillStat("스택 적립", data.stackGainPerUse.ToString()),
-            new SkillStat("폭발 피해", data.explosionDamage.ToString()),
+            new SkillStat(LocalizationText.Resolve(StatBallCount, "공 개수"), data.ballCount.ToString()),
+            new SkillStat(LocalizationText.Resolve(StatBallSize, "공 크기"), data.ballScale.ToString("0.0")),
+            new SkillStat(LocalizationText.Resolve(StatDamage, "피해"), data.damage.ToString()),
+            new SkillStat(LocalizationText.Resolve(StatStackGain, "스택 적립"), data.stackGainPerUse.ToString()),
+            new SkillStat(LocalizationText.Resolve(StatExplosionDamage, "폭발 피해"), data.explosionDamage.ToString()),
         };
     }
 

@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Localization;
 using UnityEngine.UI;
 
 // 켜고 끄는 줄. 데미지 수치 표시 · 수직 동기화가 쓴다.
@@ -19,8 +20,8 @@ public class SettingsToggleRow : SettingsRowView {
     public TMP_Text stateLabel; // "켜짐" / "꺼짐".
 
     [Header("문구")]
-    public string onText = "켜짐";
-    public string offText = "꺼짐";
+    public LocalizedString onText = new("Ui", "common.on");
+    public LocalizedString offText = new("Ui", "common.off");
 
     [Header("색상")]
     public Color onKnobColor = UiTheme.AccentBright;
@@ -42,7 +43,7 @@ public class SettingsToggleRow : SettingsRowView {
     public override void Refresh() {
         bool on = SettingsAccess.GetBool(field);
 
-        if (stateLabel != null) stateLabel.text = on ? onText : offText;
+        if (stateLabel != null) stateLabel.text = on ? LocalizationText.Resolve(onText, "켜짐") : LocalizationText.Resolve(offText, "꺼짐");
         if (toggleKnobImage != null) toggleKnobImage.color = on ? onKnobColor : offKnobColor;
 
         if (toggleKnob == null || toggleTrack == null) return;

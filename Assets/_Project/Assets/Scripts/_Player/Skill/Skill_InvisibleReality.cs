@@ -127,9 +127,10 @@ public class Skill_InvisibleReality : SkillBase, IAimableSkill {
 
         LevelData data = levels[Mathf.Clamp(level, 0, levels.Length - 1)];
         return new[] {
-            new SkillStat("범위", data.range.ToString("0.0")),
-            new SkillStat("지속", $"{data.duration:0.#}초"),
-            new SkillStat("최대 개수", data.maxCount.ToString()),
+            new SkillStat(LocalizationText.Resolve(StatArea, "범위"), data.range.ToString("0.0")),
+            new SkillStat(LocalizationText.Resolve(StatDuration, "지속"),
+                string.Format(LocalizationText.Resolve(StatSecondsFormat, "{0:0.#}초"), data.duration)),
+            new SkillStat(LocalizationText.Resolve(StatMaxCount, "최대 개수"), data.maxCount.ToString()),
         };
     }
 

@@ -4,6 +4,7 @@ using System.Globalization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Localization;
 using UnityEngine.UI;
 
 // 기록 선택 화면의 한 자리. SaveSlotSelectView 가 자리 수만큼 이 프리팹을 찍어낸다.
@@ -52,8 +53,8 @@ public class SaveSlotRowView : MonoBehaviour, IPointerEnterHandler, IPointerClic
     public string egoFormat = "{0} / {1}"; // {0} 현재, {1} 최대.
     public string unknownEgoText = "-"; // 체력을 기록하지 않던 구버전 세이브.
     public string savedAtFormat = "yyyy.MM.dd  HH:mm"; // SaveData.savedAt 을 다시 적는 형식.
-    public string emptyCreateText = "이 자리에 새 기억을 만들고 프롤로그부터 시작합니다";
-    public string emptyLoadText = "이 자리에는 아직 기억이 없습니다";
+    public LocalizedString emptyCreateText = new("Ui", "saveslot.row.empty_create");
+    public LocalizedString emptyLoadText = new("Ui", "saveslot.row.empty_load");
 
     #endregion
     #region 런타임 변수
@@ -120,7 +121,9 @@ public class SaveSlotRowView : MonoBehaviour, IPointerEnterHandler, IPointerClic
 
         filledGroup.SetActive(HasData);
         emptyGroup.SetActive(!HasData);
-        emptySubLabel.text = canCreate ? emptyCreateText : emptyLoadText;
+        emptySubLabel.text = canCreate
+            ? LocalizationText.Resolve(emptyCreateText, "이 자리에 새 기억을 만들고 프롤로그부터 시작합니다")
+            : LocalizationText.Resolve(emptyLoadText, "이 자리에는 아직 기억이 없습니다");
 
         if (HasData) {
             regionLabel.text = region;

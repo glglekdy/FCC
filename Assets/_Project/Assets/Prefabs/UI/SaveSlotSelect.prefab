@@ -789,6 +789,7 @@ GameObject:
   - component: {fileID: 3877690277639253646}
   - component: {fileID: 3897979342302256345}
   - component: {fileID: 57868015710851118}
+  - component: {fileID: 6156224157475169769}
   m_Layer: 0
   m_Name: Warning
   m_TagString: Untagged
@@ -916,6 +917,46 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &6156224157475169769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1460062672097058909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Components.LocalizeStringEvent
+  m_StringReference:
+    m_TableReference:
+      m_TableCollectionName: Ui
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: saveslot.warning
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  m_FormatArguments: []
+  m_UpdateString:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 57868015710851118}
+        m_TargetAssemblyTypeName: TMPro.TMP_Text, Unity.TextMeshPro
+        m_MethodName: SetText
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &1712198306070411692
 GameObject:
   m_ObjectHideFlags: 0
@@ -1174,26 +1215,140 @@ MonoBehaviour:
   - id: CoreScene
     name: "\uC11C\uCEE4\uC2A4 \uADF9\uC7A5"
   checkpointNames: []
-  newGameTitle: "\uAE30\uC5B5 \uC120\uD0DD"
-  newGameSubtitle: "\uC0C8\uB85C \uC2DC\uC791\uD560 \uC790\uB9AC\uB97C \uACE0\uB974\uC138\uC694.
-    \uAE30\uC5B5\uC774 \uC788\uB294 \uC790\uB9AC\uB97C \uACE0\uB974\uBA74 \uB36E\uC5B4\uC501\uB2C8\uB2E4."
-  loadTitle: "\uAE30\uC5B5 \uBD88\uB7EC\uC624\uAE30"
-  loadSubtitle: "\uC774\uC5B4\uC11C \uD560 \uAE30\uC5B5\uC744 \uACE0\uB974\uC138\uC694."
-  unknownRegionText: "\uC54C \uC218 \uC5C6\uB294 \uC7A5\uC18C"
-  checkpointFormat: "{0}\uC5D0\uC11C \uC800\uC7A5"
-  unnamedCheckpointText: "\uAC70\uC6B8"
-  quickSaveText: "\uBE60\uB978 \uC800\uC7A5"
-  overwriteTitleFormat: "\uAE30\uC5B5 {0:00}\uC744 \uB36E\uC5B4\uC4F8\uAE4C\uC694?"
-  deleteTitleFormat: "\uAE30\uC5B5 {0:00}\uC744 \uC9C0\uC6B8\uAE4C\uC694?"
-  overwriteAcceptText: "\uB36E\uC5B4\uC4F0\uAE30"
-  deleteAcceptText: "\uC9C0\uC6B0\uAE30"
-  summaryFormat: "{0}   |   \uC790\uC544 {1} / {2}   |   \uAE30\uC5B5 \uC870\uAC01
-    {3}"
+  newGameTitle:
+    m_TableReference:
+      m_TableCollectionName: Ui
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: saveslot.new_game_title
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  newGameSubtitle:
+    m_TableReference:
+      m_TableCollectionName: Ui
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: saveslot.new_game_subtitle
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  loadTitle:
+    m_TableReference:
+      m_TableCollectionName: Ui
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: saveslot.load_title
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  loadSubtitle:
+    m_TableReference:
+      m_TableCollectionName: Ui
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: saveslot.load_subtitle
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  unknownRegionText:
+    m_TableReference:
+      m_TableCollectionName: Ui
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: saveslot.unknown_region
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  checkpointFormat:
+    m_TableReference:
+      m_TableCollectionName: Ui
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: saveslot.checkpoint_format
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  unnamedCheckpointText:
+    m_TableReference:
+      m_TableCollectionName: Ui
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: saveslot.unnamed_checkpoint
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  quickSaveText:
+    m_TableReference:
+      m_TableCollectionName: Ui
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: saveslot.quick_save
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  overwriteTitleFormat:
+    m_TableReference:
+      m_TableCollectionName: Ui
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: saveslot.overwrite_title_format
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  deleteTitleFormat:
+    m_TableReference:
+      m_TableCollectionName: Ui
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: saveslot.delete_title_format
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  overwriteAcceptText:
+    m_TableReference:
+      m_TableCollectionName: Ui
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: saveslot.overwrite
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  deleteAcceptText:
+    m_TableReference:
+      m_TableCollectionName: Ui
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: saveslot.delete
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  summaryFormat:
+    m_TableReference:
+      m_TableCollectionName: Ui
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: saveslot.summary_format
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  cancelLabelText:
+    m_TableReference:
+      m_TableCollectionName: Ui
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: common.cancel
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   buttonColor: {r: 0.09019608, g: 0.06666667, b: 0.07450981, a: 1}
   focusedButtonColor: {r: 0.13333334, g: 0.101960786, b: 0.10980392, a: 1}
   cancelLabelColor: {r: 0.7607843, g: 0.7058824, b: 0.6509804, a: 1}
   focusedCancelLabelColor: {r: 0.9411765, g: 0.9019608, b: 0.84705883, a: 1}
   dangerLabelColor: {r: 0.65882355, g: 0.1882353, b: 0.1882353, a: 1}
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &2276924653159140440
 GameObject:
   m_ObjectHideFlags: 0
@@ -1394,6 +1549,7 @@ GameObject:
   - component: {fileID: 5712756746109609831}
   - component: {fileID: 106918735351103241}
   - component: {fileID: 690899862071730377}
+  - component: {fileID: 3474563049127695199}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -1520,6 +1676,46 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &3474563049127695199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2887555066622431403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Components.LocalizeStringEvent
+  m_StringReference:
+    m_TableReference:
+      m_TableCollectionName: Ui
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: common.back
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  m_FormatArguments: []
+  m_UpdateString:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 690899862071730377}
+        m_TargetAssemblyTypeName: TMPro.TMP_Text, Unity.TextMeshPro
+        m_MethodName: SetText
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &3042220707556390666
 GameObject:
   m_ObjectHideFlags: 0
@@ -1971,6 +2167,7 @@ GameObject:
   - component: {fileID: 4528893544060863805}
   - component: {fileID: 3734440505476372458}
   - component: {fileID: 7202194372396647409}
+  - component: {fileID: 2228702305510919038}
   m_Layer: 0
   m_Name: Hint
   m_TagString: Untagged
@@ -2098,6 +2295,46 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &2228702305510919038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4729533304356337826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Components.LocalizeStringEvent
+  m_StringReference:
+    m_TableReference:
+      m_TableCollectionName: Ui
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: saveslot.hint
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  m_FormatArguments: []
+  m_UpdateString:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7202194372396647409}
+        m_TargetAssemblyTypeName: TMPro.TMP_Text, Unity.TextMeshPro
+        m_MethodName: SetText
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &4841472917402097540
 GameObject:
   m_ObjectHideFlags: 0

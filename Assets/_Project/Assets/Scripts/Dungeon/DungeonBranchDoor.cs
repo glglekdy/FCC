@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Localization;
 
 // 곁가지(비밀방)로 드나드는 문. 한 쌍으로 쓴다 — 부모 방에 놓이는 "입구 문" 과 곁가지 방 안의 "귀환 문".
 //
@@ -16,7 +17,7 @@ public class DungeonBranchDoor : MonoBehaviour, IInteractable {
     #region 인스펙터 변수
 
     [Header("프롬프트")]
-    public string label = "들어가기"; // 플레이어에게 뜨는 문구.
+    public LocalizedString label = new("Ui", "interact.enter"); // 플레이어에게 뜨는 문구.
     public Vector3 promptOffset = new(0f, 3.2f, 0f); // 문 윗부분에 프롬프트를 띄울 오프셋. 문 피벗은 발밑이다.
 
     [Header("도착")]
@@ -38,7 +39,7 @@ public class DungeonBranchDoor : MonoBehaviour, IInteractable {
     #endregion
     #region IInteractable
 
-    public string InteractLabel => label;
+    public string InteractLabel => LocalizationText.Resolve(label, "들어가기");
     public bool CanInteract => destination != null && !isTraveling;
     public Vector3 PromptAnchor => transform.position + promptOffset;
 

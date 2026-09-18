@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Localization;
 
 // 기억 조각으로 만들어진 거울. 기획서상 세이브포인트이자 스킬 "정비하기" 지점이다.
 // 저장 + 자아 게이지 회복을 마친 뒤 SkillLoadoutView(스킬 정비 화면)를 띄운다.
@@ -14,7 +15,7 @@ public class SaveMirror : MonoBehaviour, IInteractable {
     public string mirrorId;
 
     [Header("프롬프트")]
-    public string label = "정비하기"; // 플레이어에게 뜨는 문구.
+    public LocalizedString label = new("Ui", "interact.prepare"); // 플레이어에게 뜨는 문구.
     public Vector3 promptOffset = new(0f, 1.6f, 0f); // 거울 위쪽에 프롬프트를 띄울 오프셋.
 
     [Header("복귀 지점")]
@@ -46,7 +47,7 @@ public class SaveMirror : MonoBehaviour, IInteractable {
     #endregion
     #region IInteractable
 
-    public string InteractLabel => label;
+    public string InteractLabel => LocalizationText.Resolve(label, "정비하기");
     public bool CanInteract => !isSaving;
     public Vector3 PromptAnchor => transform.position + promptOffset;
 

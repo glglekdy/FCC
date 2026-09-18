@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Localization;
 
 // F키로 반복해서 말을 걸 수 있는 NPC. 대화를 건 횟수(NpcDialogueManager가 세이브까지 기억한다)에 따라
 // dialogueSets 중 해당 순번의 대사를 재생하고, 목록보다 많이 말을 걸면 마지막 세트를 반복한다.
@@ -26,7 +27,7 @@ public class NpcDialogue : MonoBehaviour, IInteractable {
     public bool hideOnFinish = true; // 끝나면 대화창을 끈다.
 
     [Header("프롬프트")]
-    public string label = "대화하기"; // 플레이어에게 뜨는 문구.
+    public LocalizedString label = new("Ui", "interact.talk"); // 플레이어에게 뜨는 문구.
     public Vector3 promptOffset = new(0f, 1.6f, 0f); // NPC 머리 위쪽에 프롬프트를 띄울 오프셋.
 
     [Header("진행 중 처리")]
@@ -41,7 +42,7 @@ public class NpcDialogue : MonoBehaviour, IInteractable {
     #endregion
     #region IInteractable
 
-    public string InteractLabel => label;
+    public string InteractLabel => LocalizationText.Resolve(label, "대화하기");
     public bool CanInteract => !isTalking;
     public Vector3 PromptAnchor => transform.position + promptOffset;
 

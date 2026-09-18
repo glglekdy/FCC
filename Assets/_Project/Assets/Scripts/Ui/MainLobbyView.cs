@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Localization;
 using UnityEngine.SceneManagement;
 
 // 메인 로비(커튼콜 정면) 화면. 타이틀과 메뉴 5개를 띄우고 ↑↓ 와 마우스로 항목을 고른다.
@@ -34,9 +35,9 @@ public class MainLobbyView : MonoBehaviour {
     public string memoryRoomSceneName = ""; // [기억의 방] — 씬이 아직 없다. 비워두면 줄이 잠긴 채로 표시된다.
 
     [Header("문구")]
-    public string versionFormat = "v{0}"; // {0} = Application.version.
-    public string continueEmptyText = "저장된 기억 없음"; // 세이브가 없을 때 [이어하기] 오른쪽에 붙는 표기.
-    // {0} = 저장된 씬 이름, {1} = 저장 시각. 챕터·일차 표기는 SaveData에 해당 필드가 생기면 여기만 바꾸면 된다.
+    public string versionFormat = "v{0}"; // {0} = Application.version. 언어와 무관해 번역하지 않는다.
+    public LocalizedString continueEmptyText = new("Ui", "lobby.continue_empty"); // 세이브가 없을 때 [이어하기] 오른쪽에 붙는 표기.
+    // {0} = 저장된 씬 이름, {1} = 저장 시각. 구분자만 있어 번역하지 않는다. 챕터·일차 표기는 SaveData에 해당 필드가 생기면 여기만 바꾸면 된다.
     public string continueFormat = "{0} · {1}";
 
     #endregion
@@ -150,7 +151,7 @@ public class MainLobbyView : MonoBehaviour {
         if (item == null) return;
 
         if (continueTarget == null) {
-            item.SetSuffix(hasAnySave ? "" : continueEmptyText);
+            item.SetSuffix(hasAnySave ? "" : LocalizationText.Resolve(continueEmptyText, "저장된 기억 없음"));
             return;
         }
 

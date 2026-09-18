@@ -2,6 +2,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Localization;
 using UnityEngine.UI;
 
 // 일시정지 메뉴 한 줄이 하는 일. PauseMenuView 가 이 값만 보고 분기하므로,
@@ -55,6 +56,19 @@ public class PauseMenuItemView : MonoBehaviour, IPointerEnterHandler, IPointerCl
     public void Bind(Action<PauseMenuItemView> hovered, Action<PauseMenuItemView> clicked) {
         onHovered = hovered;
         onClicked = clicked;
+
+        // 항목 이름은 프리팹에 한국어로 직접 적혀 있었다. action이 곧 어느 줄인지를 정하므로
+        // 여기서 키를 골라 덮어써야 새 프리팹을 만들지 않고도 번역이 붙는다.
+        if (label != null) label.text = LocalizationText.Resolve(LabelKeyFor(action), label.text);
+    }
+
+    static LocalizedString LabelKeyFor(PauseMenuAction action) {
+        return action switch {
+            PauseMenuAction.Resume => new LocalizedString("Ui", "pause.resume"),
+            PauseMenuAction.Settings => new LocalizedString("Ui", "common.settings"),
+            PauseMenuAction.MainMenu => new LocalizedString("Ui", "pause.return_to_menu"),
+            _ => null,
+        };
     }
 
     #endregion

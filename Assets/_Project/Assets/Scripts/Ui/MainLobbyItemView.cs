@@ -2,6 +2,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Localization;
 using UnityEngine.UI;
 
 // 메인 로비 메뉴 한 줄이 하는 일. MainLobbyView가 이 값만 보고 분기하므로,
@@ -65,6 +66,21 @@ public class MainLobbyItemView : MonoBehaviour, IPointerEnterHandler, IPointerCl
     public void Bind(Action<MainLobbyItemView> hovered, Action<MainLobbyItemView> clicked) {
         onHovered = hovered;
         onClicked = clicked;
+
+        // 항목 이름은 프리팹에 한국어로 직접 적혀 있었다. action이 곧 어느 줄인지를 정하므로
+        // 여기서 키를 골라 덮어써야 새 프리팹을 만들지 않고도 번역이 붙는다.
+        if (label != null) label.text = LocalizationText.Resolve(LabelKeyFor(action), label.text);
+    }
+
+    static LocalizedString LabelKeyFor(MainLobbyAction action) {
+        return action switch {
+            MainLobbyAction.Continue => new LocalizedString("Ui", "lobby.continue"),
+            MainLobbyAction.NewGame => new LocalizedString("Ui", "lobby.new_game"),
+            MainLobbyAction.MemoryRoom => new LocalizedString("Ui", "lobby.memory_room"),
+            MainLobbyAction.Settings => new LocalizedString("Ui", "common.settings"),
+            MainLobbyAction.Quit => new LocalizedString("Ui", "lobby.quit"),
+            _ => null,
+        };
     }
 
     #endregion

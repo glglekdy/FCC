@@ -110,9 +110,9 @@ public class Skill_PureDream : SkillBase {
 
         LevelData data = levels[Mathf.Clamp(level, 0, levels.Length - 1)];
         return new[] {
-            new SkillStat("피해", data.damage.ToString()),
-            new SkillStat("범위", data.radius.ToString("0.0")),
-            new SkillStat("자기 회복", data.selfHeal.ToString()),
+            new SkillStat(LocalizationText.Resolve(StatDamage, "피해"), data.damage.ToString()),
+            new SkillStat(LocalizationText.Resolve(StatArea, "범위"), data.radius.ToString("0.0")),
+            new SkillStat(LocalizationText.Resolve(StatSelfHeal, "자기 회복"), data.selfHeal.ToString()),
         };
     }
 

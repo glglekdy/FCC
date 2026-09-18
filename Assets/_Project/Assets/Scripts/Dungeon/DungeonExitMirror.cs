@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Localization;
 
 // 던전 출구방의 전신 거울. 상호작용하면 거울이 반응한 뒤 던전을 빠져나간다.
 //
@@ -17,7 +18,7 @@ public class DungeonExitMirror : MonoBehaviour, IInteractable {
     #region 인스펙터 변수
 
     [Header("프롬프트")]
-    public string label = "나가기"; // 플레이어에게 뜨는 문구.
+    public LocalizedString label = new("Ui", "interact.exit"); // 플레이어에게 뜨는 문구.
     public Vector3 promptOffset = new(0f, 3.8f, 0f); // 거울 꼭대기 위에 프롬프트를 띄울 오프셋. 피벗은 발밑이다.
 
     [Header("연결")]
@@ -36,7 +37,7 @@ public class DungeonExitMirror : MonoBehaviour, IInteractable {
     #endregion
     #region IInteractable
 
-    public string InteractLabel => label;
+    public string InteractLabel => LocalizationText.Resolve(label, "나가기");
     public bool CanInteract => generator != null && !isExiting;
     public Vector3 PromptAnchor => transform.position + promptOffset;
 

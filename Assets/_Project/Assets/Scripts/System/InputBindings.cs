@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Localization;
 using UnityEngine.SceneManagement;
 
 // 키 재지정 줄이 어느 칸을 만지는지. 키보드와 마우스는 한 칸으로 본다 — PC 기본 조작이 둘을 섞어 쓰기 때문이다(공격 = 마우스 좌클릭).
@@ -103,6 +104,30 @@ public static class InputBindings {
         { "gamepad/leftstick/down", "L스틱 아래" },
         { "gamepad/leftstick/left", "L스틱 왼쪽" },
         { "gamepad/leftstick/right", "L스틱 오른쪽" },
+    };
+
+    // Names 중 한국어 단어인 것만 Ui 테이블 키로 다시 잇는다. ESC · Space · LB · A 버튼처럼 이미 영문/기호인
+    // 항목은 번역할 말이 없어 Names 에만 남긴다.
+    static readonly Dictionary<string, LocalizedString> LocalizedKeyNames = new() {
+        { "mouse/leftbutton", new LocalizedString("Ui", "keybind.key.mouse_left") },
+        { "mouse/rightbutton", new LocalizedString("Ui", "keybind.key.mouse_right") },
+        { "mouse/middlebutton", new LocalizedString("Ui", "keybind.key.mouse_middle") },
+        { "mouse/forwardbutton", new LocalizedString("Ui", "keybind.key.mouse_forward") },
+        { "mouse/backbutton", new LocalizedString("Ui", "keybind.key.mouse_back") },
+        { "gamepad/buttonsouth", new LocalizedString("Ui", "keybind.key.gamepad_south") },
+        { "gamepad/buttoneast", new LocalizedString("Ui", "keybind.key.gamepad_east") },
+        { "gamepad/buttonwest", new LocalizedString("Ui", "keybind.key.gamepad_west") },
+        { "gamepad/buttonnorth", new LocalizedString("Ui", "keybind.key.gamepad_north") },
+        { "gamepad/leftstickpress", new LocalizedString("Ui", "keybind.key.left_stick_press") },
+        { "gamepad/rightstickpress", new LocalizedString("Ui", "keybind.key.right_stick_press") },
+        { "gamepad/dpad/up", new LocalizedString("Ui", "keybind.key.dpad_up") },
+        { "gamepad/dpad/down", new LocalizedString("Ui", "keybind.key.dpad_down") },
+        { "gamepad/dpad/left", new LocalizedString("Ui", "keybind.key.dpad_left") },
+        { "gamepad/dpad/right", new LocalizedString("Ui", "keybind.key.dpad_right") },
+        { "gamepad/leftstick/up", new LocalizedString("Ui", "keybind.key.left_stick_up") },
+        { "gamepad/leftstick/down", new LocalizedString("Ui", "keybind.key.left_stick_down") },
+        { "gamepad/leftstick/left", new LocalizedString("Ui", "keybind.key.left_stick_left") },
+        { "gamepad/leftstick/right", new LocalizedString("Ui", "keybind.key.left_stick_right") },
     };
 
     // HUD 스킬 칸처럼 한두 글자 자리에 적는 짧은 이름. 없으면 Names 의 이름을 쓴다.
@@ -486,6 +511,10 @@ public static class InputBindings {
 
         string key = ControlKey(path);
         if (key != null) {
+            if (LocalizedKeyNames.TryGetValue(key, out LocalizedString localized)) {
+                string resolved = LocalizationText.Resolve(localized, null);
+                if (!string.IsNullOrEmpty(resolved)) return resolved;
+            }
             if (compact && ShortNames.TryGetValue(key, out string shortName)) return shortName;
             if (Names.TryGetValue(key, out string name)) return name;
         }

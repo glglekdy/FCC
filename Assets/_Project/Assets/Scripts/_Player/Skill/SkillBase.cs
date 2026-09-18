@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization;
 
 // 모든 스킬이 상속받는 공통 뼈대.
 // 스킬 데이터를 씬이 아니라 에셋(ScriptableObject)으로 둔 이유는, 거울 정비 UI가 "해금된 스킬 목록"을
@@ -13,10 +14,9 @@ public abstract class SkillBase : ScriptableObject {
     [Header("식별")]
     // 세이브·장착 슬롯 복원에 쓰는 고유 id. **에셋마다 겹치지 않게 지으세요.** 비워두면 에셋 이름을 대신 쓴다.
     public string skillID;
-    public string skillName = "이름 없는 스킬"; // 슬롯·목록 UI에 표시되는 이름.
-    public string roleLabel; // 정비 화면에서 이름 아래 붙는 한 줄. "칼잡이 · 투사체" 처럼 누구의 어떤 기술인지.
-    [TextArea(2, 4)]
-    public string description; // 정비 UI에서 보여줄 설명문.
+    public LocalizedString skillName = new("Ui", "skill.unnamed"); // 슬롯·목록 UI에 표시되는 이름.
+    public LocalizedString roleLabel; // 정비 화면에서 이름 아래 붙는 한 줄. "칼잡이 · 투사체" 처럼 누구의 어떤 기술인지.
+    public LocalizedString description; // 정비 UI에서 보여줄 설명문.
     public Sprite icon; // 슬롯·목록 UI에 표시할 아이콘.
 
     [Header("쿨타임")]
@@ -48,7 +48,28 @@ public abstract class SkillBase : ScriptableObject {
     // skillID를 깜빡해도 최소한 에셋 이름으로는 구분되게 한다 (SaveMirror.mirrorId와 같은 방식).
     public string SkillId => string.IsNullOrEmpty(skillID) ? name : skillID;
 
-    public string DisplayName => string.IsNullOrEmpty(skillName) ? name : skillName;
+    public string DisplayName => LocalizationText.Resolve(skillName, name);
+
+    #endregion
+    #region 정비 화면 수치 라벨
+
+    // 정비 화면 비교표의 항목 이름. 파생 클래스가 DescribeLevel에서 이 값을 그대로 문다.
+    protected static readonly LocalizedString StatDamage = new("Ui", "skill.stat.damage");
+    protected static readonly LocalizedString StatRange = new("Ui", "skill.stat.range");
+    protected static readonly LocalizedString StatArea = new("Ui", "skill.stat.area");
+    protected static readonly LocalizedString StatPierce = new("Ui", "skill.stat.pierce");
+    protected static readonly LocalizedString StatPierceValueFormat = new("Ui", "skill.stat.pierce_value_format");
+    protected static readonly LocalizedString StatExecuteThreshold = new("Ui", "skill.stat.execute_threshold");
+    protected static readonly LocalizedString StatExecuteThresholdValueFormat = new("Ui", "skill.stat.execute_threshold_value_format");
+    protected static readonly LocalizedString StatRestrain = new("Ui", "skill.stat.restrain");
+    protected static readonly LocalizedString StatDuration = new("Ui", "skill.stat.duration");
+    protected static readonly LocalizedString StatSecondsFormat = new("Ui", "skill.stat.seconds_format");
+    protected static readonly LocalizedString StatMaxCount = new("Ui", "skill.stat.max_count");
+    protected static readonly LocalizedString StatBallCount = new("Ui", "skill.stat.ball_count");
+    protected static readonly LocalizedString StatBallSize = new("Ui", "skill.stat.ball_size");
+    protected static readonly LocalizedString StatStackGain = new("Ui", "skill.stat.stack_gain");
+    protected static readonly LocalizedString StatExplosionDamage = new("Ui", "skill.stat.explosion_damage");
+    protected static readonly LocalizedString StatSelfHeal = new("Ui", "skill.stat.self_heal");
 
     #endregion
     #region 유니티 라이프 사이클

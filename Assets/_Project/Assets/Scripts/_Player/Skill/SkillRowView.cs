@@ -2,6 +2,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Localization;
 using UnityEngine.UI;
 
 // 정비 화면 "보유 스킬" 목록의 한 줄. SkillLoadoutView가 게임에 있는 스킬 수만큼 이 프리팹을 찍어낸다.
@@ -30,11 +31,11 @@ public class SkillRowView : MonoBehaviour, IPointerEnterHandler {
     public Color lockedColor = UiTheme.TextDim;
 
     [Header("문구")]
-    public string lockedName = "? ? ?";
-    public string lockedStateText = "아직 떠올리지 못한 기억";
-    public string equippedText = "장착 중";
-    public string levelFormat = "Lv {0} / {1}"; // {0} 지금, {1} 최대.
-    public string noLevelText = "강화 없음"; // 강화 단계가 없는 스킬.
+    public string lockedName = "? ? ?"; // 언어와 무관한 자리표시라 번역하지 않는다.
+    public LocalizedString lockedStateText = new("Ui", "loadout.locked_state");
+    public LocalizedString equippedText = new("Ui", "common.equipped");
+    public string levelFormat = "Lv {0} / {1}"; // {0} 지금, {1} 최대. Lv+숫자라 번역이 필요 없다.
+    public LocalizedString noLevelText = new("Ui", "loadout.no_level"); // 강화 단계가 없는 스킬.
 
     #endregion
     #region 런타임 변수
@@ -80,11 +81,11 @@ public class SkillRowView : MonoBehaviour, IPointerEnterHandler {
         if (stateLabel == null) return;
 
         if (IsLocked) {
-            stateLabel.text = lockedStateText;
+            stateLabel.text = LocalizationText.Resolve(lockedStateText, "아직 떠올리지 못한 기억");
             return;
         }
 
-        string levelText = maxLevel > 0 ? string.Format(levelFormat, level, maxLevel) : noLevelText;
+        string levelText = maxLevel > 0 ? string.Format(levelFormat, level, maxLevel) : LocalizationText.Resolve(noLevelText, "강화 없음");
         if (equippedSlot < 0) {
             stateLabel.text = levelText;
             return;
@@ -92,7 +93,7 @@ public class SkillRowView : MonoBehaviour, IPointerEnterHandler {
 
         // 장착 표기만 포인트 컬러로 칠한다. 줄 전체를 칠하면 커서가 올라온 줄과 구분이 안 된다.
         string accent = ColorUtility.ToHtmlStringRGB(equippedColor);
-        stateLabel.text = $"<color=#{accent}>{equippedText}</color>  ·  {levelText}";
+        stateLabel.text = $"<color=#{accent}>{LocalizationText.Resolve(equippedText, "장착 중")}</color>  ·  {levelText}";
     }
 
     public void SetHighlighted(bool highlighted) {

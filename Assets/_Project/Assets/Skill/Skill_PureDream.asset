@@ -13,11 +13,33 @@ MonoBehaviour:
   m_Name: Skill_PureDream
   m_EditorClassIdentifier: Assembly-CSharp::Skill_PureDream
   skillID: pure_dream
-  skillName: Pure Dream
-  roleLabel: "\uC8FC\uC778\uACF5 \xB7 \uC815\uD654"
-  description: "\uC804\uBC29\uC5D0 \uC815\uD654\uC758 \uD30C\uB3D9\uC744 \uD130\uB728\uB824
-    \uC8FC\uBCC0\uC744 \uBC00\uC5B4\uB0B4\uACE0, \uADF8 \uBC18\uB3D9\uC73C\uB85C
-    \uC790\uC544\uB97C \uC870\uAE08 \uB418\uCC3E\uB294\uB2E4."
+  skillName:
+    m_TableReference:
+      m_TableCollectionName: Ui
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: skill.pure_dream.name
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  roleLabel:
+    m_TableReference:
+      m_TableCollectionName: Ui
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: skill.pure_dream.role
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: Ui
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: skill.pure_dream.desc
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   icon: {fileID: 0}
   cooldown: 3
   startingLevel: 0
@@ -38,3 +60,6 @@ MonoBehaviour:
     m_Bits: 256
   forwardOffset: 1.2
   heightOffset: 0.5
+  references:
+    version: 2
+    RefIds: []

@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.Localization;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -57,10 +58,12 @@ public class PauseMenuView : MonoBehaviour {
     public bool keepLastRespawn = true;
 
     [Header("문구")]
-    public string saveTitle = "저장하고 메인메뉴로 나가시겠습니까?";
-    public string saveMessageFormat = "해당 게임은 기억 {0:00}에 저장됩니다."; // {0} = 화면에 보이는 자리 번호(1부터).
-    public string unsavableTitle = "메인메뉴로 나가시겠습니까?"; // 저장할 수 없는 곳(SaveManager 가 없거나 던전 안)에서 열었을 때.
-    public string unsavableMessage = "이곳에서는 진행이 저장되지 않습니다.";
+    public LocalizedString saveTitle = new("Ui", "pause.confirm_save_title");
+    public LocalizedString saveMessageFormat = new("Ui", "pause.confirm_save_message_format"); // {0} = 화면에 보이는 자리 번호(1부터).
+    public LocalizedString unsavableTitle = new("Ui", "pause.confirm_unsavable_title"); // 저장할 수 없는 곳(SaveManager 가 없거나 던전 안)에서 열었을 때.
+    public LocalizedString unsavableMessage = new("Ui", "pause.confirm_unsavable_message");
+    public LocalizedString cancelLabelText = new("Ui", "common.cancel");
+    public LocalizedString acceptLabelText = new("Ui", "pause.confirm_leave");
 
     [Header("색상")]
     public Color buttonColor = UiTheme.Panel;
@@ -109,6 +112,10 @@ public class PauseMenuView : MonoBehaviour {
 
         confirmCancelButton.onClick.AddListener(CloseConfirm);
         confirmAcceptButton.onClick.AddListener(AcceptConfirm);
+
+        // 취소·나가기 버튼 글자는 색만 코드가 바꾸고 문구는 프리팹에 직접 적혀 있었다. 여기서 한 번만 덮어쓴다.
+        confirmCancelLabel.text = LocalizationText.Resolve(cancelLabelText, confirmCancelLabel.text);
+        confirmAcceptLabel.text = LocalizationText.Resolve(acceptLabelText, confirmAcceptLabel.text);
 
         if (settingsPanel != null) {
             settingsPanel.OnClosed += HandleSettingsClosed;
@@ -378,8 +385,12 @@ public class PauseMenuView : MonoBehaviour {
         savePlan = DecideSavePlan(out lastRecord);
         bool saves = savePlan != SavePlan.None;
 
-        confirmTitle.text = saves ? saveTitle : unsavableTitle;
-        confirmMessage.text = saves ? string.Format(saveMessageFormat, SaveManager.Instance.ActiveSlot + 1) : unsavableMessage;
+        confirmTitle.text = saves
+            ? LocalizationText.Resolve(saveTitle, "저장하고 메인메뉴로 나가시겠습니까?")
+            : LocalizationText.Resolve(unsavableTitle, "메인메뉴로 나가시겠습니까?");
+        confirmMessage.text = saves
+            ? string.Format(LocalizationText.Resolve(saveMessageFormat, "해당 게임은 기억 {0:00}에 저장됩니다."), SaveManager.Instance.ActiveSlot + 1)
+            : LocalizationText.Resolve(unsavableMessage, "이곳에서는 진행이 저장되지 않습니다.");
 
         confirmOpen = true;
         acceptFocused = false; // 되돌릴 수 없는 동작이라 매번 「취소」에서 시작한다 (SaveSlotSelectView 와 같은 규칙).

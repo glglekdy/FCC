@@ -2,6 +2,7 @@ using System;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Localization;
 using UnityEngine.UI;
 
 public class Player_move : MonoBehaviour
@@ -70,7 +71,7 @@ public class Player_move : MonoBehaviour
 
     [Header("이동 패시브 해금 알림")]
     public bool announceAbilityUnlock = true; // 배우는 순간 화면 위에 기술 이름을 띄운다 (AreaTitleView).
-    public string abilityAnnounceSubtitle = "곡예사에게 배운 기술"; // 알림에서 기술 이름 아래 붙는 문구.
+    public LocalizedString abilityAnnounceSubtitle = new("Ui", "unlock.ability_subtitle"); // 알림에서 기술 이름 아래 붙는 문구.
 
     #endregion
     #region 외부 제어용 변수
@@ -398,7 +399,7 @@ public class Player_move : MonoBehaviour
 
         // 파괴된 뒤에도 C# 참조가 남을 수 있어 ?. 대신 != null 로 Unity의 == 오버로드를 탄다.
         if (announceAbilityUnlock && AreaTitleView.Instance != null) {
-            AreaTitleView.Announce(GetAbilityDisplayName(ability), abilityAnnounceSubtitle);
+            AreaTitleView.Announce(GetAbilityDisplayName(ability), LocalizationText.Resolve(abilityAnnounceSubtitle, "곡예사에게 배운 기술"));
         }
         return true;
     }
@@ -416,10 +417,13 @@ public class Player_move : MonoBehaviour
         }
     }
 
+    static readonly LocalizedString AbilityDoubleJumpName = new("Ui", "ability.double_jump");
+    static readonly LocalizedString AbilityDashName = new("Ui", "ability.dash");
+
     static string GetAbilityDisplayName(Player_Ability ability) {
         switch (ability) {
-            case Player_Ability.DoubleJump: return "2단 점프";
-            case Player_Ability.Dash: return "대시";
+            case Player_Ability.DoubleJump: return LocalizationText.Resolve(AbilityDoubleJumpName, "2단 점프");
+            case Player_Ability.Dash: return LocalizationText.Resolve(AbilityDashName, "대시");
             default: return ability.ToString();
         }
     }

@@ -920,6 +920,16 @@ MonoBehaviour:
     m_Metadata:
       m_Items:
       - rid: 5254442213871714442
+  - m_Id: 469094566461440
+    m_Key: interact.exit
+    m_Metadata:
+      m_Items:
+      - rid: 5254442225122935424
+  - m_Id: 469094591627264
+    m_Key: interact.move
+    m_Metadata:
+      m_Items:
+      - rid: 5254442225122935425
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
@@ -1698,3 +1708,12 @@ MonoBehaviour:
       data:
         m_CommentText: "Assets/Dungeon/ShopItem_HealFull \xB7 description (\uAD6C\uB9E4
           \uC54C\uB9BC \uC544\uB798 \uC904)"
+    - rid: 5254442225122935424
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "DungeonExitMirror.label \uC0C1\uD638\uC791\uC6A9 \uD504\uB86C\uD504\uD2B8"
+    - rid: 5254442225122935425
+      type: {class: Comment, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_CommentText: "SceneDoor.label \uC0C1\uD638\uC791\uC6A9 \uD504\uB86C\uD504\uD2B8
+          (\uAE30\uBCF8\uAC12)"

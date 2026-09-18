@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 
 // 게임 설정 값 한 벌. 세이브 파일이 아니라 PlayerPrefs 에 따로 담는다 —
@@ -48,15 +49,34 @@ public static class GameSettings {
     const string PrefsKey = "FCC_Settings";
 
     // 화면에 보이는 문구와 실제 값의 대응표. 선택형 행(< 값 >)이 이 순서를 그대로 쓴다.
-    public static readonly string[] ScreenModeLabels = { "전체 화면", "테두리 없는 창", "창 모드" };
+    public static readonly LocalizedString[] ScreenModeLabels = {
+        new("Ui", "settings.screen_mode.fullscreen"),
+        new("Ui", "settings.screen_mode.borderless"),
+        new("Ui", "settings.screen_mode.windowed"),
+    };
+    static readonly string[] ScreenModeFallbacks = { "전체 화면", "테두리 없는 창", "창 모드" };
     static readonly FullScreenMode[] ScreenModes = {
         FullScreenMode.ExclusiveFullScreen,
         FullScreenMode.FullScreenWindow,
         FullScreenMode.Windowed,
     };
 
+    // 숫자 셋은 언어와 무관해 그대로 두고, "무제한"만 번역이 필요하다.
     public static readonly string[] FrameLimitLabels = { "60", "120", "144", "무제한" };
+    public static readonly LocalizedString FrameLimitUnlimited = new("Ui", "settings.frame_limit.unlimited");
     static readonly int[] FrameLimits = { 60, 120, 144, -1 };
+
+    public static string ScreenModeLabel(int index) {
+        index = Mathf.Clamp(index, 0, ScreenModeLabels.Length - 1);
+        return LocalizationText.Resolve(ScreenModeLabels[index], ScreenModeFallbacks[index]);
+    }
+
+    public static string FrameLimitLabel(int index) {
+        index = Mathf.Clamp(index, 0, FrameLimitLabels.Length - 1);
+        return index == FrameLimitLabels.Length - 1
+            ? LocalizationText.Resolve(FrameLimitUnlimited, FrameLimitLabels[index])
+            : FrameLimitLabels[index];
+    }
 
     #endregion
     #region 상태

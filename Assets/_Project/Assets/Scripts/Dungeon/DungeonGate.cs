@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.Localization;
 
 // 던전(뒷세계 등) 입구. 상호작용하면 던전을 새로 생성해 플레이어를 들여보내고, 전투방을 모두
 // 클리어하면 기억 조각을 지급한다. 던전 안에서의 낙사·사망 처리는 DungeonRespawnController 에 맡긴다.
@@ -19,7 +20,7 @@ public class DungeonGate : MonoBehaviour, IInteractable {
     public string dungeonId;
 
     [Header("프롬프트")]
-    public string label = "들어가기";
+    public LocalizedString label = new("Ui", "interact.enter");
     public Vector3 promptOffset = new(0f, 1.6f, 0f);
 
     [Header("던전")]
@@ -62,8 +63,8 @@ public class DungeonGate : MonoBehaviour, IInteractable {
 
     [Header("진입 연출")]
     // 던전에 들어선 순간 화면 위에서 내려오는 지역 이름. 비우면 표시하지 않는다.
-    public string areaTitle = "뒷세계";
-    public string areaSubtitle;
+    public LocalizedString areaTitle = new("Ui", "area.underside");
+    public string areaSubtitle; // 언어와 무관한 값이라면 지금처럼 비워 둔다. 채우면 그대로 나가므로 번역이 필요해지면 LocalizedString으로 바꾼다.
 
     [Tooltip("두 번째 진입부터는 거울 반응(①)을 건너뛰고 암전만 태운다. 클리어 전에 걸어 나왔다가 다시 들어오는 경우 같은 도입을 매번 보면 지겨워진다.")]
     public bool shortenOnReenter = true;
@@ -103,7 +104,7 @@ public class DungeonGate : MonoBehaviour, IInteractable {
     #endregion
     #region IInteractable
 
-    public string InteractLabel => label;
+    public string InteractLabel => LocalizationText.Resolve(label, "들어가기");
 
     public bool CanInteract {
         get {
@@ -224,7 +225,7 @@ public class DungeonGate : MonoBehaviour, IInteractable {
         if (blackHold > 0f) yield return new WaitForSecondsRealtime(blackHold);
 
         // ③ 눈을 뜬다. 지역 이름을 막이 걷히기 직전에 띄워 두면 화면이 밝아지면서 글자가 함께 떠오른다.
-        if (!string.IsNullOrEmpty(areaTitle)) AreaTitleView.Announce(areaTitle, areaSubtitle);
+        if (!areaTitle.IsEmpty) AreaTitleView.Announce(LocalizationText.Resolve(areaTitle, "뒷세계"), areaSubtitle);
         yield return Cover(0f, enterFadeIn);
 
         LockPlayer(false);

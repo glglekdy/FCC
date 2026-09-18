@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Localization;
 
 // 플레이어가 이 영역(Collider2D 트리거)에 들어오면 화면 위에서 지역 이름이 내려온다.
 // ObjectiveZoneTrigger 와 동일한 트리거 골격이다.
@@ -8,8 +9,10 @@ public class AreaTitleZone : MonoBehaviour {
     #region 인스펙터 변수
 
     [Header("표시할 지역")]
-    public string title;    // **지역 이름. 비우면 아무 일도 하지 않는다.**
-    public string subtitle; // 부제(선택).
+    // **지역 이름. 비우면 아무 일도 하지 않는다.** Ui 테이블에 이 지역의 키를 만들어 연결하세요
+    // (예: area.circus_theater). 아직 값을 연결하지 않은 칸은 빈 문자열과 같게 취급된다.
+    public LocalizedString title;
+    public LocalizedString subtitle; // 부제(선택).
 
     [Header("트리거")]
     public bool playOnce = true; // 껐다 켜지는 구역이면 끄세요.
@@ -26,10 +29,10 @@ public class AreaTitleZone : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D other) {
         if (!other.CompareTag(playerTag)) return;
         if (playOnce && played) return;
-        if (string.IsNullOrWhiteSpace(title)) return;
+        if (title.IsEmpty) return;
 
         played = true;
-        AreaTitleView.Announce(title, subtitle);
+        AreaTitleView.Announce(LocalizationText.Resolve(title), LocalizationText.Resolve(subtitle));
     }
 
     #endregion

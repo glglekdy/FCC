@@ -13,9 +13,33 @@ MonoBehaviour:
   m_Name: Skill_CloseCall
   m_EditorClassIdentifier: Assembly-CSharp::Skill_CloseCall
   skillID: close_call
-  skillName: Close Call
-  roleLabel: "\uace1\uc608\uc0ac \u00b7 \uad6c\uc18d \u00b7 \ucc98\ud615"
-  description: "\uc904\uc744 \ub358\uc838 \ub9de\uc740 \uc801\uc744 \ubb36\ub294\ub2e4. \uccb4\ub825\uc774 \uc5bc\ub9c8 \ub0a8\uc9c0 \uc54a\uc740 \uc801\uc774\uba74 \uc904\uc744 \ud0c0\uace0 \ub0a0\uc544\uac00 \ub4e4\uc774\ubc1b\uc544 \ub05d\ub0b8\ub2e4. \ub0a0\uc544\uac00\ub294 \ub3d9\uc548\uc5d0\ub294 \ubb34\uc801\uc774\ub2e4."
+  skillName:
+    m_TableReference:
+      m_TableCollectionName: Ui
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: skill.close_call.name
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  roleLabel:
+    m_TableReference:
+      m_TableCollectionName: Ui
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: skill.close_call.role
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: Ui
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: skill.close_call.desc
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   icon: {fileID: 0}
   cooldown: 6
   startingLevel: 0
@@ -53,3 +77,6 @@ MonoBehaviour:
   postExecuteInvincible: 0.25
   aimLineColor: {r: 1, g: 1, b: 1, a: 0.5}
   aimLineWidth: 0.05
+  references:
+    version: 2
+    RefIds: []
