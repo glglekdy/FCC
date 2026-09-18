@@ -7,6 +7,10 @@ using UnityEngine.Localization;
 // 던전(뒷세계 등) 입구. 상호작용하면 던전을 새로 생성해 플레이어를 들여보내고, 전투방을 모두
 // 클리어하면 기억 조각을 지급한다. 던전 안에서의 낙사·사망 처리는 DungeonRespawnController 에 맡긴다.
 //
+// 기본은 몇 번이든 다시 들어갈 수 있는 반복 던전이다(repeatable). 들어갈 때마다 방 구성과 보상을 새로
+// 뽑으므로 판당 상태(전투방 수 · 동선 · 코인 지급 기록)는 진입할 때 전부 초기화한다. repeatable 을 끄면
+// 클리어한 순간 거울이 부서지며 입구가 영영 닫히는 1회성 던전이 된다.
+//
 // 들고 나는 순간은 "① 거울이 반응한다 → ② 삼켜진다(암전) → ③ 저쪽에서 눈을 뜬다" 세 박자로 재생한다.
 // 생성(Generate)과 순간이동은 반드시 ② 의 암전 뒤에서 처리한다 — 화면이 보이는 채로 방을 통째로
 // Instantiate 하면 프레임이 튀는 것까지 그대로 보이고, 무엇보다 순간이동이 연출이 아니라 사고처럼 보인다.
@@ -18,6 +22,13 @@ public class DungeonGate : MonoBehaviour, IInteractable {
     [Header("식별")]
     // 클리어 여부를 기록하는 고유 id. **씬 안에서 겹치지 않게 지으세요.** 비우면 오브젝트 이름을 쓴다.
     public string dungeonId;
+
+    [Tooltip("클리어한 뒤에도 몇 번이든 다시 들어갈 수 있게 한다. 끄면 한 번 깬 던전은 거울이 부서져 입구가 닫힌다.")]
+    // 기본값이 켬인 이유: 방 구성(DungeonGenerator)과 보상(memoryShardRewardMin~Max)이 판마다 새로 뽑히도록
+    // 만들어져 있어, 다시 들어갈 때마다 다른 판이 나오는 것을 전제로 한 설계이기 때문이다.
+    // 이 값과 무관하게 클리어 기록(DungeonManager)과 objectiveId 완료 처리는 그대로 남는다 — 목표와 세이브는
+    // "깬 적이 있는가"를 물어야 하고, 입구를 닫을지는 별개의 문제다.
+    public bool repeatable = true;
 
     [Header("프롬프트")]
     public LocalizedString label = new("Ui", "interact.enter");
@@ -109,6 +120,7 @@ public class DungeonGate : MonoBehaviour, IInteractable {
     public bool CanInteract {
         get {
             if (inDungeon || isTransitioning) return false;
+            if (repeatable) return true;
             return !(DungeonManager.Instance != null && DungeonManager.Instance.IsCleared(dungeonId));
         }
     }
@@ -141,7 +153,7 @@ public class DungeonGate : MonoBehaviour, IInteractable {
     // 이미 클리어한 던전이면 거울이 처음부터 부서진 상태여야 한다. Awake 가 아니라 Start 인 이유는
     // DungeonManager 가 세이브에서 클리어 목록을 되돌리는 시점보다 뒤여야 하기 때문이다.
     void Start() {
-        if (mirror == null) return;
+        if (mirror == null || repeatable) return;
         if (DungeonManager.Instance != null && DungeonManager.Instance.IsCleared(dungeonId)) mirror.SetBrokenImmediate();
     }
 
@@ -340,8 +352,9 @@ public class DungeonGate : MonoBehaviour, IInteractable {
 
         // 클리어하고 나왔을 때만 거울을 부순다. 클리어 전에 걸어 나온 것은 다시 들어갈 수 있어야 하므로
         // 입구가 그대로 남아 있어야 한다(CanInteract 도 같은 기준으로 열고 닫힌다).
+        // repeatable 이면 몇 번이든 다시 들어가므로 입구를 닫지 않는다.
         // 막이 완전히 걷힌 뒤에 부르는 이유는, 암전 중에 터지면 플레이어가 그 장면을 통째로 놓치기 때문이다.
-        if (mirror != null && DungeonManager.Instance != null && DungeonManager.Instance.IsCleared(dungeonId)) {
+        if (!repeatable && mirror != null && DungeonManager.Instance != null && DungeonManager.Instance.IsCleared(dungeonId)) {
             mirror.PlayBreak();
         }
     }

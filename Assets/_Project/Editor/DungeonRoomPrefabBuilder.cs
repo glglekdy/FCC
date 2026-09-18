@@ -1549,7 +1549,7 @@ public static class DungeonRoomPrefabBuilder {
     // offset 은 시작 위치 기준 상대 이동량이라, 방이 어디에 배치되든 같은 궤적을 그린다.
     static void Mover(GameObject root, string name, float centerX, float topY, float width,
         Vector2 offset, float speed, float startDelay = 0f) {
-        GameObject obj = GimmickLedge(root, name, centerX, topY, width, UiTheme.TextBody); // 눈에 띄어야 타이밍을 잰다.
+        GameObject obj = GimmickLedge(root, name, centerX, topY, width, DungeonGimmickPalette.Platform); // 밟을 것은 흰색 — 타이밍을 재려면 멀리서도 보여야 한다.
 
         // MovingPlatform 이 RequireComponent 로 알아서 붙이긴 하지만, 그 경우 기본값이 Dynamic 이라
         // 프리팹에 중력에 떨어지는 발판으로 저장된다. 여기서 먼저 붙여 Kinematic 으로 확정한다.
@@ -1564,7 +1564,7 @@ public static class DungeonRoomPrefabBuilder {
     // 밟으면 잠시 뒤 무너졌다가 되살아나는 발판. 기본값(0.4초)보다 넉넉히 잡는 이유는, 오비에서
     // 떨어지면 방 처음으로 되돌아가기 때문에 반응할 틈이 너무 짧으면 금세 지치기 때문이다.
     static void Crumble(GameObject root, string name, float centerX, float topY, float width, float fallDelay = 0.8f) {
-        GameObject obj = GimmickLedge(root, name, centerX, topY, width, UiTheme.TextMuted); // 바랜 색 = 곧 무너질 것.
+        GameObject obj = GimmickLedge(root, name, centerX, topY, width, DungeonGimmickPalette.Platform); // 밟을 것은 흰색. 무너진다는 신호는 색이 아니라 밟은 뒤의 흔들림이 준다.
 
         CrumblingPlatform crumble = obj.AddComponent<CrumblingPlatform>();
         crumble.fallDelay = fallDelay;
@@ -1575,7 +1575,7 @@ public static class DungeonRoomPrefabBuilder {
     // 실패를 만든다. 피격 무적(0.9초)이 걸리므로 밭을 가로질러도 한 번에 녹지는 않는다.
     static void Spikes(GameObject root, string name, float centerX, float topY, float width, int damage) {
         GameObject obj = Block(root, name, new Vector3(centerX, topY - SpikeThick / 2f, 0f),
-            new Vector2(width, SpikeThick), UiTheme.AccentBright); // 위험은 포인트 컬러로.
+            new Vector2(width, SpikeThick), DungeonGimmickPalette.Hazard); // 피할 것은 빨강.
 
         // 지형 레이어에서 빼 둔다. 트리거라 접지 판정에는 어차피 안 걸리지만, 지형 취급으로 남겨 두면
         // 나중에 레이어로 지형을 훑는 코드가 가시를 바닥으로 세게 된다.
@@ -1729,7 +1729,7 @@ public static class DungeonRoomPrefabBuilder {
     static void Lift(GameObject root, string name, float centerX, float topY, float width,
         Vector2 offset, float speed, float startDelay = 0f) {
         GameObject obj = Block(root, name, new Vector3(centerX, topY - PlatThick / 2f, 0f),
-            new Vector2(width, PlatThick), UiTheme.TextHigh); // 통과형 이동 발판(TextBody)보다 밝게 — 막혀 있다는 표시.
+            new Vector2(width, PlatThick), DungeonGimmickPalette.Platform); // 통과형 이동 발판과 같은 흰색. 막혀 있다는 것은 색이 아니라 밑으로 지나갈 길을 내지 않는 배치로 알린다.
 
         obj.AddComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic; // Mover 와 같은 이유로 먼저 붙여 Kinematic 으로 확정한다.
 

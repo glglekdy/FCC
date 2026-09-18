@@ -175,9 +175,9 @@ public static class DungeonTilemapConverter {
     // 이동·붕괴·가시는 오브젝트로 남기고 보이는 것만 스프라이트로 바꾼다. 옮겼으면 true.
     static bool TryGimmick(GameObject obj, Sprite sprite) {
         Color color;
-        if (obj.GetComponent<MovingPlatform>() != null) color = UiTheme.TextBody;        // 눈에 띄어야 타이밍을 잰다.
-        else if (obj.GetComponent<CrumblingPlatform>() != null) color = UiTheme.TextMuted; // 바랜 색 = 곧 무너질 것.
-        else if (obj.GetComponent<DamageZone>() != null) color = UiTheme.AccentBright;     // 위험은 포인트 컬러로.
+        if (obj.GetComponent<MovingPlatform>() != null) color = DungeonGimmickPalette.Platform;        // 밟을 것은 흰색.
+        else if (obj.GetComponent<CrumblingPlatform>() != null) color = DungeonGimmickPalette.Platform; // 붕괴 발판도 밟는 것이라 같은 흰색.
+        else if (obj.GetComponent<DamageZone>() != null) color = DungeonGimmickPalette.Hazard;          // 피할 것은 빨강.
         else return false;
 
         // CrumblingPlatform 이 Renderer 로 찾아 끄고 켜므로, Quad 를 지우기 전에 대신할 것을 붙여야 한다.
