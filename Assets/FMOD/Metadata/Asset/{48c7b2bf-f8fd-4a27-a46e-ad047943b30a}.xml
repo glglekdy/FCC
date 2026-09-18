@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="EncodableAsset" id="{48c7b2bf-f8fd-4a27-a46e-ad047943b30a}">
+		<property name="assetPath">
+			<value>SFX/Skill/Cycle of fate/</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{1995a0a0-6f28-4261-a297-2463d80b899d}</destination>
+		</relationship>
+	</object>
+</objects>

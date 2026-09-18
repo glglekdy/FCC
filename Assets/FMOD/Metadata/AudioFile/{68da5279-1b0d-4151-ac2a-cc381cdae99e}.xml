@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{68da5279-1b0d-4151-ac2a-cc381cdae99e}">
+		<property name="assetPath">
+			<value>SFX/Player/Walk/Grass.mp3</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>6.3477551020408161</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{1995a0a0-6f28-4261-a297-2463d80b899d}</destination>
+		</relationship>
+	</object>
+</objects>

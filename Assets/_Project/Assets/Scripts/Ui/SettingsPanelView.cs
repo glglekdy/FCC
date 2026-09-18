@@ -188,13 +188,14 @@ public class SettingsPanelView : MonoBehaviour, IPointerClickHandler {
         if (index < 0 || index == rowIndex) return; // 같은 줄에 다시 SetFocused 를 부르면 키 재지정 대기가 흔들린다.
 
         SetRow(index);
+        UiAudio.PlayHover();
     }
 
     void HandleNavigation() {
         if (rows.Count == 0) return;
 
-        if (WasPressed(Key.UpArrow, Key.W)) SetRow(rowIndex - 1);
-        if (WasPressed(Key.DownArrow, Key.S)) SetRow(rowIndex + 1);
+        if (WasPressed(Key.UpArrow, Key.W)) { SetRow(rowIndex - 1); UiAudio.PlayHover(); }
+        if (WasPressed(Key.DownArrow, Key.S)) { SetRow(rowIndex + 1); UiAudio.PlayHover(); }
 
         // 좌우는 누르고 있으면 연속으로 먹힌다. 볼륨을 0에서 100까지 한 칸씩 스무 번 누르게 할 수는 없다.
         int dir = 0;
@@ -222,7 +223,7 @@ public class SettingsPanelView : MonoBehaviour, IPointerClickHandler {
     }
 
     void HandleShortcuts() {
-        if (WasPressed(Key.Enter, Key.NumpadEnter) && rows.Count > 0) rows[rowIndex].Submit();
+        if (WasPressed(Key.Enter, Key.NumpadEnter) && rows.Count > 0) { rows[rowIndex].Submit(); UiAudio.PlayClick(); }
         if (WasPressed(Key.Backspace) && rows.Count > 0) rows[rowIndex].Clear();
 
         // 탭 전환은 Q/E 로. 좌우 방향키는 값 변경에 이미 쓰이고 있어 겹칠 수 없다.
@@ -254,16 +255,19 @@ public class SettingsPanelView : MonoBehaviour, IPointerClickHandler {
     #region 푸터 버튼
 
     public void ApplyAndClose() {
+        UiAudio.PlayClick();
         GameSettings.Apply();
         Close();
     }
 
     public void CancelAndClose() {
+        UiAudio.PlayClick();
         GameSettings.Cancel();
         Close();
     }
 
     public void ResetToDefaults() {
+        UiAudio.PlayClick();
         InputBindings.CancelRebind();
         GameSettings.ResetToDefaults();
         RefreshAllRows();

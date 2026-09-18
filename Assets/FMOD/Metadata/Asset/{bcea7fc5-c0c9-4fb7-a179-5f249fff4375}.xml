@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="EncodableAsset" id="{bcea7fc5-c0c9-4fb7-a179-5f249fff4375}">
+		<property name="assetPath">
+			<value>SFX/Skill/Invisible reality/</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{1995a0a0-6f28-4261-a297-2463d80b899d}</destination>
+		</relationship>
+	</object>
+</objects>

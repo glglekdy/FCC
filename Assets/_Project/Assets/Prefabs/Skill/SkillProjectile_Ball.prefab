@@ -173,3 +173,5 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 2147483648
+  bounceSoundEvent: event:/SFX/Skill/Cycle of fate_BBIK
+  explodeSoundEvent: event:/SFX/Skill/Cycle of fate_Explode

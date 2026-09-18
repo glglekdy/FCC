@@ -51,6 +51,9 @@ public class Skill_BrokenPhantasm : SkillBase, IAimableSkill {
     public Color aimLineColor = new(1f, 1f, 1f, 0.5f);
     public float aimLineWidth = 0.05f;
 
+    [Header("사운드")]
+    [FMODUnity.EventRef] public string skillSoundEvent; // event:/SFX/Skill/Broken phantasm
+
     #endregion
     #region 런타임 변수
 
@@ -109,6 +112,8 @@ public class Skill_BrokenPhantasm : SkillBase, IAimableSkill {
         Vector2 origin = (Vector2)owner.position + aimDirection * forwardOffset + Vector2.up * heightOffset;
         Health ownerHealth = owner.GetComponentInParent<Health>();
 
+        if (!string.IsNullOrEmpty(skillSoundEvent)) FMODUnity.RuntimeManager.PlayOneShot(skillSoundEvent, origin);
+
         // 조준 방향(aimDirection)을 중심으로 칼들을 좌우로 고르게 편다.
         float baseAngle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
         float startAngle = baseAngle - spreadAngle * 0.5f * (knifeCount - 1);
@@ -133,9 +138,10 @@ public class Skill_BrokenPhantasm : SkillBase, IAimableSkill {
 
         LevelData data = levels[Mathf.Clamp(level, 0, levels.Length - 1)];
         return new[] {
-            new SkillStat("피해", data.damage.ToString()),
-            new SkillStat("사거리", data.range.ToString("0.#")),
-            new SkillStat("관통", $"{data.pierceCount}체"),
+            new SkillStat(LocalizationText.Resolve(StatDamage, "피해"), data.damage.ToString()),
+            new SkillStat(LocalizationText.Resolve(StatRange, "사거리"), data.range.ToString("0.#")),
+            new SkillStat(LocalizationText.Resolve(StatPierce, "관통"),
+                string.Format(LocalizationText.Resolve(StatPierceValueFormat, "{0}체"), data.pierceCount)),
         };
     }
 

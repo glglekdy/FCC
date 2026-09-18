@@ -108,15 +108,10 @@ public static class SettingsAccess {
                 return string.IsNullOrEmpty(native) ? locale.LocaleName : native;
             }
             case SettingsField.Resolution: return GameSettings.ResolutionLabel(index);
-            case SettingsField.ScreenMode: return Pick(GameSettings.ScreenModeLabels, index);
-            case SettingsField.FrameLimit: return Pick(GameSettings.FrameLimitLabels, index);
+            case SettingsField.ScreenMode: return GameSettings.ScreenModeLabel(index);
+            case SettingsField.FrameLimit: return GameSettings.FrameLimitLabel(index);
             default: return string.Empty;
         }
-    }
-
-    static string Pick(string[] labels, int index) {
-        if (labels == null || labels.Length == 0) return string.Empty;
-        return labels[Mathf.Clamp(index, 0, labels.Length - 1)];
     }
 
     #endregion
@@ -222,6 +217,7 @@ public abstract class SettingsRowView : MonoBehaviour,
     public void OnPointerClick(PointerEventData eventData) {
         if (eventData.button != PointerEventData.InputButton.Left) return;
         PointerClicked(eventData);
+        UiAudio.PlayClick();
     }
 
     // 파생 클래스가 필요한 것만 골라 덮어쓴다. 슬라이더는 누르는 순간·끄는 동안, 나머지는 뗐을 때 반응한다.

@@ -18,6 +18,9 @@ public class Player_Combat : MonoBehaviour {
     [Header("공격 데미지")]
     public int attackDamage = 10;
 
+    [Header("사운드")]
+    [FMODUnity.EventRef] public string attackSoundEvent; // event:/SFX/Player/Attack_Sound
+
     #endregion
     #region 일시 배율
 
@@ -81,6 +84,8 @@ public class Player_Combat : MonoBehaviour {
         // 회전 방식이든 판정점 위치에는 똑같이 반영되므로, 반전 방식을 몰라도 된다.
         float facing = currentAttackWorldPos.x >= transform.position.x ? 1f : -1f;
         OnAttackStarted?.Invoke(currentAttackWorldPos, facing);
+
+        if (!string.IsNullOrEmpty(attackSoundEvent)) FMODUnity.RuntimeManager.PlayOneShot(attackSoundEvent, transform.position);
     }
 
     void TickWindup() {

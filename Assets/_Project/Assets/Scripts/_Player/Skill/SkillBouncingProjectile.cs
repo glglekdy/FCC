@@ -20,6 +20,10 @@ public class SkillBouncingProjectile : MonoBehaviour {
     public int maxBounces = 2; // 바닥에 이 횟수만큼 튕기면 터진다.
     public LayerMask groundLayer; // 이 레이어와 부딪힌 것만 "튕김"으로 센다. **ground 레이어를 지정하세요.**
 
+    [Header("사운드")]
+    [FMODUnity.EventRef] public string bounceSoundEvent; // event:/SFX/Skill/Cycle of fate_BBIK
+    [FMODUnity.EventRef] public string explodeSoundEvent; // event:/SFX/Skill/Cycle of fate_Explode
+
     #endregion
     #region 런타임 변수
 
@@ -68,6 +72,7 @@ public class SkillBouncingProjectile : MonoBehaviour {
         if (((1 << collision.gameObject.layer) & groundLayer) == 0) return;
 
         bounceCount++;
+        if (!string.IsNullOrEmpty(bounceSoundEvent)) FMODUnity.RuntimeManager.PlayOneShot(bounceSoundEvent, transform.position);
         if (bounceCount < maxBounces) return;
 
         Explode();
@@ -96,6 +101,8 @@ public class SkillBouncingProjectile : MonoBehaviour {
     #region 폭발
 
     void Explode() {
+        if (!string.IsNullOrEmpty(explodeSoundEvent)) FMODUnity.RuntimeManager.PlayOneShot(explodeSoundEvent, transform.position);
+
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, explosion.radius, explosion.layer);
         if (hits.Length > 0) {
             explosionHitTargets.Clear();
