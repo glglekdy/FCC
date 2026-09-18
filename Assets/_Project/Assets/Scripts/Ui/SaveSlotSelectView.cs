@@ -434,6 +434,17 @@ public class SaveSlotSelectView : MonoBehaviour {
         OnLoadRequested(slot, data);
     }
 
+    // 화면이 떠 있는 동안 세이브 파일이 밖에서 바뀌었을 때(초기화 단축키) 목록을 다시 읽는다.
+    // 열려 있을 때만 의미가 있으므로 꺼져 있으면 아무것도 하지 않는다 — 다시 열릴 때 OnEnable 이 어차피 새로 읽는다.
+    public void Refresh() {
+        if (!isReady || !gameObject.activeSelf) return;
+
+        // 확인 창이 떠 있었다면 지금은 없는 기록을 두고 묻는 셈이라 함께 닫는다.
+        CloseConfirm();
+        RebuildRows();
+        FocusRow(rowIndex);
+    }
+
     public void Close() {
         if (isBusy) return;
 

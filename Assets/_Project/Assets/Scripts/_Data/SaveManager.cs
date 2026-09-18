@@ -113,6 +113,24 @@ public class SaveManager : MonoBehaviour {
         if (File.Exists(path)) File.Delete(path);
     }
 
+    // 기록 자리를 전부 지운다(개발·시연용 초기화). 되돌릴 수 없으므로 확인을 묻는 일은 부르는 쪽이 맡고,
+    // 여기서는 지우기만 한다. 지운 자리 수를 돌려주므로 호출부가 콘솔에 결과를 적을 수 있다.
+    public int DeleteAllSlots() {
+        int deleted = 0;
+
+        for (int i = 0; i < slotCount; i++) {
+            if (!HasSlot(i)) continue;
+
+            DeleteSlot(i);
+            deleted++;
+        }
+
+        // 지운 뒤에는 이어서 할 자리가 없으므로 01번으로 되돌린다. 마지막으로 고른 자리가 PlayerPrefs 에 남아 있으면
+        // 다음 실행의 [이어하기]가 이미 없는 파일을 향한 채로 열린다.
+        UseSlot(0);
+        return deleted;
+    }
+
     // 이후의 저장·불러오기(거울·이어하기)가 이 자리를 향하게 한다. 새로 시작할 자리를 골랐을 때 부른다.
     public void UseSlot(int slot) {
         ActiveSlot = Mathf.Clamp(slot, 0, Mathf.Max(0, slotCount - 1));

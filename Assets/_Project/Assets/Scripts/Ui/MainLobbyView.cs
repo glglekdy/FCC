@@ -333,6 +333,15 @@ public class MainLobbyView : MonoBehaviour {
 
     // 기록 선택 화면에서 기록을 지우고 나왔을 수 있다. [이어하기]의 잠금과 표기를 다시 맞춘다.
     void HandleSaveSlotClosed() {
+        RefreshSaveState();
+    }
+
+    // 세이브 파일이 밖에서 바뀐 뒤 [이어하기] 줄의 표기와 잠금을 다시 읽는다.
+    // 기록 선택 화면을 닫았을 때와, 초기화 단축키(MainMenuController)로 기록을 전부 지웠을 때 부른다.
+    // 갱신하지 않으면 이미 지워진 기록이 [이어하기]에 그대로 남아, 골랐을 때 빈 파일을 여는 꼴이 된다.
+    public void RefreshSaveState() {
+        if (!isReady) return;
+
         RefreshContinue();
         RefreshLocks();
 
