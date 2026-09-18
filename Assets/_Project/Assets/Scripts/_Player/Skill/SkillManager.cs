@@ -47,8 +47,7 @@ public class SkillManager : MonoBehaviour {
     [Header("해금")]
     // 스토리에서 새 스킬을 되찾았을 때(UnlockFromStory)만 쓰인다. 세이브 복원·시작 장착은 조용히 해금한다.
     public bool autoEquipOnUnlock = true; // 빈 슬롯이 있으면 바로 끼운다. 거울까지 가기 전에 써 봐야 보상으로 느껴진다.
-    public bool announceUnlock = true; // 화면 위에 스킬 이름을 띄운다 (AreaTitleView).
-    public string unlockAnnounceSubtitle = "되찾은 기억"; // 알림에서 스킬 이름 아래 붙는 문구.
+    public bool announceUnlock = true; // 스킬 이름을 화면 가운데 알림으로 띄운다 (SkillUnlockView, Enter 로 닫는다).
 
     [Header("디버그")]
     public bool logCooldown = true; // 쿨타임 중에 눌렀을 때 남은 시간을 콘솔에 찍는다. 감각 조정용이라 빌드에선 꺼도 된다.
@@ -309,8 +308,7 @@ public class SkillManager : MonoBehaviour {
             }
         }
 
-        // 파괴된 뒤에도 C# 참조가 남을 수 있어 ?. 대신 != null 로 Unity의 == 오버로드를 탄다.
-        if (announceUnlock && AreaTitleView.Instance != null) AreaTitleView.Announce(skill.DisplayName, unlockAnnounceSubtitle);
+        if (announceUnlock) SkillUnlockView.Announce(skill, playerMove);
 
         onSkillUnlocked?.Invoke(skill);
         return true;
