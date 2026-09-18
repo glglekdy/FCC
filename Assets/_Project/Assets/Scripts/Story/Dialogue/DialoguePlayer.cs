@@ -30,6 +30,8 @@ public static class DialoguePlayer {
         bool enabledByUs = action != null && !action.enabled;
         if (enabledByUs) action.Enable();
 
+        view.HideOtherUi();
+
         foreach (DialogueEntry entry in entries) {
             if (entry == null) continue; // 인스펙터에서 비워둔 칸.
 
@@ -73,6 +75,7 @@ public static class DialoguePlayer {
 
         // 깃발을 지우는 것은 재생이 끝난 뒤여야 한다. 미리 지우면 바깥 루프가 건너뛰기를 놓친다.
         view.ClearSkipRequest();
+        view.RestoreOtherUi();
 
         if (enabledByUs) action.Disable();
         if (hideOnFinish) view.Hide();

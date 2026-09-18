@@ -31,6 +31,13 @@ public class DialogueView : MonoBehaviour
 
     [SerializeField] private Button   _skipButton;               // 대화 전체 건너뛰기 (선택)
 
+    [Header("대사 중 가릴 화면")]
+    // 대사 재생 중 꺼둘 다른 UI 뿌리들. **PlayerHud · ObjectiveChecklist · AreaTitle · SkillUnlockUI 등을 연결하세요.**
+    // 비워두면 아무것도 끄지 않는다.
+    [SerializeField] private GameObject[] _hideDuringDialogue;
+
+    private bool[] _hiddenUiPrevState; // 끄기 직전 상태. 되돌릴 때 이미 꺼져 있던 화면까지 켜지 않기 위해 기억해 둔다.
+
     private bool _autoAdvance;
     private int  _uiClickFrame = -10;
 
@@ -131,6 +138,33 @@ public class DialogueView : MonoBehaviour
 
     /// <summary>대화창을 끕니다.</summary>
     public void Hide() => SetRootActive(false);
+
+    /// <summary>대사 재생 직전에 다른 UI를 꺼둡니다. 되돌릴 때 필요한 이전 상태를 기억해 둡니다.</summary>
+    public void HideOtherUi()
+    {
+        if (_hideDuringDialogue == null || _hideDuringDialogue.Length == 0) return;
+
+        _hiddenUiPrevState = new bool[_hideDuringDialogue.Length];
+        for (int i = 0; i < _hideDuringDialogue.Length; i++)
+        {
+            if (_hideDuringDialogue[i] == null) continue;
+            _hiddenUiPrevState[i] = _hideDuringDialogue[i].activeSelf;
+            _hideDuringDialogue[i].SetActive(false);
+        }
+    }
+
+    /// <summary>HideOtherUi로 껐던 화면을 원래 상태로 되돌립니다. 이미 꺼져 있던 화면은 그대로 둡니다.</summary>
+    public void RestoreOtherUi()
+    {
+        if (_hiddenUiPrevState == null || _hideDuringDialogue == null) return;
+
+        for (int i = 0; i < _hideDuringDialogue.Length && i < _hiddenUiPrevState.Length; i++)
+        {
+            if (_hideDuringDialogue[i] == null) continue;
+            _hideDuringDialogue[i].SetActive(_hiddenUiPrevState[i]);
+        }
+        _hiddenUiPrevState = null;
+    }
 
     /// <summary>남은 대사를 전부 건너뛰라는 요청이 들어와 있는지 여부.
     /// DialoguePlayer가 매 프레임 확인하고, 켜져 있으면 재생 루프를 빠져나옵니다.</summary>
