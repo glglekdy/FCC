@@ -56,7 +56,7 @@ Transform:
   m_GameObject: {fileID: 748507598249648298}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.014, z: 0}
+  m_LocalPosition: {x: 0, y: -1.14, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -372,6 +372,7 @@ MonoBehaviour:
   attackDelay: 0.15
   attackCooldown: 0.4
   attackDamage: 50
+  attackSoundEvent: event:/SFX/Player/Attack_Sound
 --- !u!1 &8576524948119994719
 GameObject:
   m_ObjectHideFlags: 0
@@ -395,6 +396,7 @@ GameObject:
   - component: {fileID: 905950734729212233}
   - component: {fileID: 7700200}
   - component: {fileID: 5426409266790144256}
+  - component: {fileID: 7828914170269115456}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -485,7 +487,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.00000011920929, y: 0.0025554895}
+  m_Offset: {x: 0, y: -0.1}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -495,7 +497,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.5102756, y: 1.9973791}
+  m_Size: {x: 0.51, y: 2.21}
   m_EdgeRadius: 0
 --- !u!58 &6395780776323375305
 CircleCollider2D:
@@ -578,8 +580,8 @@ MonoBehaviour:
   speed: 7
   maxSpeed: 7
   jumpForce: 11
-  doubleJumpEnabled: 0
-  dashEnabled: 0
+  doubleJumpEnabled: 1
+  dashEnabled: 1
   dashSpeed: 18
   dashDuration: 0.18
   dashCooldown: 0.6
@@ -747,6 +749,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SkillManager
   unlockedSkills:
   - {fileID: 11400000, guid: 7267f24ee051bd64fac54df058e10596, type: 2}
+  - {fileID: 11400000, guid: 27f10c585109ba746a85b164113fa2ee, type: 2}
+  - {fileID: 11400000, guid: c196a40f292b3c941bbb5c25cf356802, type: 2}
+  - {fileID: 11400000, guid: ca9191503b44ce8438c91180dd2a5b76, type: 2}
+  - {fileID: 11400000, guid: 7337058f36d64008a23551f83aab5bcd, type: 2}
   allSkills:
   - {fileID: 11400000, guid: 7267f24ee051bd64fac54df058e10596, type: 2}
   - {fileID: 11400000, guid: 27f10c585109ba746a85b164113fa2ee, type: 2}
@@ -755,8 +761,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7337058f36d64008a23551f83aab5bcd, type: 2}
   equippedSkills:
   - {fileID: 11400000, guid: 7267f24ee051bd64fac54df058e10596, type: 2}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 27f10c585109ba746a85b164113fa2ee, type: 2}
+  - {fileID: 11400000, guid: c196a40f292b3c941bbb5c25cf356802, type: 2}
   slotActionNames:
   - Skill1
   - Skill2
@@ -767,7 +773,6 @@ MonoBehaviour:
   upgradeMinimums: 0300000005000000
   autoEquipOnUnlock: 1
   announceUnlock: 1
-  unlockAnnounceSubtitle: "\uB418\uCC3E\uC740 \uAE30\uC5B5"
   logCooldown: 1
 --- !u!114 &905950734729212233
 MonoBehaviour:
@@ -814,6 +819,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player_DungeonCoinInventory
   count: 0
+--- !u!114 &7828914170269115456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8576524948119994719}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2fd61feb5871e441ae5aca9f856d32d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Player_GateCompass
+  arrowPrefab: {fileID: 5758636931222585576, guid: cfa102c397c6b3648abbe47bcf37e19e, type: 3}
+  radius: 1.8
+  centerOffset: {x: 0, y: 0.6}
+  holdSeconds: 5
+  fadeSeconds: 1.5
+  cooldown: 15
 --- !u!1 &9191151492144908228
 GameObject:
   m_ObjectHideFlags: 0
@@ -916,6 +939,18 @@ PrefabInstance:
     - target: {fileID: 4152741664095336961, guid: 1b29a781a75b4bb4ca9090d028be1616, type: 3}
       propertyPath: m_Name
       value: PlayerFlashlight2D
+      objectReference: {fileID: 0}
+    - target: {fileID: 8338342299213881249, guid: 1b29a781a75b4bb4ca9090d028be1616, type: 3}
+      propertyPath: m_LocalBounds.m_Center.y
+      value: -0.00000011920929
+      objectReference: {fileID: 0}
+    - target: {fileID: 8338342299213881249, guid: 1b29a781a75b4bb4ca9090d028be1616, type: 3}
+      propertyPath: m_LocalBounds.m_Extent.x
+      value: 0.9985302
+      objectReference: {fileID: 0}
+    - target: {fileID: 8338342299213881249, guid: 1b29a781a75b4bb4ca9090d028be1616, type: 3}
+      propertyPath: m_LocalBounds.m_Extent.y
+      value: 0.99853027
       objectReference: {fileID: 0}
     - target: {fileID: 8786485918130754490, guid: 1b29a781a75b4bb4ca9090d028be1616, type: 3}
       propertyPath: m_LocalPosition.x

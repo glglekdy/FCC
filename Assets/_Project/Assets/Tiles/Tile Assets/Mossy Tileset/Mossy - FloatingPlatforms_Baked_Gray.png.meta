@@ -1,0 +1,351 @@
+fileFormatVersion: 2
+guid: 21995f4288d73d745a6497c89056ec08
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 5751012063964977367
+    second: Mossy - FloatingPlatforms_Baked_Gray_0
+  - first:
+      213: -2821112069566387551
+    second: Mossy - FloatingPlatforms_Baked_Gray_1
+  - first:
+      213: 4076838061647075608
+    second: Mossy - FloatingPlatforms_Baked_Gray_2
+  - first:
+      213: 8966438254871548881
+    second: Mossy - FloatingPlatforms_Baked_Gray_3
+  - first:
+      213: 6024100512441855381
+    second: Mossy - FloatingPlatforms_Baked_Gray_4
+  - first:
+      213: -6370554950001433919
+    second: Mossy - FloatingPlatforms_Baked_Gray_5
+  - first:
+      213: 6672248498367820894
+    second: Mossy - FloatingPlatforms_Baked_Gray_6
+  - first:
+      213: 2956074641645167923
+    second: Mossy - FloatingPlatforms_Baked_Gray_7
+  - first:
+      213: -1659194364591791190
+    second: Mossy - FloatingPlatforms_Baked_Gray_8
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 512
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: MossyFloatingGray_RowLeft
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 1520
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dcecb3c9a87618740b3353623a86e285
+      internalID: 2115142632
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MossyFloatingGray_RowMid
+      rect:
+        serializedVersion: 2
+        x: 560
+        y: 1520
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7391997a40e5c1a4083cd65f46642a5b
+      internalID: 411798467
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MossyFloatingGray_RowRight
+      rect:
+        serializedVersion: 2
+        x: 1104
+        y: 1520
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 83dbf25a396994644a8e4b2408be78b7
+      internalID: 896025327
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MossyFloatingGray_ColumnTop
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 976
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 586fa0ffedcc27c4e84af26d982c1865
+      internalID: 1013585008
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MossyFloatingGray_ColumnMid
+      rect:
+        serializedVersion: 2
+        x: 560
+        y: 976
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3065e6a6daa9a1d47a1b7fe5cfb5160f
+      internalID: -1934291811
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MossyFloatingGray_ColumnBottom
+      rect:
+        serializedVersion: 2
+        x: 1104
+        y: 976
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2837e182e57b6d04cb3a7d8ab7740b02
+      internalID: -919088173
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MossyFloatingGray_Single_A
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 432
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 33bb4a8ad7e3fd148abb83fa3e8c64bc
+      internalID: 1324618913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MossyFloatingGray_Single_B
+      rect:
+        serializedVersion: 2
+        x: 560
+        y: 432
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4463a4f9398d07944927b60a94477823
+      internalID: -308262358
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MossyFloatingGray_Single_C
+      rect:
+        serializedVersion: 2
+        x: 1104
+        y: 432
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8f4cfdd51e4c5184e8ec09ed0916e843
+      internalID: -83066305
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: a784fdd5883a5ae4a84040b7a26ca596
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      MossyFloatingGray_ColumnBottom: -919088173
+      MossyFloatingGray_ColumnMid: -1934291811
+      MossyFloatingGray_ColumnTop: 1013585008
+      MossyFloatingGray_RowLeft: 2115142632
+      MossyFloatingGray_RowMid: 411798467
+      MossyFloatingGray_RowRight: 896025327
+      MossyFloatingGray_Single_A: 1324618913
+      MossyFloatingGray_Single_B: -308262358
+      MossyFloatingGray_Single_C: -83066305
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
