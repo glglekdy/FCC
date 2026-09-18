@@ -175,6 +175,10 @@ public class SaveManager : MonoBehaviour {
             data.npcDialogueCounts = NpcDialogueManager.Instance.CaptureState();
         }
 
+        if (TutorialManager.Instance != null) {
+            data.shownTutorialIds = TutorialManager.Instance.CaptureState();
+        }
+
         Write(data);
         OnSaved?.Invoke(data);
         return data;
@@ -243,6 +247,10 @@ public class SaveManager : MonoBehaviour {
 
         if (NpcDialogueManager.Instance != null) {
             NpcDialogueManager.Instance.RestoreState(data.npcDialogueCounts);
+        }
+
+        if (TutorialManager.Instance != null) {
+            TutorialManager.Instance.RestoreState(data.shownTutorialIds);
         }
     }
 

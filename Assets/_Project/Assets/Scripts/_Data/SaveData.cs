@@ -29,6 +29,7 @@ public class SaveData {
     public int dungeonCoinCount; // 보유한 뒷세계 코인 수. 이 필드가 없던 구버전 세이브는 0 으로 읽힌다(코인이 생기기 전이라 원래 0 이다).
     public List<string> clearedDungeonIds = new List<string>(); // 뒷세계 등 1회성 몬스터 구역 중 이미 클리어한 dungeonId 목록.
     public List<NpcDialogueSaveEntry> npcDialogueCounts = new List<NpcDialogueSaveEntry>(); // NPC별로 지금까지 대화를 건 횟수.
+    public List<string> shownTutorialIds = new List<string>(); // 이미 본 튜토리얼 id 목록. 없는 필드는 빈 리스트로 읽혀 구버전 세이브에서도 안전하다.
 
     public List<string> unlockedSkillIds = new List<string>(); // 스토리 진행으로 해금된 스킬 id.
     public List<SkillSaveEntry> skillLevels = new List<SkillSaveEntry>(); // 스킬별 강화 레벨과 단계별 지불액.

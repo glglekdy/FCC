@@ -1,0 +1,106 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Tutorial_en
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 520e6d6a7d5c3304a82e2fb5b3490b23, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 1000000001
+    m_Localized: Move
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000000002
+    m_Localized: Use the arrow keys or A / D to move, and Space to jump.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000000003
+    m_Localized: Save
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000000004
+    m_Localized: You can save at mirrors scattered across the map.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000000005
+    m_Localized: Loadout
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1000000006
+    m_Localized: Saving also lets you change your equipped skills.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 121560501321728
+    m_Localized: Twisted Mirror
+    m_Metadata:
+      m_Items: []
+  - m_Id: 121560564236288
+    m_Localized: Interact with a twisted mirror found around the map to cross into
+      the Backworld.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 121560581013504
+    m_Localized: Obstacle Room
+    m_Metadata:
+      m_Items: []
+  - m_Id: 121560601985024
+    m_Localized: A room where you must make your way across platforms and obstacles.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 121560622956544
+    m_Localized: Battle Room
+    m_Metadata:
+      m_Items: []
+  - m_Id: 121560643928064
+    m_Localized: A room with monsters. You must defeat every monster that appears.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 121560660705280
+    m_Localized: Shop Room
+    m_Metadata:
+      m_Items: []
+  - m_Id: 121560681676800
+    m_Localized: A room where you can buy upgrade items with Backworld Coins.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 121560698454016
+    m_Localized: No Escape During Battle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 121560715231232
+    m_Localized: Entering a battle room seals the walls shut. You cannot leave until
+      every monster inside is defeated.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 121560736202752
+    m_Localized: Clear Reward
+    m_Metadata:
+      m_Items: []
+  - m_Id: 121560757174272
+    m_Localized: Once cleared, a Backworld cannot be entered again, and clearing
+      it rewards you with 1 to 5 Memory Shards.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 121560782340096
+    m_Localized: Mirror Sense
+    m_Metadata:
+      m_Items: []
+  - m_Id: 121560799117312
+    m_Localized: Press T to check the direction of nearby Backworld mirrors.
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []
