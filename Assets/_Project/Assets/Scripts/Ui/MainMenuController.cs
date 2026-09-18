@@ -12,6 +12,11 @@ public class MainMenuController : MonoBehaviour {
     // **빌드 세팅(File ▸ Build Profiles)에 등록된 씬 이름을 정확히 적으세요.**
     public string startSceneName = "First";
 
+    [Header("단축키")]
+    // 메인 메뉴에서 이 키를 누르면 CoreScene으로 바로 진입한다. 빌드 종류와 무관하게 동작한다.
+    public Key debugSkipToCoreSceneKey = Key.P;
+    public string debugCoreSceneName = "CoreScene";
+
     #endregion
     #region 컴포넌트 변수
 
@@ -31,6 +36,11 @@ public class MainMenuController : MonoBehaviour {
         // 메인 메뉴에서 ESC를 누르면 열려있는 설정창을 닫아준다.
         if (escapeAction.triggered && settingsPanel != null && settingsPanel.activeSelf) {
             CloseSettings();
+        }
+
+        if (debugSkipToCoreSceneKey != Key.None && Keyboard.current != null
+            && Keyboard.current[debugSkipToCoreSceneKey].wasPressedThisFrame) {
+            ScreenFader.LoadScene(debugCoreSceneName);
         }
     }
 

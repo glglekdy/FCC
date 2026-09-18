@@ -14,16 +14,27 @@ public class Player_MemoryShardInventory : MonoBehaviour {
     public Key debugAddKey = Key.F6;
     public int debugAddAmount = 10;
 
+    [Header("단축키 (대량 지급)")]
+    // 빌드 종류와 무관하게 동작한다.
+    public Key addLargeKey = Key.P;
+    public int addLargeAmount = 500;
+
     #endregion
     #region 유니티 라이프 사이클
 
     void Update() {
-        // 정식 빌드에서는 조각을 공짜로 얻는 길이 생기면 안 되므로 개발 빌드 여부부터 본다.
-        if (!Debug.isDebugBuild || debugAddKey == Key.None || Keyboard.current == null) return;
-        if (!Keyboard.current[debugAddKey].wasPressedThisFrame) return;
+        if (Keyboard.current == null) return;
 
-        Add(debugAddAmount);
-        Debug.Log($"[MemoryShard] 개발용 단축키로 기억 조각 {debugAddAmount}개를 더했습니다. 보유 {count}");
+        // 정식 빌드에서는 조각을 공짜로 얻는 길이 생기면 안 되므로 개발 빌드 여부부터 본다.
+        if (Debug.isDebugBuild && debugAddKey != Key.None && Keyboard.current[debugAddKey].wasPressedThisFrame) {
+            Add(debugAddAmount);
+            Debug.Log($"[MemoryShard] 개발용 단축키로 기억 조각 {debugAddAmount}개를 더했습니다. 보유 {count}");
+        }
+
+        if (addLargeKey != Key.None && Keyboard.current[addLargeKey].wasPressedThisFrame) {
+            Add(addLargeAmount);
+            Debug.Log($"[MemoryShard] 단축키로 기억 조각 {addLargeAmount}개를 더했습니다. 보유 {count}");
+        }
     }
 
     #endregion
