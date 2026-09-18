@@ -47,6 +47,7 @@ public static class UiThemeApplier {
         touched += Apply("SaveSlotSelect", font, flat, SaveSlotSelect);
         touched += Apply("SaveSlotRow", font, flat, SaveSlotRow);
         touched += Apply("PauseMenu", font, flat, PauseMenu);
+        touched += Apply("TutorialUI", font, flat, TutorialUI);
 
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
@@ -327,6 +328,21 @@ public static class UiThemeApplier {
             view.focusedCancelLabelColor = UiTheme.TextHigh;
             view.dangerLabelColor = UiTheme.AccentBright; // 되돌릴 수 없는 버튼. 면이 아니라 글자에만 포인트 컬러를 쓴다.
         }
+    }
+
+    static void TutorialUI(GameObject root) {
+        Img(root, "Dim", UiTheme.With(UiTheme.Stage, 0.5f));
+
+        Txt(root, "Header/Title", UiTheme.TextHigh);
+        Txt(root, "Header/Subtitle", UiTheme.TextMuted);
+        Img(root, "Header/Divider", UiTheme.Line);
+
+        Img(root, "Image", UiTheme.PanelRaised);
+        ImgTree(root, "Image/Border", UiTheme.Line);
+        Txt(root, "Message", UiTheme.TextHigh);
+
+        Img(root, "Footer/Divider", UiTheme.Line);
+        Txt(root, "Footer/Hint", UiTheme.TextMuted);
     }
 
     #endregion

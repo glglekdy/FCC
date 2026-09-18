@@ -27,8 +27,8 @@ using UnityEngine.Tilemaps;
 public static class TilesetWeatherBaker {
     #region 상수
 
-    const string SheetDir = "Assets/_Project/Assets/Tiles/King And Pig";
-    const string TileDir = "Assets/_Project/Assets/Tiles";
+    const string SheetDir = "Assets/_Project/Assets/Tiles/Tile Assets/King And Pig";
+    const string TileDir = "Assets/_Project/Assets/Tiles/Tile Rule";
     const string OriginalDirName = "Original~"; // **물결표로 끝나야 유니티가 무시한다. 이름을 바꾸면 원본까지 임포트된다.**
 
     static readonly string[] Sheets = {

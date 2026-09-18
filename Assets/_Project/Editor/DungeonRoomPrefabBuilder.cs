@@ -4,6 +4,7 @@ using System.IO;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.Localization;
 using UnityEngine.Tilemaps;
 
 // 던전 방 프리팹 세트를 한 번에 찍어내는 에디터 도구.
@@ -867,13 +868,13 @@ public static class DungeonRoomPrefabBuilder {
 
         Material mat = EnsureMaterial("BranchDoor", new Color(0.24f, 0.17f, 0.14f));
 
-        room.returnDoor = EnsureDoor(root, "ReturnDoor", new Vector3(entryX, g, 0f), "돌아가기", mat);
-        room.entranceDoor = EnsureDoor(root, "EntranceDoor", new Vector3(-w / 2f - 2f, g, 0f), "들어가기", mat);
+        room.returnDoor = EnsureDoor(root, "ReturnDoor", new Vector3(entryX, g, 0f), new LocalizedString("Ui", "interact.return"), mat);
+        room.entranceDoor = EnsureDoor(root, "EntranceDoor", new Vector3(-w / 2f - 2f, g, 0f), new LocalizedString("Ui", "interact.enter"), mat);
         EditorUtility.SetDirty(room);
     }
 
     // 문 피벗은 발밑이다. 생성기가 부모 방 바닥을 찾아 그 높이에 그대로 세우기 때문이다.
-    static DungeonBranchDoor EnsureDoor(GameObject root, string name, Vector3 local, string label, Material mat) {
+    static DungeonBranchDoor EnsureDoor(GameObject root, string name, Vector3 local, LocalizedString label, Material mat) {
         Transform found = root.transform.Find(name);
         if (found != null && found.TryGetComponent(out DungeonBranchDoor existing)) return existing;
 

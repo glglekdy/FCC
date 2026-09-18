@@ -19,8 +19,8 @@ using UnityEngine.Tilemaps;
 public static class KingAndPigTileBuilder {
     #region 상수
 
-    const string SheetPath = "Assets/_Project/Assets/Tiles/King And Pig/Terrain (32x32).png";
-    const string TileDir = "Assets/_Project/Assets/Tiles";
+    const string SheetPath = "Assets/_Project/Assets/Tiles/Tile Assets/King And Pig/Terrain (32x32).png";
+    const string TileDir = "Assets/_Project/Assets/Tiles/Tile Rule";
 
     // 32px = 1유닛. 씬의 Grid 가 1×1 칸이고 기존 Tile_Solid 계열도 32 PPU 라, 여기서 어긋나면 칸이 안 맞는다.
     const int CellPixels = 32;

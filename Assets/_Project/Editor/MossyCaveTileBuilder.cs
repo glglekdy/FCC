@@ -21,20 +21,28 @@ using UnityEngine.Tilemaps;
 // 원본 PNG 와 그 임포트 설정은 건드리지 않는다. 굽기는 언제나 원본에서 다시 시작하므로 여러 번 돌려도 안전하다.
 //
 // 사용법: Tools ▸ FCC ▸ Tilemap ▸ Build Mossy · Cave Rule Tiles
+//         Tile_Mossy · Tile_Mossy_Floating 는 같은 굽기에서 회색 버전(Tile_Mossy_Gray · Tile_Mossy_Floating_Gray)도
+//         함께 만들어진다 — 이끼 낀 초록을 걷어낸 돌담 · 잿빛 폐허 지역용이다. 자르는 좌표(조각표)는 원본과
+//         하나만 두고 공유하며, 색만 구운 뒤에 갈린다(아래 "회색 버전" 항목 참고).
 public static class MossyCaveTileBuilder {
     #region 상수
 
-    const string TileDir = "Assets/_Project/Assets/Tiles";
-    const string MossyDir = TileDir + "/Mossy Tileset";
-    const string CaveDir = TileDir + "/Assets 1024 Cave";
+    const string SheetDir = "Assets/_Project/Assets/Tiles/Tile Assets"; // 원본 시트.
+    const string TileDir = "Assets/_Project/Assets/Tiles/Tile Rule";     // 만들어진 룰 타일.
+    const string MossyDir = SheetDir + "/Mossy Tileset";
+    const string CaveDir = SheetDir + "/Assets 1024 Cave";
 
     const string MossySheetPath = MossyDir + "/Mossy - TileSet.png";
     const string MossyAtlasPath = MossyDir + "/Mossy - TileSet_Baked.png";
     const string MossyTilePath = TileDir + "/Tile_Mossy.asset";
+    const string MossyGrayAtlasPath = MossyDir + "/Mossy - TileSet_Baked_Gray.png";
+    const string MossyGrayTilePath = TileDir + "/Tile_Mossy_Gray.asset";
 
     const string FloatingSheetPath = MossyDir + "/Mossy - FloatingPlatforms.png";
     const string FloatingAtlasPath = MossyDir + "/Mossy - FloatingPlatforms_Baked.png";
     const string FloatingTilePath = TileDir + "/Tile_Mossy_Floating.asset";
+    const string FloatingGrayAtlasPath = MossyDir + "/Mossy - FloatingPlatforms_Baked_Gray.png";
+    const string FloatingGrayTilePath = TileDir + "/Tile_Mossy_Floating_Gray.asset";
 
     const string CaveSheetPath = CaveDir + "/Cave - Platforms.png";
     const string CaveAtlasPath = CaveDir + "/Cave - Platforms_Baked.png";
@@ -198,12 +206,16 @@ public static class MossyCaveTileBuilder {
         SourceSheet sheet = SourceSheet.Load(MossySheetPath);
         if (sheet == null) return;
 
-        var atlas = new Atlas(MossyCellPixels, MossyPadding, MossyPieces);
+        // 자르기는 한 번만 한다. 색 버전(원본 · 회색)마다 다시 자르면 같은 계산을 두 번 하는 데다,
+        // Cut() 이 쌍선형 보간이라 두 번 돌리면 부동소수 반올림이 미세하게 달라질 수 있다.
+        var cells = new Dictionary<string, Color[]>();
         foreach (Piece piece in MossyPieces) {
             var source = new Rect(piece.Col * MossyCellPixels, piece.Row * MossyCellPixels, MossyCellPixels, MossyCellPixels);
-            atlas.Put(piece.Name, sheet.Cut(source, MossyCellPixels, sheet.Bounds));
+            cells[piece.Name] = sheet.Cut(source, MossyCellPixels, sheet.Bounds);
         }
-        Finish(atlas, MossyAtlasPath, "Mossy", MossyTilePath, MossyPieces, "Inner");
+
+        BakeAndFinish(cells, MossyCellPixels, MossyPadding, MossyPieces, MossyAtlasPath, "Mossy", MossyTilePath, "Inner", gray: false);
+        BakeAndFinish(cells, MossyCellPixels, MossyPadding, MossyPieces, MossyGrayAtlasPath, "MossyGray", MossyGrayTilePath, "Inner", gray: true);
     }
 
     // 자르는 좌표는 시트를 픽셀 단위로 비교해 찾은 값이다. 원본 그림이 바뀌면 다시 찾아야 한다.
@@ -212,16 +224,16 @@ public static class MossyCaveTileBuilder {
         if (sheet == null) return;
 
         const int n = MossyCellPixels;
-        var atlas = new Atlas(n, MossyPadding, FloatingPieces);
+        var cells = new Dictionary<string, Color[]>();
 
         // 가로 발판: 맨 윗줄 발판 하나에서 세 칸을 뜬다. 이 발판은 x=750 과 x=1262 의 세로줄이 픽셀까지 같아서
         // [750, 1262) 칸은 자기 자신과 이어 붙여도 끊기지 않고, 그 앞뒤 칸이 곧 양 끝 조각이 된다.
         // clip 은 이 발판만 남기는 사각형이다. 양 끝 칸이 옆 덤불 · 기둥 그림까지 걸쳐 잘리기 때문이다.
         const int RowTop = 5; // 발판(y 36~486)을 칸 가운데에 둔다.
         var rowClip = new RectInt(440, 0, 1120, 530);
-        atlas.Put("RowLeft", sheet.Cut(new Rect(238, RowTop, n, n), n, rowClip));
-        atlas.Put("RowMid", sheet.Cut(new Rect(750, RowTop, n, n), n, rowClip));
-        atlas.Put("RowRight", sheet.Cut(new Rect(1262, RowTop, n, n), n, rowClip));
+        cells["RowLeft"] = sheet.Cut(new Rect(238, RowTop, n, n), n, rowClip);
+        cells["RowMid"] = sheet.Cut(new Rect(750, RowTop, n, n), n, rowClip);
+        cells["RowRight"] = sheet.Cut(new Rect(1262, RowTop, n, n), n, rowClip);
 
         // 세로 기둥: 픽셀까지 같은 줄은 없고 y=231 과 y=743 이 가장 비슷하다. 그 사이를 가운데 칸으로 쓰되,
         // 아래 끝 48px 를 윗칸의 같은 자리(y=183~231)로 서서히 바꿔 다음 가운데 칸의 첫 줄과 맞춘다.
@@ -231,9 +243,9 @@ public static class MossyCaveTileBuilder {
         var columnClip = new RectInt(1560, 0, 488, 1040);
         Color[] columnTop = sheet.Cut(new Rect(ColumnLeft, ColumnSeam - n, n, n), n, columnClip);
         Color[] columnMid = sheet.Cut(new Rect(ColumnLeft, ColumnSeam, n, n), n, columnClip);
-        atlas.Put("ColumnTop", columnTop);
-        atlas.Put("ColumnMid", Blend(columnMid, columnTop, n, false, 1f - (float)ColumnFade / n, 1f));
-        atlas.Put("ColumnBottom", sheet.Cut(new Rect(ColumnLeft, ColumnSeam + n, n, n), n, columnClip));
+        cells["ColumnTop"] = columnTop;
+        cells["ColumnMid"] = Blend(columnMid, columnTop, n, false, 1f - (float)ColumnFade / n, 1f);
+        cells["ColumnBottom"] = sheet.Cut(new Rect(ColumnLeft, ColumnSeam + n, n, n), n, columnClip);
 
         // 외딴 덤불 3종. 각 덤불의 테두리 상자를 칸 가운데에 둔다.
         (string Name, RectInt Box)[] bushes = {
@@ -246,10 +258,11 @@ public static class MossyCaveTileBuilder {
             int top = Mathf.RoundToInt(box.center.y) - n / 2;
             // 20px 여유는 본체에서 떨어져 나간 잎 조각까지 담기 위해서다.
             var clip = new RectInt(box.x - 20, box.y - 20, box.width + 40, box.height + 40);
-            atlas.Put(name, sheet.Cut(new Rect(left, top, n, n), n, clip));
+            cells[name] = sheet.Cut(new Rect(left, top, n, n), n, clip);
         }
 
-        Finish(atlas, FloatingAtlasPath, "MossyFloating", FloatingTilePath, FloatingPieces, "RowMid");
+        BakeAndFinish(cells, n, MossyPadding, FloatingPieces, FloatingAtlasPath, "MossyFloating", FloatingTilePath, "RowMid", gray: false);
+        BakeAndFinish(cells, n, MossyPadding, FloatingPieces, FloatingGrayAtlasPath, "MossyFloatingGray", FloatingGrayTilePath, "RowMid", gray: true);
     }
 
     static void BuildCave() {
@@ -287,6 +300,18 @@ public static class MossyCaveTileBuilder {
         Finish(atlas, CaveAtlasPath, "Cave", CaveTilePath, CavePieces, "Center");
     }
 
+    // 이미 잘라 둔 조각(cells)으로 아틀라스 하나를 굽고 룰 타일까지 만든다. gray 가 켜지면 칸마다
+    // Desaturate 를 거친다 — 원본과 조각표 · 자르기 좌표를 그대로 공유하므로 색만 다른 형제 타일이 나온다.
+    static void BakeAndFinish(Dictionary<string, Color[]> cells, int cellPixels, int padding, Piece[] pieces,
+        string atlasPath, string prefix, string tilePath, string defaultPiece, bool gray) {
+        var atlas = new Atlas(cellPixels, padding, pieces);
+        foreach (Piece piece in pieces) {
+            if (!cells.TryGetValue(piece.Name, out Color[] cell)) continue;
+            atlas.Put(piece.Name, gray ? Desaturate(cell) : cell);
+        }
+        Finish(atlas, atlasPath, prefix, tilePath, pieces, defaultPiece);
+    }
+
     static void Finish(Atlas atlas, string atlasPath, string prefix, string tilePath, Piece[] pieces, string defaultPiece) {
         atlas.Save(atlasPath);
         Dictionary<string, Sprite> sprites = ImportAtlas(atlasPath, atlas, prefix);
@@ -294,6 +319,21 @@ public static class MossyCaveTileBuilder {
 
         BuildRuleTile(tilePath, prefix, pieces, defaultPiece, sprites);
         Debug.Log($"[Tilemap] {prefix} 룰 타일을 만들었습니다 (조각 {pieces.Length}개): {tilePath}");
+    }
+
+    #endregion
+    #region 회색 버전
+
+    // 명도(휘도)만 남기고 채도를 걷어낸다. 색이 알파를 미리 곱한 값(premultiplied)이라도 휘도는 선형
+    // 결합이라 c*a 의 휘도가 곧 휘도(c)*a 와 같다 — 언프리멀티플라이 없이 그대로 계산해도 결과가 맞다.
+    static Color[] Desaturate(Color[] cell) {
+        var result = new Color[cell.Length];
+        for (int i = 0; i < cell.Length; i++) {
+            Color c = cell[i];
+            float luma = 0.2126f * c.r + 0.7152f * c.g + 0.0722f * c.b;
+            result[i] = new Color(luma, luma, luma, c.a);
+        }
+        return result;
     }
 
     #endregion

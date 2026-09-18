@@ -23,7 +23,8 @@ public static class TilemapGridBuilder {
     #region 상수
 
     const string SpriteDir = "Assets/_Project/Assets/Sprites/Env";
-    const string TileDir = "Assets/_Project/Assets/Tiles";
+    const string TileDir = "Assets/_Project/Assets/Tiles";          // Tile_Background 처럼 룰이 아닌 타일.
+    const string RuleTileDir = TileDir + "/Tile Rule";               // 룰 타일은 따로 모아 둔다.
     const string RoomPrefabDir = "Assets/_Project/Assets/Prefabs/Dungeon";
 
     public const string GridName = "Tilemap";
@@ -37,8 +38,8 @@ public static class TilemapGridBuilder {
     // (Tools ▸ FCC ▸ Tilemap ▸ Weather Tileset ▸ Back World). 본편과 같은 타일을 쓰면 뒷세계에 들어온 것이
     // 화면에서 읽히지 않는다. 막힘 지형(Rose)과 통과 발판(Gold)은 사본에서도 밝기가 갈려 "밟고 올라설 수 있는 면"이 구분된다.
     // **방 빌더 · 변환기만 이 값을 쓴다. 본편 씬의 타일맵은 원본 타일로 손으로 칠해 둔 것이라 여기와 무관하다.**
-    const string SolidTilePath = TileDir + "/Tile_KingAndPig_Rose_BackWorld.asset";
-    const string PlatformTilePath = TileDir + "/Tile_KingAndPig_Gold_BackWorld.asset";
+    const string SolidTilePath = RuleTileDir + "/Tile_KingAndPig_Rose_BackWorld.asset";
+    const string PlatformTilePath = RuleTileDir + "/Tile_KingAndPig_Gold_BackWorld.asset";
 
     // 32px = 1유닛. 방 빌더가 1유닛 격자(폭 38 · 높이 18 등 정수)로 방을 짜 두었으므로 타일 한 칸을 1유닛에 맞춘다.
     const int TilePixels = 32;

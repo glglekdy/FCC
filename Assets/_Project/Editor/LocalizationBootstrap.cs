@@ -33,6 +33,9 @@ public static class LocalizationBootstrap {
     // 메뉴·HUD·설정·정비 화면처럼 화면에 고정으로 붙는 문구. 목표 문구와도 나눈 이유는 목표는 기획이
     // 늘 때마다 키가 불어나는 반면 UI 문구는 화면 단위로 묶여 있어 검수 시점이 다르기 때문이다.
     public const string UiTable = "Ui";
+    // 튜토리얼 이름(부제)·멘트. Ui 테이블과 나눈 이유는 튜토리얼이 레벨 배치가 늘 때마다 키가
+    // 계속 불어나는 목표 문구 쪽 성격에 가까워서다 (화면에 고정으로 붙는 Ui 문구와는 검수 시점이 다르다).
+    public const string TutorialTable = "Tutorial";
 
     // 원문 언어. 번역이 비어 있을 때 이 언어로 되돌아간다.
     const string SourceLocaleCode = "ko";
@@ -55,12 +58,13 @@ public static class LocalizationBootstrap {
         EnsureTable(DialogueTable, locales);
         EnsureTable(ObjectiveTable, locales);
         EnsureTable(UiTable, locales);
+        EnsureTable(TutorialTable, locales);
 
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
 
         Debug.Log($"[Localization] 셋업 완료 — 언어 {string.Join(" / ", LocaleCodes)}, " +
-            $"테이블 '{DialogueTable}' · '{ObjectiveTable}' · '{UiTable}'. " +
+            $"테이블 '{DialogueTable}' · '{ObjectiveTable}' · '{UiTable}' · '{TutorialTable}'. " +
             "번역은 Window ▸ Asset Management ▸ Localization Tables 에서 편집하세요.");
 
         Selection.activeObject = settings;
